@@ -1,26 +1,227 @@
+/* stylelint-disable at-rule-no-unknown */
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ═══════════════════════════════════════════════════════
+   Nodo — Design System Tokens (Tailwind v4)
+   ═══════════════════════════════════════════════════════ */
+
+@font-face {
+  font-family: "Codec Pro";
+  src: url("/fonts/CodecPro-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+@font-face {
+  font-family: "Codec Pro";
+  src: url("/fonts/CodecPro-Italic.ttf") format("truetype");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@theme {
+  /* ── Colors ── */
+  --color-nodo-black: #0a0a0a;
+  --color-nodo-white: #ffffff;
+  --color-nodo-blue: #2785fe;
+  --color-nodo-cyan: #00c1f4;
+  --color-nodo-purple: #8b2fef;
+  --color-nodo-indigo: #5863f2;
+
+  --color-nodo-gray-900: #1a1a2e;
+  --color-nodo-gray-800: #16213e;
+  --color-nodo-gray-700: #2a2a4a;
+  --color-nodo-gray-600: #3a3a5c;
+  --color-nodo-gray-400: #8888aa;
+  --color-nodo-gray-300: #b0b0cc;
+  --color-nodo-gray-200: #d0d0e8;
+
+  --color-nodo-success: #00d68f;
+  --color-nodo-warning: #ffaa00;
+  --color-nodo-error: #ff3d71;
+
+  /* ── Typography ── */
+  --font-sans: "Codec Pro", "Poppins", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", "Fira Code", ui-monospace, monospace;
+
+  /* ── Animations ── */
+  --animate-fade-up: fade-up 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  --animate-fade-in: fade-in 0.4s ease forwards;
+  --animate-marquee: marquee 35s linear infinite;
+  --animate-pulse-glow: pulse-glow 3s ease-in-out infinite;
+
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes marquee {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+
+  @keyframes pulse-glow {
+    0%,
+    100% {
+      opacity: 0.4;
+    }
+    50% {
+      opacity: 1;
+    }
   }
 }
 
+/* ═══════════════════════════════════════════════════════
+   CSS Custom Properties
+   ═══════════════════════════════════════════════════════ */
+
+:root {
+  --nodo-black: #0a0a0a;
+  --nodo-white: #ffffff;
+  --nodo-blue: #2785fe;
+  --nodo-cyan: #00c1f4;
+  --nodo-purple: #8b2fef;
+  --nodo-indigo: #5863f2;
+
+  --nodo-gray-900: #1a1a2e;
+  --nodo-gray-800: #16213e;
+  --nodo-gray-700: #2a2a4a;
+  --nodo-gray-600: #3a3a5c;
+  --nodo-gray-400: #8888aa;
+  --nodo-gray-300: #b0b0cc;
+  --nodo-gray-200: #d0d0e8;
+
+  --nodo-gradient-full: linear-gradient(
+    135deg,
+    #8b2fef 0%,
+    #5863f2 30%,
+    #2785fe 60%,
+    #00c1f4 100%
+  );
+  --nodo-gradient-short: linear-gradient(135deg, #8b2fef, #00c1f4);
+  --nodo-shadow-blue: 0 4px 30px rgba(39, 133, 254, 0.15);
+  --nodo-shadow-purple: 0 4px 30px rgba(139, 47, 239, 0.15);
+  --nodo-shadow-glow: 0 0 40px rgba(0, 193, 244, 0.1);
+}
+
+/* ═══════════════════════════════════════════════════════
+   Base Styles
+   ═══════════════════════════════════════════════════════ */
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--nodo-black);
+  color: var(--nodo-white);
+  font-family: "Codec Pro", "Poppins", sans-serif;
+  overflow-x: hidden;
+}
+
+/* ═══════════════════════════════════════════════════════
+   Utility Classes
+   ═══════════════════════════════════════════════════════ */
+
+.gradient-text {
+  background: var(--nodo-gradient-full);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.glass {
+  background: rgba(26, 26, 46, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+}
+
+.glass-hover:hover {
+  border-color: rgba(39, 133, 254, 0.3);
+  box-shadow: 0 4px 30px rgba(39, 133, 254, 0.12);
+  transform: translateY(-4px);
+}
+
+.gradient-btn {
+  background: var(--nodo-gradient-full);
+}
+
+.hero-gradient-orb {
+  background: var(--nodo-gradient-full);
+}
+
+.gradient-border {
+  position: relative;
+}
+
+.gradient-border::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: var(--nodo-gradient-full);
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* ── Selection ── */
+::selection {
+  background-color: rgba(39, 133, 254, 0.3);
+  color: var(--nodo-white);
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--nodo-black);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--nodo-gray-700);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--nodo-gray-600);
+}
+
+/* ── Focus visible ── */
+*:focus-visible {
+  outline: 2px solid var(--nodo-blue);
+  outline-offset: 2px;
 }
