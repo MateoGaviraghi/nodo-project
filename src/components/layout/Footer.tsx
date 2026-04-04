@@ -16,15 +16,17 @@ export default function Footer() {
         <div className="grid gap-12 md:grid-cols-3">
           {/* Brand */}
           <div className="space-y-4">
-            <Link href="/" className="flex items-center gap-3">
+            <Link href="/" className="flex items-center gap-2.5">
               <Image
                 src="/logos/logo-n.png"
-                alt="Nodo"
-                width={28}
-                height={28}
-                className="h-7 w-7"
+                alt="N"
+                width={22}
+                height={22}
+                className="h-[22px] w-[22px]"
               />
-              <span className="text-lg font-medium text-nodo-white">Nodo</span>
+              <span className="text-base font-medium text-nodo-white">
+                Nodo
+              </span>
             </Link>
             <p className="max-w-xs text-sm leading-relaxed text-nodo-gray-400">
               {t.footer.tagline}
@@ -34,7 +36,7 @@ export default function Footer() {
           {/* Navigation */}
           <div>
             <h3 className="mb-4 text-xs font-medium uppercase tracking-wider text-nodo-gray-400">
-              Navegación
+              {t.footer.navigation}
             </h3>
             <ul className="space-y-3">
               {NAV_ITEMS.map((item) => (
@@ -53,7 +55,7 @@ export default function Footer() {
           {/* Contact */}
           <div>
             <h3 className="mb-4 text-xs font-medium uppercase tracking-wider text-nodo-gray-400">
-              Contacto
+              {t.footer.contact}
             </h3>
             <ul className="space-y-3">
               <li>

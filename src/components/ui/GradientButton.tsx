@@ -19,21 +19,31 @@ export default function GradientButton({
   type = "button",
   fullWidth = false,
 }: GradientButtonProps) {
-  const baseClasses = `gradient-btn inline-flex items-center justify-center rounded-lg px-6 py-3 text-sm font-medium text-nodo-white transition-all duration-300 hover:opacity-90 hover:shadow-[0_4px_30px_rgba(39,133,254,0.25)] ${
+  const baseClasses = `group relative inline-flex items-center justify-center overflow-hidden rounded-[3px] px-7 py-3 text-[13px] font-medium tracking-wide text-nodo-white transition-all duration-300 hover:shadow-[0_0_28px_rgba(39,133,254,0.2)] ${
     fullWidth ? "w-full" : ""
   } ${className}`;
+
+  const inner = (
+    <>
+      {/* Gradient bg */}
+      <span className="absolute inset-0 bg-gradient-to-r from-nodo-purple via-nodo-indigo via-60% to-nodo-blue transition-opacity duration-300 group-hover:opacity-90" />
+      {/* Top highlight edge */}
+      <span className="absolute inset-x-0 top-0 h-px bg-white/[0.12]" />
+      <span className="relative">{children}</span>
+    </>
+  );
 
   if (href) {
     return (
       <Link href={href} className={baseClasses}>
-        {children}
+        {inner}
       </Link>
     );
   }
 
   return (
     <button onClick={onClick} type={type} className={baseClasses}>
-      {children}
+      {inner}
     </button>
   );
 }

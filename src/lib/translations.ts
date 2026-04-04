@@ -12,7 +12,7 @@ export const translations = {
       cta: "Empezar proyecto",
     },
     hero: {
-      headline: "Transformamos tus *ideas* en software",
+      headline: "El punto donde tu *idea*, se conecta con el *mundo*",
       subtitle:
         "Desarrollo a medida · WordPress profesional · Automatización con IA",
       cta_primary: "Empezar proyecto",
@@ -20,6 +20,7 @@ export const translations = {
     },
     services: {
       title: "Lo que hacemos",
+      subtitle: "Soluciones digitales que escalan con tu negocio.",
       dev: {
         title: "Desarrollo a medida",
         description:
@@ -43,6 +44,7 @@ export const translations = {
     },
     projects: {
       title: "Nuestro trabajo",
+      subtitle: "Soluciones reales para clientes reales.",
       cta: "Ver todos los proyectos",
     },
     testimonials: {
@@ -56,6 +58,8 @@ export const translations = {
     footer: {
       tagline: "El punto donde tu idea se conecta con el mundo.",
       rights: "Todos los derechos reservados.",
+      navigation: "Navegación",
+      contact: "Contacto",
     },
     contact: {
       title: "Hablemos",
@@ -90,13 +94,14 @@ export const translations = {
       cta: "Start a project",
     },
     hero: {
-      headline: "We turn your *ideas* into software",
+      headline: "The point where your *idea* connects with the *world*",
       subtitle: "Custom development · Professional WordPress · AI Automation",
       cta_primary: "Start a project",
       cta_secondary: "Learn more",
     },
     services: {
       title: "What we do",
+      subtitle: "Digital solutions that scale with your business.",
       dev: {
         title: "Custom development",
         description:
@@ -120,6 +125,7 @@ export const translations = {
     },
     projects: {
       title: "Our work",
+      subtitle: "Real solutions for real clients.",
       cta: "View all projects",
     },
     testimonials: {
@@ -133,6 +139,8 @@ export const translations = {
     footer: {
       tagline: "Where your idea connects with the world.",
       rights: "All rights reserved.",
+      navigation: "Navigation",
+      contact: "Contact",
     },
     contact: {
       title: "Let's talk",

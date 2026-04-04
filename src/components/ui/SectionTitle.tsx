@@ -5,21 +5,24 @@ import { motion } from "framer-motion";
 interface SectionTitleProps {
   children: React.ReactNode;
   className?: string;
+  as?: "h1" | "h2" | "h3";
 }
 
 export default function SectionTitle({
   children,
   className = "",
+  as = "h2",
 }: SectionTitleProps) {
+  const Tag = motion[as];
   return (
-    <motion.h2
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-100px" }}
-      transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-      className={`text-3xl font-medium tracking-tight text-nodo-white sm:text-4xl lg:text-5xl ${className}`}
+    <Tag
+      initial={{ opacity: 0, y: 24, clipPath: "inset(0 0 40% 0)" }}
+      whileInView={{ opacity: 1, y: 0, clipPath: "inset(0 0 0% 0)" }}
+      viewport={{ once: true, margin: "-80px" }}
+      transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+      className={`text-3xl font-medium tracking-[-0.02em] text-nodo-white sm:text-4xl lg:text-5xl ${className}`}
     >
       {children}
-    </motion.h2>
+    </Tag>
   );
 }

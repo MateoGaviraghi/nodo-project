@@ -17,7 +17,7 @@ export default function FlipCard({
 
   return (
     <div
-      className={`group cursor-pointer [perspective:1000px] ${className}`}
+      className={`group cursor-pointer perspective-[1000px] ${className}`}
       onClick={() => setIsFlipped(!isFlipped)}
       role="button"
       tabIndex={0}
@@ -29,17 +29,15 @@ export default function FlipCard({
       }}
     >
       <div
-        className={`relative h-full w-full transition-transform duration-600 ease-[cubic-bezier(0.4,0,0.2,1)] [transform-style:preserve-3d] ${
-          isFlipped ? "[transform:rotateY(180deg)]" : ""
+        className={`relative h-full w-full transition-transform duration-600 ease-in-out transform-3d ${
+          isFlipped ? "transform-[rotateY(180deg)]" : ""
         }`}
       >
         {/* Front */}
-        <div className="absolute inset-0 [backface-visibility:hidden]">
-          {front}
-        </div>
+        <div className="absolute inset-0 backface-hidden">{front}</div>
 
         {/* Back */}
-        <div className="absolute inset-0 [backface-visibility:hidden] [transform:rotateY(180deg)]">
+        <div className="absolute inset-0 backface-hidden transform-[rotateY(180deg)]">
           {back}
         </div>
       </div>

@@ -1,17 +1,13 @@
-"use client";
+import type { Metadata } from "next";
+import NosotrosContent from "./NosotrosContent";
 
-import SectionTitle from "@/components/ui/SectionTitle";
-import { useLanguage } from "@/hooks/useLanguage";
+export const metadata: Metadata = {
+  title: "Nosotros",
+  description:
+    "Conoce al equipo detrás de Nodo. Software house boutique argentina con foco en código limpio, diseño con propósito y resultados reales.",
+  alternates: { canonical: "https://nodo.com.ar/nosotros" },
+};
 
 export default function NosotrosPage() {
-  const { t } = useLanguage();
-
-  return (
-    <section className="flex min-h-screen items-center justify-center px-4 pt-24">
-      <div className="text-center">
-        <SectionTitle>{t.about.title}</SectionTitle>
-        <p className="mt-4 text-nodo-gray-400">Próximamente</p>
-      </div>
-    </section>
-  );
+  return <NosotrosContent />;
 }

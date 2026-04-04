@@ -4,6 +4,8 @@ import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import WhatsAppButton from "@/components/layout/WhatsAppButton";
+import MeshBackground from "@/components/layout/MeshBackground";
+// import CustomCursor from "@/components/layout/CustomCursor";
 import SmoothScrollProvider from "@/components/layout/SmoothScrollProvider";
 import { LanguageProvider } from "@/hooks/useLanguage";
 
@@ -50,6 +52,9 @@ export const metadata: Metadata = {
       "Software house boutique argentina. Desarrollo a medida. WordPress. IA.",
     images: ["/og-image.png"],
   },
+  alternates: {
+    canonical: "https://nodo.com.ar",
+  },
   robots: {
     index: true,
     follow: true,
@@ -62,12 +67,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es" className={`${poppins.variable} h-full antialiased`}>
+    <html lang="es" data-scroll-behavior="smooth" className={`${poppins.variable} h-full antialiased`}>
       <body className="min-h-full bg-nodo-black text-nodo-white">
         <LanguageProvider>
           <SmoothScrollProvider>
+            <MeshBackground />
             <Navbar />
-            <main className="flex-1">{children}</main>
+            <main className="relative z-1 flex-1">{children}</main>
             <Footer />
             <WhatsAppButton />
           </SmoothScrollProvider>

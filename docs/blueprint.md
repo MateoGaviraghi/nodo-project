@@ -208,20 +208,27 @@ nodo-web/
 
 ## Sistema de Animaciones
 
-### Hero — Logo 3D con Scroll
+### Fondo Animado (Mesh Gradient — GLOBAL, en layout.tsx)
+
+El sitio NO usa fondo negro plano. Tiene mesh gradient animado global:
+- Fondo base #0a0a0a + 3-4 orbs de colores de marca en 5-8% opacidad
+- Orbs ~600px, blur(120px), animados en loops de 30-60s
+- Componente MeshBackground.tsx, position: fixed, z-index: 0
+- Sutil como Linear.app — da vida sin distraer
+
+### Hero — Logo 3D con Scroll (3 ETAPAS)
 
 ```
-Scroll 0%:    Logo N centrado, grande, rotando suave (idle)
-Scroll 0-30%: Logo rota en Y (0° → 360°), se escala down (1 → 0.4)
-Scroll 30%:   Logo llega a su posición final (arriba del headline)
-Scroll 30%+:  Headline, subtitle, CTAs aparecen con stagger fade-up
+ETAPA 1 (scroll 0%):     Logo N GRANDE centrado, girando 360° loop. Sin texto. 100vh.
+ETAPA 2 (scroll 0-70%):  Logo SUBE + ACHICA + gira lento. GSAP scrub fluido. Pin.
+ETAPA 3 (scroll 70%+):   Logo 150px arriba, idle. Headline + CTAs stagger fade-up. Navbar visible.
 ```
 
 **Implementación:**
-- React Three Fiber `<Canvas>` con `useScroll()` de @react-three/drei
-- GSAP ScrollTrigger como alternativa si R3F scroll es limitado
-- `position: sticky` en el container del hero para scroll-linked effect
-- El Canvas cubre 100vh, el contenido del hero aparece debajo
+- Hero container: height 300vh. Inner: position sticky, top 0, height 100vh.
+- GSAP ScrollTrigger con scrub: 1 y pin: true
+- Logo: 160 frames PNG en canvas (frame = Math.floor(progress * 159)) o video con currentTime
+- Ver `docs/prompt-fix-hero.md` y `docs/skills-map.md` para código de referencia completo
 
 ### Custom Cursor
 

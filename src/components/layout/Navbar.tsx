@@ -10,18 +10,26 @@ import { NAV_ITEMS } from "@/lib/constants";
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [heroComplete, setHeroComplete] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
-  const { t, language, toggleLanguage } = useLanguage();
+  const { t, language, setLanguage } = useLanguage();
 
   useEffect(() => {
     function handleScroll() {
       setIsScrolled(window.scrollY > 20);
+      // Only hide navbar on home page (hero exists)
+      const hasHero = document.querySelector("[data-hero]");
+      if (hasHero) {
+        setHeroComplete(window.scrollY > window.innerHeight * 1.3);
+      } else {
+        setHeroComplete(true);
+      }
     }
+    handleScroll(); // Run once on mount
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Close mobile menu on route change or resize
   useEffect(() => {
     function handleResize() {
       if (window.innerWidth >= 768) setIsMobileOpen(false);
@@ -30,7 +38,6 @@ export default function Navbar() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Prevent body scroll when mobile menu is open
   useEffect(() => {
     document.body.style.overflow = isMobileOpen ? "hidden" : "";
     return () => {
@@ -43,55 +50,85 @@ export default function Navbar() {
   return (
     <>
       <nav
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          isScrolled ? "glass border-b border-white/[0.06]" : "bg-transparent"
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+          heroComplete
+            ? isScrolled
+              ? "glass border-b border-white/6"
+              : "bg-transparent"
+            : "pointer-events-none"
         }`}
+        style={{ opacity: heroComplete ? 1 : 0 }}
       >
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex h-16 items-center justify-between md:h-20">
+          <div className="flex h-20 items-center justify-between md:h-24">
             {/* Logo */}
             <Link
               href="/"
               className="flex items-center gap-3"
               onClick={() => setIsMobileOpen(false)}
             >
-              <Image
-                src="/logos/logo-n.png"
-                alt="Nodo"
-                width={32}
-                height={32}
-                className="h-8 w-8"
-              />
-              <span className="text-lg font-medium tracking-tight text-nodo-white">
+              <div className="flex h-[52px] w-[52px] shrink-0 items-center justify-center overflow-hidden">
+                <Image
+                  src="/logos/logo-n.png"
+                  alt="Nodo logo"
+                  width={130}
+                  height={130}
+                  className="h-auto w-auto max-h-[130px] max-w-[130px]"
+                  priority
+                />
+              </div>
+              <span className="text-2xl font-bold tracking-[-0.02em] text-nodo-white uppercase">
                 Nodo
               </span>
             </Link>
 
             {/* Desktop Nav */}
-            <div className="hidden items-center gap-8 md:flex">
-              {NAV_ITEMS.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className="text-sm text-nodo-gray-300 transition-colors duration-200 hover:text-nodo-white"
-                >
-                  {navTranslations[item.label] || item.label}
-                </Link>
-              ))}
+            <div className="hidden items-center md:flex">
+              <div className="flex items-center gap-8">
+                {NAV_ITEMS.map((item) => (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className="text-sm text-nodo-gray-300 transition-colors duration-200 hover:text-nodo-white"
+                  >
+                    {navTranslations[item.label] || item.label}
+                  </Link>
+                ))}
+              </div>
 
-              {/* Language toggle */}
-              <button
-                onClick={toggleLanguage}
-                className="rounded-md px-2 py-1 text-xs font-medium text-nodo-gray-400 transition-colors duration-200 hover:text-nodo-white"
-                aria-label={`Switch to ${language === "es" ? "English" : "Español"}`}
-              >
-                {language === "es" ? "EN" : "ES"}
-              </button>
+              <div className="mx-7 h-5 w-px bg-white/10" />
+
+              {/* Language toggle — segmented control */}
+              <div className="mr-6 flex items-center rounded-[2px] border border-white/[0.08]">
+                <button
+                  onClick={() => setLanguage("es")}
+                  className={`px-3 py-1.5 text-[11px] font-medium uppercase tracking-[0.12em] transition-all duration-200 ${
+                    language === "es"
+                      ? "bg-white/[0.08] text-nodo-white"
+                      : "text-nodo-gray-400 hover:text-nodo-gray-300"
+                  }`}
+                  aria-label="Cambiar a Español"
+                >
+                  ES
+                </button>
+                <div className="h-4 w-px bg-white/[0.06]" />
+                <button
+                  onClick={() => setLanguage("en")}
+                  className={`px-3 py-1.5 text-[11px] font-medium uppercase tracking-[0.12em] transition-all duration-200 ${
+                    language === "en"
+                      ? "bg-white/[0.08] text-nodo-white"
+                      : "text-nodo-gray-400 hover:text-nodo-gray-300"
+                  }`}
+                  aria-label="Switch to English"
+                >
+                  EN
+                </button>
+              </div>
 
               {/* CTA */}
               <Link
                 href="/contacto"
-                className="inline-flex items-center rounded-lg px-5 py-2.5 text-sm font-medium text-nodo-white transition-all duration-300"
+                className="inline-flex items-center rounded-[3px] px-6 py-2.5 text-sm font-medium text-nodo-white transition-all duration-300 hover:shadow-[0_0_20px_rgba(39,133,254,0.15)]"
                 style={{ background: "var(--nodo-gradient-full)" }}
               >
                 {t.nav.cta}
@@ -146,25 +183,41 @@ export default function Navbar() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.25, duration: 0.3 }}
-                className="flex flex-col items-center gap-4 pt-4"
+                className="flex flex-col items-center gap-5 pt-4"
               >
                 <Link
                   href="/contacto"
                   onClick={() => setIsMobileOpen(false)}
-                  className="inline-flex items-center rounded-lg px-8 py-3 text-base font-medium text-nodo-white"
+                  className="inline-flex items-center rounded-[3px] px-8 py-3 text-base font-medium text-nodo-white"
                   style={{ background: "var(--nodo-gradient-full)" }}
                 >
                   {t.nav.cta}
                 </Link>
 
-                <button
-                  onClick={toggleLanguage}
-                  className="text-sm text-nodo-gray-400 transition-colors hover:text-nodo-white"
-                >
-                  {language === "es"
-                    ? "Switch to English"
-                    : "Cambiar a Español"}
-                </button>
+                {/* Mobile language toggle */}
+                <div className="flex items-center rounded-[2px] border border-white/[0.08]">
+                  <button
+                    onClick={() => setLanguage("es")}
+                    className={`px-4 py-1.5 text-xs font-medium uppercase tracking-wider transition-all ${
+                      language === "es"
+                        ? "bg-white/[0.08] text-nodo-white"
+                        : "text-nodo-gray-400"
+                    }`}
+                  >
+                    ES
+                  </button>
+                  <div className="h-4 w-px bg-white/[0.06]" />
+                  <button
+                    onClick={() => setLanguage("en")}
+                    className={`px-4 py-1.5 text-xs font-medium uppercase tracking-wider transition-all ${
+                      language === "en"
+                        ? "bg-white/[0.08] text-nodo-white"
+                        : "text-nodo-gray-400"
+                    }`}
+                  >
+                    EN
+                  </button>
+                </div>
               </motion.div>
             </div>
           </motion.div>
