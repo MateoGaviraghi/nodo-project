@@ -1,7 +1,12 @@
 {
   "permissions": {
     "allow": [
-      "Bash(ls -la \"C:\\\\Users\\\\mateo\\\\.claude\\\\projects\\\\C--Users-mateo-Desktop-nodo-project\\\\memory\"\" 2>/dev/null || echo \"Directory not found \")"
+      "Bash(ls -la \"C:\\\\Users\\\\mateo\\\\.claude\\\\projects\\\\C--Users-mateo-Desktop-nodo-project\\\\memory\"\" 2>/dev/null || echo \"Directory not found \")",
+      "Bash(npm outdated:*)",
+      "Bash(npm ls:*)",
+      "Bash(rm -rf public/logos/frames-logo/)",
+      "Bash(rm -f public/videos/nodo-n-loop.mp4 public/videos/video-logo-N-sin-fondo.mp4)",
+      "mcp__Claude_Preview__preview_start"
     ]
   }
 }
