@@ -296,40 +296,6 @@ body {
   background: var(--nodo-gray-600);
 }
 
-/* ═══════════════════════════════════════════════════════
-   Custom Cursor
-   ═══════════════════════════════════════════════════════ */
-
-.cursor-hide-default,
-.cursor-hide-default * {
-  cursor: none !important;
-}
-
-.custom-cursor {
-  opacity: var(--cursor-opacity, 0);
-  transition: opacity 0.3s ease;
-}
-
-.cursor-ring {
-  width: 32px;
-  height: 32px;
-}
-
-.cursor-ring-hover {
-  width: 48px;
-  height: 48px;
-}
-
-.cursor-dot {
-  width: 4px;
-  height: 4px;
-}
-
-.cursor-dot-hover {
-  width: 6px;
-  height: 6px;
-}
-
 /* ── Focus visible ── */
 *:focus-visible {
   outline: 2px solid var(--nodo-blue);

@@ -5,7 +5,6 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import WhatsAppButton from "@/components/layout/WhatsAppButton";
 import MeshBackground from "@/components/layout/MeshBackground";
-// import CustomCursor from "@/components/layout/CustomCursor";
 import SmoothScrollProvider from "@/components/layout/SmoothScrollProvider";
 import { LanguageProvider } from "@/hooks/useLanguage";
 
