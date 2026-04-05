@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls -la \"C:\\\\Users\\\\mateo\\\\.claude\\\\projects\\\\C--Users-mateo-Desktop-nodo-project\\\\memory\"\" 2>/dev/null || echo \"Directory not found \")"
+    ]
+  }
+}
