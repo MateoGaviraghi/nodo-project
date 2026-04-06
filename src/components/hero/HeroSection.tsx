@@ -10,7 +10,12 @@ import ScrollIndicator from "./ScrollIndicator";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const TOTAL_FRAMES = 160;
+const TOTAL_FRAMES = 122;
+const FRAME_PATH = "/hero-frames/";
+
+function getFrameSrc(index: number): string {
+  return `${FRAME_PATH}${String(index + 1).padStart(4, "0")}.jpg`;
+}
 
 function clamp(v: number, min: number, max: number) {
   return Math.max(min, Math.min(max, v));
@@ -20,121 +25,89 @@ function remap(v: number, lo: number, hi: number) {
   return clamp((v - lo) / (hi - lo), 0, 1);
 }
 
-function getFramePath(index: number): string {
-  return `/logos/frames-logo/${String(index + 1).padStart(3, "0")}.png`;
-}
-
-/** Remove near-white pixels (set alpha → 0) for transparent background. */
-function removeWhiteBg(data: Uint8ClampedArray) {
-  for (let i = 0; i < data.length; i += 4) {
-    const minC = Math.min(data[i], data[i + 1], data[i + 2]);
-    if (minC > 230) {
-      data[i + 3] = 0;
-    } else if (minC > 180) {
-      data[i + 3] = Math.round(((230 - minC) / 50) * data[i + 3]);
-    }
-  }
-}
-
 export default function HeroSection() {
   const { t } = useLanguage();
 
   const sectionRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const logoContainerRef = useRef<HTMLDivElement>(null);
+  const canvasContainerRef = useRef<HTMLDivElement>(null);
   const heroTextRef = useRef<HTMLDivElement>(null);
   const h1Ref = useRef<HTMLHeadingElement>(null);
   const subtitleRef = useRef<HTMLParagraphElement>(null);
   const ctaRef = useRef<HTMLDivElement>(null);
 
-  const framesRef = useRef<(HTMLCanvasElement | null)[]>(
+  const framesRef = useRef<(HTMLImageElement | null)[]>(
     new Array(TOTAL_FRAMES).fill(null),
   );
-  const targetFrameRef = useRef(0); // Where mouse wants to go (float)
-  const displayFrameRef = useRef(0); // What's actually shown (lerps toward target)
+  const currentFrameRef = useRef(0);
   const scrollProgressRef = useRef(0);
-  const lastMouseXRef = useRef(0);
-  const mouseInitRef = useRef(false); // Has first mousemove fired?
-  const loadedCountRef = useRef(0);
 
   const [hasFirstFrame, setHasFirstFrame] = useState(false);
   const [pastStart, setPastStart] = useState(false);
-  const mouseEnabledRef = useRef(false);
 
-  // -- Load frames progressively: frame 0 first (instant display), rest in background --
+  // -- Preload frames progressively --
   useEffect(() => {
-    const PROCESS_W = 1400;
+    const BATCH_SIZE = 8;
 
-    function processFrame(index: number, img: HTMLImageElement) {
-      const ph = Math.round(
-        (PROCESS_W * img.naturalHeight) / img.naturalWidth,
-      );
-      const offscreen = document.createElement("canvas");
-      offscreen.width = PROCESS_W;
-      offscreen.height = ph;
-      const ctx = offscreen.getContext("2d", { willReadFrequently: true })!;
-      ctx.drawImage(img, 0, 0, PROCESS_W, ph);
-
-      const imageData = ctx.getImageData(0, 0, PROCESS_W, ph);
-      removeWhiteBg(imageData.data);
-      ctx.putImageData(imageData, 0, 0);
-
-      framesRef.current[index] = offscreen;
-      loadedCountRef.current++;
+    function loadFrame(index: number): Promise<void> {
+      return new Promise((resolve) => {
+        const img = new Image();
+        img.src = getFrameSrc(index);
+        img.onload = () => {
+          framesRef.current[index] = img;
+          if (index === 0) setHasFirstFrame(true);
+          resolve();
+        };
+        img.onerror = () => resolve();
+      });
     }
 
-    // Load frame 0 FIRST for instant display
-    const firstImg = new Image();
-    firstImg.src = getFramePath(0);
-    firstImg.onload = () => {
-      processFrame(0, firstImg);
-      setHasFirstFrame(true);
-      // Enable mouse interaction after a delay so the logo doesn't jitter on load
-      setTimeout(() => {
-        mouseEnabledRef.current = true;
-      }, 1500);
-
-      // Then load the rest in batches
-      const BATCH_SIZE = 10;
+    // Load frame 0 first for instant display
+    loadFrame(0).then(() => {
       let nextIndex = 1;
 
       function loadBatch() {
         const end = Math.min(nextIndex + BATCH_SIZE, TOTAL_FRAMES);
+        const promises: Promise<void>[] = [];
         for (let i = nextIndex; i < end; i++) {
-          const img = new Image();
-          img.src = getFramePath(i);
-          img.onload = () => processFrame(i, img);
+          promises.push(loadFrame(i));
         }
-        nextIndex = end;
-        if (nextIndex < TOTAL_FRAMES) {
-          setTimeout(loadBatch, 50); // Small delay between batches to not block main thread
-        }
+        Promise.all(promises).then(() => {
+          nextIndex = end;
+          if (nextIndex < TOTAL_FRAMES) {
+            requestAnimationFrame(loadBatch);
+          }
+        });
       }
 
       loadBatch();
-    };
+    });
   }, []);
 
-  // -- Draw frame on canvas --
+  // -- Draw frame on canvas (fills entire viewport, no black borders) --
   const drawFrame = useCallback((frameIndex: number) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const idx = ((frameIndex % TOTAL_FRAMES) + TOTAL_FRAMES) % TOTAL_FRAMES;
-    const frame = framesRef.current[idx];
-    // If this frame isn't loaded yet, find the closest loaded one
-    let drawSource = frame;
-    if (!drawSource) {
+    const idx = clamp(Math.round(frameIndex), 0, TOTAL_FRAMES - 1);
+    let img = framesRef.current[idx];
+
+    // Fallback to closest loaded frame
+    if (!img) {
       for (let offset = 1; offset < TOTAL_FRAMES; offset++) {
-        const tryIdx =
-          ((idx - offset) % TOTAL_FRAMES + TOTAL_FRAMES) % TOTAL_FRAMES;
-        if (framesRef.current[tryIdx]) {
-          drawSource = framesRef.current[tryIdx];
+        const below = idx - offset;
+        const above = idx + offset;
+        if (below >= 0 && framesRef.current[below]) {
+          img = framesRef.current[below];
+          break;
+        }
+        if (above < TOTAL_FRAMES && framesRef.current[above]) {
+          img = framesRef.current[above];
           break;
         }
       }
     }
-    if (!drawSource) return;
+    if (!img) return;
 
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
@@ -149,94 +122,39 @@ export default function HeroSection() {
       canvas.height = h;
     }
 
-    ctx.clearRect(0, 0, w, h);
-
-    const frameAspect = drawSource.width / drawSource.height;
+    // Cover fit — fills entire viewport, no bars, premium fullscreen
+    const imgAspect = img.naturalWidth / img.naturalHeight;
     const canvasAspect = w / h;
-    let dW: number, dH: number, dX: number, dY: number;
+    let sW: number, sH: number, sX: number, sY: number;
 
-    if (frameAspect > canvasAspect) {
-      dW = w;
-      dH = w / frameAspect;
-      dX = 0;
-      dY = (h - dH) / 2;
+    if (imgAspect > canvasAspect) {
+      sH = img.naturalHeight;
+      sW = img.naturalHeight * canvasAspect;
+      sX = (img.naturalWidth - sW) / 2;
+      sY = 0;
     } else {
-      dH = h;
-      dW = h * frameAspect;
-      dX = (w - dW) / 2;
-      dY = 0;
+      sW = img.naturalWidth;
+      sH = img.naturalWidth / canvasAspect;
+      sX = 0;
+      sY = (img.naturalHeight - sH) / 2;
     }
 
-    ctx.drawImage(drawSource, dX, dY, dW, dH);
+    ctx.drawImage(img, sX, sY, sW, sH, 0, 0, w, h);
   }, []);
 
-  // -- Mouse interaction: spin logo only when mouse moves horizontally --
-  useEffect(() => {
-    const container = logoContainerRef.current;
-    if (!container) return;
-
-    const handleMouseMove = (e: MouseEvent) => {
-      if (!mouseEnabledRef.current) return;
-      if (scrollProgressRef.current > 0.1) return;
-
-      // Skip until we have a valid previous position
-      if (!mouseInitRef.current) {
-        lastMouseXRef.current = e.clientX;
-        mouseInitRef.current = true;
-        return;
-      }
-
-      const deltaX = e.clientX - lastMouseXRef.current;
-      lastMouseXRef.current = e.clientX;
-
-      // Deadzone to avoid jitter from micro-movements
-      if (Math.abs(deltaX) > 2) {
-        targetFrameRef.current += deltaX * 0.12;
-      }
-    };
-
-    const handleMouseEnter = (e: MouseEvent) => {
-      // Reset so first move initializes position cleanly
-      mouseInitRef.current = false;
-      lastMouseXRef.current = e.clientX;
-    };
-    const handleMouseLeave = () => {
-      mouseInitRef.current = false;
-    };
-
-    container.addEventListener("mousemove", handleMouseMove);
-    container.addEventListener("mouseenter", handleMouseEnter);
-    container.addEventListener("mouseleave", handleMouseLeave);
-
-    return () => {
-      container.removeEventListener("mousemove", handleMouseMove);
-      container.removeEventListener("mouseenter", handleMouseEnter);
-      container.removeEventListener("mouseleave", handleMouseLeave);
-    };
-  }, []);
-
-  // -- Render loop: lerp displayFrame toward targetFrame for smooth motion --
+  // -- Render loop --
   useEffect(() => {
     if (!hasFirstFrame) return;
 
     let animFrame: number;
-    const LERP_SPEED = 0.12; // Lower = smoother, higher = more responsive
+    let lastDrawn = -1;
 
     function tick() {
-      // Smooth interpolation: displayFrame eases toward targetFrame
-      const diff = targetFrameRef.current - displayFrameRef.current;
-      if (Math.abs(diff) > 0.01) {
-        displayFrameRef.current += diff * LERP_SPEED;
-      } else {
-        displayFrameRef.current = targetFrameRef.current;
+      const frame = currentFrameRef.current;
+      if (frame !== lastDrawn) {
+        drawFrame(frame);
+        lastDrawn = frame;
       }
-
-      // Convert float to integer frame index, wrap around
-      const frameIdx =
-        ((Math.round(displayFrameRef.current) % TOTAL_FRAMES) + TOTAL_FRAMES) %
-        TOTAL_FRAMES;
-      drawFrame(frameIdx);
-
       animFrame = requestAnimationFrame(tick);
     }
 
@@ -244,52 +162,56 @@ export default function HeroSection() {
     return () => cancelAnimationFrame(animFrame);
   }, [hasFirstFrame, drawFrame]);
 
-  // -- GSAP ScrollTrigger — direct DOM, zero re-renders --
+  // -- GSAP ScrollTrigger --
   useEffect(() => {
     const el = sectionRef.current;
-    const logoCtn = logoContainerRef.current;
+    const canvasCtn = canvasContainerRef.current;
     const heroText = heroTextRef.current;
     const h1El = h1Ref.current;
     const subtitleEl = subtitleRef.current;
     const ctaEl = ctaRef.current;
 
-    if (!el || !logoCtn || !heroText || !h1El || !subtitleEl || !ctaEl) return;
+    if (!el || !canvasCtn || !heroText || !h1El || !subtitleEl || !ctaEl) return;
 
     const st = ScrollTrigger.create({
       trigger: el,
       start: "top top",
       end: "bottom bottom",
-      scrub: 0,
+      scrub: 0.5, // Smoother scrub with slight lag
       onUpdate: (self) => {
         const p = self.progress;
         scrollProgressRef.current = p;
 
-        // Logo transform
-        const phase = remap(p, 0, 0.7);
-        const logoScale = 1 - phase * 0.55;
-        const logoY = phase * -12;
-        logoCtn.style.transform = `translateY(${logoY}vh) scale(${logoScale})`;
-        logoCtn.style.pointerEvents = p < 0.1 ? "auto" : "none";
+        // ── Stage 1: Frame scrub (0% → 60%) ──
+        const frameProgress = remap(p, 0, 0.6);
+        const frameIndex = Math.round(frameProgress * (TOTAL_FRAMES - 1));
+        currentFrameRef.current = frameIndex;
 
-        // Text container
-        const textPhase = remap(p, 0.65, 0.85);
+        // ── Stage 2: Canvas fades out smoothly (58% → 75%) ──
+        const fadeOutProgress = remap(p, 0.58, 0.75);
+        canvasCtn.style.opacity = String(1 - fadeOutProgress);
+
+        // ── Stage 3: Text appears (68% → 88%) ──
+        const textPhase = remap(p, 0.68, 0.78);
         heroText.style.opacity = String(textPhase);
         heroText.style.pointerEvents = textPhase > 0.3 ? "auto" : "none";
 
         // Staggered reveals
-        const h1p = remap(p, 0.65, 0.82);
+        const h1p = remap(p, 0.68, 0.8);
         h1El.style.opacity = String(h1p);
-        h1El.style.transform = `translateY(${(1 - h1p) * 30}px)`;
+        h1El.style.transform = `translateY(${(1 - h1p) * 40}px)`;
 
-        const subP = remap(p, 0.72, 0.87);
+        const subP = remap(p, 0.73, 0.84);
         subtitleEl.style.opacity = String(subP);
-        subtitleEl.style.transform = `translateY(${(1 - subP) * 20}px)`;
+        subtitleEl.style.transform = `translateY(${(1 - subP) * 25}px)`;
 
-        const ctaP = remap(p, 0.78, 0.92);
+        const ctaP = remap(p, 0.78, 0.88);
         ctaEl.style.opacity = String(ctaP);
-        ctaEl.style.transform = `translateY(${(1 - ctaP) * 15}px)`;
+        ctaEl.style.transform = `translateY(${(1 - ctaP) * 20}px)`;
 
-        if (p > 0.05) setPastStart(true);
+        // Scroll indicator
+        if (p > 0.03) setPastStart(true);
+        else setPastStart(false);
       },
     });
 
@@ -301,39 +223,47 @@ export default function HeroSection() {
       ref={sectionRef}
       data-hero
       className="relative"
-      style={{ height: "300vh" }}
+      style={{ height: "600vh" }}
     >
       <div className="sticky top-0 flex h-screen w-full flex-col items-center justify-center overflow-hidden">
-        {/* -- Logo Canvas -- BIG */}
+        {/* ── Canvas — fullscreen, no borders ── */}
         <div
-          ref={logoContainerRef}
-          className="absolute inset-0 z-10 flex items-center justify-center"
-          style={{ willChange: "transform" }}
+          ref={canvasContainerRef}
+          className="absolute inset-0 z-10"
+          style={{ willChange: "opacity" }}
         >
           <canvas
             ref={canvasRef}
-            className="h-[140vh] w-[140vh] sm:h-[150vh] sm:w-[150vh] md:h-[160vh] md:w-[160vh]"
+            className="h-full w-full"
           />
         </div>
 
-        {/* -- Hero text — appears in stage 3 -- */}
+        {/* ── Hero Text — appears after video fades ── */}
         <div
           ref={heroTextRef}
-          className="relative z-20 flex flex-col items-center px-6 pt-[56vh] text-center"
+          className="relative z-20 flex flex-col items-center px-6 text-center"
           style={{ opacity: 0, pointerEvents: "none" }}
         >
+          {/* Brand name */}
+          <p
+            className="mb-8 text-[clamp(1rem,1.8vw,1.3rem)] font-semibold tracking-[0.4em] uppercase gradient-text"
+            style={{ willChange: "opacity" }}
+          >
+            Nodo
+          </p>
+
           <h1
             ref={h1Ref}
             className="mb-5 max-w-3xl text-[clamp(1.75rem,5vw,4rem)] font-medium leading-[1.08] tracking-[-0.03em]"
             style={{
               opacity: 0,
-              transform: "translateY(30px)",
+              transform: "translateY(40px)",
               willChange: "transform, opacity",
             }}
           >
             {t.hero.headline.split(" ").map((word, i) => {
               const clean = word.replace(/\*/g, "");
-              const highlighted = word.startsWith("*") && word.endsWith("*");
+              const highlighted = word.includes("*");
               return (
                 <span
                   key={i}
@@ -352,7 +282,7 @@ export default function HeroSection() {
             className="mb-9 max-w-md text-[15px] leading-relaxed text-nodo-gray-400"
             style={{
               opacity: 0,
-              transform: "translateY(20px)",
+              transform: "translateY(25px)",
               willChange: "transform, opacity",
             }}
           >
@@ -364,7 +294,7 @@ export default function HeroSection() {
             className="flex items-center gap-3"
             style={{
               opacity: 0,
-              transform: "translateY(15px)",
+              transform: "translateY(20px)",
               willChange: "transform, opacity",
             }}
           >
@@ -377,7 +307,7 @@ export default function HeroSection() {
           </div>
         </div>
 
-        {/* -- Scroll Indicator -- */}
+        {/* ── Scroll Indicator ── */}
         <ScrollIndicator visible={!pastStart} />
       </div>
     </section>
