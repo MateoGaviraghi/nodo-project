@@ -25,7 +25,14 @@
       "Bash(cmd.exe /c \"taskkill /F /PID 5152 & taskkill /F /PID 216444\")",
       "Bash(ffprobe -v error -select_streams v:0 -show_entries stream=width,height,r_frame_rate,duration -of csv=p=0 \"C:\\\\Users\\\\mateo\\\\Desktop\\\\nodo-project\\\\nodo-brain\\\\nodo-video-scroll-web.mp4\")",
       "Bash(ffmpeg -i \"C:\\\\Users\\\\mateo\\\\Desktop\\\\nodo-project\\\\nodo-brain\\\\nodo-video-scroll-web.mp4\" -r 15 -q:v 3 \"C:\\\\Users\\\\mateo\\\\Desktop\\\\nodo-project\\\\.claude\\\\worktrees\\\\elastic-margulis\\\\public\\\\hero-frames\\\\%04d.jpg\")",
-      "Bash(cmd.exe /c \"for /f \"\"tokens=5\"\" %a in \\(''netstat -ano ^| findstr :3000 ^| findstr LISTENING''\\) do taskkill /F /PID %a\")"
+      "Bash(cmd.exe /c \"for /f \"\"tokens=5\"\" %a in \\(''netstat -ano ^| findstr :3000 ^| findstr LISTENING''\\) do taskkill /F /PID %a\")",
+      "Bash(ls \"C:\\\\Users\\\\mateo\\\\Desktop\\\\nodo-project\\\\src\\\\components\\\\ui\"\" 2>/dev/null || echo \"Checking main project...\":*)",
+      "Bash(cp \"/c/Users/mateo/Desktop/nodo-project/src/components/ui/TiltCard.tsx\" \"/c/Users/mateo/Desktop/nodo-project/.claude/worktrees/elastic-margulis/src/components/ui/TiltCard.tsx\")",
+      "Bash(cp \"/c/Users/mateo/Desktop/nodo-project/src/components/ui/ScrollCounter.tsx\" \"/c/Users/mateo/Desktop/nodo-project/.claude/worktrees/elastic-margulis/src/components/ui/ScrollCounter.tsx\")",
+      "Bash(cp \"/c/Users/mateo/Desktop/nodo-project/src/components/ui/DepthMarquee.tsx\" \"/c/Users/mateo/Desktop/nodo-project/.claude/worktrees/elastic-margulis/src/components/ui/DepthMarquee.tsx\")",
+      "Bash(cp \"/c/Users/mateo/Desktop/nodo-project/src/components/ui/GradientMesh.tsx\" \"/c/Users/mateo/Desktop/nodo-project/.claude/worktrees/elastic-margulis/src/components/ui/GradientMesh.tsx\")",
+      "Bash(cp \"/c/Users/mateo/Desktop/nodo-project/src/hooks/useTiltEffect.ts\" \"/c/Users/mateo/Desktop/nodo-project/.claude/worktrees/elastic-margulis/src/hooks/useTiltEffect.ts\")",
+      "Bash(cp \"/c/Users/mateo/Desktop/nodo-project/src/hooks/useScrollReveal.ts\" \"/c/Users/mateo/Desktop/nodo-project/.claude/worktrees/elastic-margulis/src/hooks/useScrollReveal.ts\")"
     ]
   }
 }
