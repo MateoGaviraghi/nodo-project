@@ -6,7 +6,25 @@
       "Bash(npm ls:*)",
       "Bash(rm -rf public/logos/frames-logo/)",
       "Bash(rm -f public/videos/nodo-n-loop.mp4 public/videos/video-logo-N-sin-fondo.mp4)",
-      "mcp__Claude_Preview__preview_start"
+      "mcp__Claude_Preview__preview_start",
+      "Bash(gh pr:*)",
+      "Bash(where gh:*)",
+      "Bash(winget install:*)",
+      "Bash(export PATH=\"/c/Program Files/GitHub CLI:$PATH\")",
+      "Bash(gh auth:*)",
+      "Read(//c/c/Users/mateo/**)",
+      "Bash(where ffmpeg:*)",
+      "Bash(export PATH=\"/c/Users/mateo/AppData/Local/Microsoft/WinGet/Links:$PATH\")",
+      "Bash(ffmpeg -i \"C:\\\\Users\\\\mateo\\\\Desktop\\\\nodo-project\\\\nodo-brain\\\\nodo-video-scroll-web.mp4\" -vf \"scale=1920:1080,crop=1870:1050:25:15\" -r 15 -q:v 3 \"C:\\\\Users\\\\mateo\\\\Desktop\\\\nodo-project\\\\.claude\\\\worktrees\\\\elastic-margulis\\\\public\\\\hero-frames\\\\%04d.jpg\")",
+      "Bash(ls \"C:\\\\Users\\\\mateo\\\\Desktop\\\\nodo-project\\\\.claude\\\\worktrees\\\\elastic-margulis\\\\public\\\\hero-frames\"\" | wc -l && du -sh \"C:UsersmateoDesktopnodo-project.claudeworktreeselastic-margulispublichero-frames\"\")",
+      "Bash(taskkill /PID 5152 /F)",
+      "Bash(taskkill /IM node.exe /F)",
+      "Bash(cmd.exe /c \"taskkill /PID 5152 /F\")",
+      "Bash(cmd.exe /c \"taskkill /F /IM node.exe\")",
+      "Bash(netstat -ano)",
+      "Bash(cmd.exe /c \"taskkill /F /PID 5152 & taskkill /F /PID 216444\")",
+      "Bash(ffprobe -v error -select_streams v:0 -show_entries stream=width,height,r_frame_rate,duration -of csv=p=0 \"C:\\\\Users\\\\mateo\\\\Desktop\\\\nodo-project\\\\nodo-brain\\\\nodo-video-scroll-web.mp4\")",
+      "Bash(ffmpeg -i \"C:\\\\Users\\\\mateo\\\\Desktop\\\\nodo-project\\\\nodo-brain\\\\nodo-video-scroll-web.mp4\" -r 15 -q:v 3 \"C:\\\\Users\\\\mateo\\\\Desktop\\\\nodo-project\\\\.claude\\\\worktrees\\\\elastic-margulis\\\\public\\\\hero-frames\\\\%04d.jpg\")"
     ]
   }
 }

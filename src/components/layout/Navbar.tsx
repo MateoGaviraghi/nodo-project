@@ -17,7 +17,6 @@ export default function Navbar() {
   useEffect(() => {
     function handleScroll() {
       setIsScrolled(window.scrollY > 20);
-      // Only hide navbar on home page (hero exists)
       const hasHero = document.querySelector("[data-hero]");
       if (hasHero) {
         setHeroComplete(window.scrollY > window.innerHeight * 1.3);
@@ -25,7 +24,7 @@ export default function Navbar() {
         setHeroComplete(true);
       }
     }
-    handleScroll(); // Run once on mount
+    handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -59,50 +58,62 @@ export default function Navbar() {
         }`}
         style={{ opacity: heroComplete ? 1 : 0 }}
       >
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex h-20 items-center justify-between md:h-24">
-            {/* Logo */}
+        <div className="mx-auto w-full px-8 lg:px-16">
+          <div className="flex h-16 items-center md:h-20">
+            {/* Logo — solo isotipo, pegado a la izquierda */}
             <Link
               href="/"
-              className="flex items-center gap-3"
-              onClick={() => setIsMobileOpen(false)}
+              className="mr-auto flex shrink-0 items-center"
+              onClick={(e) => {
+                setIsMobileOpen(false);
+                // If on home page, scroll to hero text (past the video)
+                if (window.location.pathname === "/") {
+                  e.preventDefault();
+                  const hero = document.querySelector("[data-hero]");
+                  if (hero) {
+                    const heroHeight = hero.getBoundingClientRect().height;
+                    // Scroll to ~75% of hero (where text appears)
+                    window.scrollTo({ top: heroHeight * 0.75, behavior: "smooth" });
+                  }
+                }
+              }}
             >
-              <div className="flex h-[52px] w-[52px] shrink-0 items-center justify-center overflow-hidden">
+              <div className="flex h-10 w-10 items-center justify-center overflow-hidden">
                 <Image
                   src="/logos/logo-n.png"
-                  alt="Nodo logo"
-                  width={130}
-                  height={130}
-                  className="h-auto w-auto max-h-[130px] max-w-[130px]"
+                  alt="Nodo"
+                  width={100}
+                  height={100}
+                  className="h-auto w-auto max-h-[100px] max-w-[100px]"
                   priority
                 />
               </div>
-              <span className="text-2xl font-bold tracking-[-0.02em] text-nodo-white uppercase">
-                Nodo
-              </span>
             </Link>
 
-            {/* Desktop Nav */}
-            <div className="hidden items-center md:flex">
+            {/* Desktop Nav — pages centradas absolutamente */}
+            <div className="absolute left-1/2 hidden -translate-x-1/2 items-center md:flex">
               <div className="flex items-center gap-8">
                 {NAV_ITEMS.map((item) => (
                   <Link
                     key={item.href}
                     href={item.href}
-                    className="text-sm text-nodo-gray-300 transition-colors duration-200 hover:text-nodo-white"
+                    className="group relative py-2 text-[13px] text-nodo-gray-300 transition-colors duration-200 hover:text-nodo-white"
                   >
                     {navTranslations[item.label] || item.label}
+                    {/* Animated gradient underline */}
+                    <span className="absolute bottom-0 left-0 h-[2px] w-0 rounded-full bg-gradient-to-r from-nodo-purple via-nodo-indigo to-nodo-cyan transition-all duration-300 ease-out group-hover:w-full" />
                   </Link>
                 ))}
               </div>
+            </div>
 
-              <div className="mx-7 h-5 w-px bg-white/10" />
-
-              {/* Language toggle — segmented control */}
-              <div className="mr-6 flex items-center rounded-[2px] border border-white/[0.08]">
+            {/* Right side — idiomas + CTA, pegados a la derecha */}
+            <div className="ml-auto hidden items-center gap-4 md:flex">
+              {/* Language toggle */}
+              <div className="flex items-center rounded-[2px] border border-white/[0.08]">
                 <button
                   onClick={() => setLanguage("es")}
-                  className={`px-3 py-1.5 text-[11px] font-medium uppercase tracking-[0.12em] transition-all duration-200 ${
+                  className={`px-2.5 py-1 text-[11px] font-medium uppercase tracking-[0.12em] transition-all duration-200 ${
                     language === "es"
                       ? "bg-white/[0.08] text-nodo-white"
                       : "text-nodo-gray-400 hover:text-nodo-gray-300"
@@ -111,10 +122,10 @@ export default function Navbar() {
                 >
                   ES
                 </button>
-                <div className="h-4 w-px bg-white/[0.06]" />
+                <div className="h-3.5 w-px bg-white/[0.06]" />
                 <button
                   onClick={() => setLanguage("en")}
-                  className={`px-3 py-1.5 text-[11px] font-medium uppercase tracking-[0.12em] transition-all duration-200 ${
+                  className={`px-2.5 py-1 text-[11px] font-medium uppercase tracking-[0.12em] transition-all duration-200 ${
                     language === "en"
                       ? "bg-white/[0.08] text-nodo-white"
                       : "text-nodo-gray-400 hover:text-nodo-gray-300"
@@ -128,7 +139,7 @@ export default function Navbar() {
               {/* CTA */}
               <Link
                 href="/contacto"
-                className="inline-flex items-center rounded-[3px] px-6 py-2.5 text-sm font-medium text-nodo-white transition-all duration-300 hover:shadow-[0_0_20px_rgba(39,133,254,0.15)]"
+                className="inline-flex items-center rounded-[3px] px-5 py-2 text-[13px] font-medium text-nodo-white transition-all duration-300 hover:shadow-[0_0_20px_rgba(39,133,254,0.15)]"
                 style={{ background: "var(--nodo-gradient-full)" }}
               >
                 {t.nav.cta}
@@ -194,7 +205,6 @@ export default function Navbar() {
                   {t.nav.cta}
                 </Link>
 
-                {/* Mobile language toggle */}
                 <div className="flex items-center rounded-[2px] border border-white/[0.08]">
                   <button
                     onClick={() => setLanguage("es")}
