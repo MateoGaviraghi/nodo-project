@@ -15,7 +15,7 @@ export default function GhostButton({
   onClick,
   className = "",
 }: GhostButtonProps) {
-  const baseClasses = `group relative inline-flex items-center justify-center overflow-hidden rounded-[3px] border border-white/[0.08] bg-white/[0.02] px-7 py-3 text-[13px] font-medium text-nodo-gray-300 transition-all duration-300 hover:border-nodo-indigo/40 hover:text-nodo-white hover:shadow-[0_0_20px_rgba(88,99,242,0.12)] hover:scale-[1.03] active:scale-[0.98] ${className}`;
+  const baseClasses = `group relative inline-flex items-center justify-center overflow-hidden whitespace-nowrap rounded-[3px] border border-white/[0.08] bg-white/[0.02] px-7 py-3 text-[13px] font-medium text-nodo-gray-300 transition-all duration-300 hover:border-nodo-indigo/40 hover:text-nodo-white hover:shadow-[0_0_20px_rgba(88,99,242,0.12)] hover:scale-[1.03] active:scale-[0.98] ${className}`;
 
   const inner = (
     <>

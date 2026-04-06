@@ -225,3 +225,162 @@ body {
   outline-offset: 2px;
 }
 
+/* ═══════════════════════════════════════════════════════
+   Scroll Reveal System
+   ═══════════════════════════════════════════════════════ */
+
+/* Default reveal — slide up with blur dissolve */
+.reveal-el {
+  opacity: 0;
+  transform: translateY(50px) scale(0.95);
+  filter: blur(8px);
+  transition:
+    opacity 1s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 1s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 1s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.reveal-el.revealed {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  filter: blur(0px);
+}
+
+/* 3D card reveal — rotates in from below with perspective */
+.reveal-3d {
+  opacity: 0;
+  transform: perspective(800px) rotateX(15deg) translateY(60px) scale(0.9);
+  filter: blur(10px);
+  transition:
+    opacity 1.1s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 1.1s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 1.1s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.reveal-3d.revealed {
+  opacity: 1;
+  transform: perspective(800px) rotateX(0deg) translateY(0) scale(1);
+  filter: blur(0px);
+}
+
+/* Scale reveal — zooms in from small with heavy blur */
+.reveal-scale {
+  opacity: 0;
+  transform: scale(0.5);
+  filter: blur(12px);
+  transition:
+    opacity 1.2s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 1.2s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.reveal-scale.revealed {
+  opacity: 1;
+  transform: scale(1);
+  filter: blur(0px);
+}
+
+/* Slide from left */
+.reveal-left {
+  opacity: 0;
+  transform: translateX(-60px);
+  filter: blur(6px);
+  transition:
+    opacity 1s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 1s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 1s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.reveal-left.revealed {
+  opacity: 1;
+  transform: translateX(0);
+  filter: blur(0px);
+}
+
+/* Reveal with expanding circle clip — for 3D/canvas elements (no transform) */
+.reveal-clip {
+  opacity: 0;
+  clip-path: circle(5% at 50% 50%);
+  transition:
+    opacity 1.5s cubic-bezier(0.22, 1, 0.36, 1),
+    clip-path 1.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.reveal-clip.revealed {
+  opacity: 1;
+  clip-path: circle(75% at 50% 50%);
+}
+
+/* Slide from right */
+.reveal-right {
+  opacity: 0;
+  transform: translateX(60px);
+  filter: blur(6px);
+  transition:
+    opacity 1s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 1s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 1s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.reveal-right.revealed {
+  opacity: 1;
+  transform: translateX(0);
+  filter: blur(0px);
+}
+
+.section-line {
+  margin: 0 auto;
+  height: 1px;
+  width: 100%;
+  max-width: 64rem;
+  background: linear-gradient(90deg, transparent, rgba(88, 99, 242, 0.25), transparent);
+}
+
+/* ═══════════════════════════════════════════════════════
+   Animation System — CSS 3D + Keyframes
+   ═══════════════════════════════════════════════════════ */
+
+/* Animated gradient border rotation */
+@property --border-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes rotate-border {
+  to { --border-angle: 360deg; }
+}
+
+/* CTA gradient mesh orbs */
+@keyframes mesh-cta-1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(80px, -60px) scale(1.2); }
+  66% { transform: translate(-40px, 40px) scale(0.9); }
+}
+
+@keyframes mesh-cta-2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(-60px, 50px) scale(1.15); }
+  66% { transform: translate(50px, -30px) scale(0.85); }
+}
+
+@keyframes mesh-cta-3 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(40px, -40px) scale(1.1); }
+}
+
+/* Floating particles */
+@keyframes float-particle {
+  0%, 100% { transform: translateY(0); opacity: 0.5; }
+  50% { transform: translateY(-20px); opacity: 1; }
+}
+
+/* ── Reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+

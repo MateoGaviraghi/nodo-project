@@ -37,9 +37,9 @@ export default function Footer() {
               <Image
                 src="/logos/logo-n.png"
                 alt="Nodo"
-                width={60}
-                height={60}
-                className="h-[60px] w-[60px]"
+                width={90}
+                height={90}
+                className="h-[90px] w-[90px]"
               />
             </Link>
             <p className="mt-4 max-w-xs text-[13px] leading-relaxed text-nodo-gray-400">
