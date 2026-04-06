@@ -334,7 +334,7 @@ function ConnectionLines({
 function Scene() {
   const groupRef = useRef<THREE.Group>(null);
   const { viewport } = useThree();
-  const scale = Math.min(1, viewport.width / 10);
+  const scale = Math.min(1, Math.max(0.65, viewport.width / 8));
 
   const { allNodes, extraPositions, neighbors } = useMemo(() => {
     const totalCount = TECH_STACK.length + EXTRA_DOTS;
@@ -377,7 +377,7 @@ export default function NetworkSphere() {
   return (
     <div className="h-[600px] w-full sm:h-[700px]">
       <Canvas
-        camera={{ position: [0, 0, 8], fov: 50 }}
+        camera={{ position: [0, 0, 7], fov: 50 }}
         gl={{ antialias: true, alpha: true }}
         style={{ background: "transparent" }}
       >
