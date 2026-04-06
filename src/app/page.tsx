@@ -127,9 +127,7 @@ export default function HomePage() {
               Dominamos las herramientas más potentes del mercado. Las conectamos entre sí para construir exactamente lo que tu proyecto necesita.
             </p>
           </div>
-          <div data-reveal className="reveal-clip" style={{ transitionDelay: "200ms" }}>
-            <NetworkSphere />
-          </div>
+          <NetworkSphere />
         </div>
       </section>
 
