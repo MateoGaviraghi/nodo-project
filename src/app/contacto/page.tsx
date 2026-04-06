@@ -5,7 +5,7 @@ export const metadata: Metadata = {
   title: "Contacto",
   description:
     "Contacta a Nodo. Contanos tu idea y te respondemos en menos de 24 horas. WhatsApp, videollamada o formulario.",
-  alternates: { canonical: "https://nodo.com.ar/contacto" },
+  alternates: { canonical: "https://nodotech.dev/contacto" },
 };
 
 export default function ContactoPage() {

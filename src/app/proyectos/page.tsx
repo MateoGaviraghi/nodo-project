@@ -5,7 +5,7 @@ export const metadata: Metadata = {
   title: "Proyectos",
   description:
     "Portfolio de proyectos de Nodo. Aplicaciones web, sitios WordPress y soluciones de IA para clientes reales.",
-  alternates: { canonical: "https://nodo.com.ar/proyectos" },
+  alternates: { canonical: "https://nodotech.dev/proyectos" },
 };
 
 export default function ProyectosPage() {

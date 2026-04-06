@@ -5,7 +5,7 @@ export const metadata: Metadata = {
   title: "Servicios",
   description:
     "Desarrollo de software a medida, WordPress profesional y automatización con IA. Soluciones digitales que escalan con tu negocio.",
-  alternates: { canonical: "https://nodo.com.ar/servicios" },
+  alternates: { canonical: "https://nodotech.dev/servicios" },
 };
 
 export default function ServiciosPage() {

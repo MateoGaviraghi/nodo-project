@@ -5,7 +5,7 @@ export const metadata: Metadata = {
   title: "Nosotros",
   description:
     "Conoce al equipo detrás de Nodo. Software house boutique argentina con foco en código limpio, diseño con propósito y resultados reales.",
-  alternates: { canonical: "https://nodo.com.ar/nosotros" },
+  alternates: { canonical: "https://nodotech.dev/nosotros" },
 };
 
 export default function NosotrosPage() {

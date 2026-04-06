@@ -22,37 +22,44 @@ export const metadata: Metadata = {
   },
   description:
     "Nodo es una software house boutique argentina. Desarrollo a medida, WordPress profesional y automatización con IA. El punto donde tu idea se conecta con el mundo.",
-  metadataBase: new URL("https://nodo.com.ar"),
+  metadataBase: new URL("https://nodotech.dev"),
   keywords: [
-    "software house",
-    "desarrollo web",
-    "argentina",
-    "software a medida",
-    "wordpress",
-    "inteligencia artificial",
-    "automatización",
     "nodo",
+    "nodotech",
+    "software house argentina",
+    "desarrollo web",
+    "desarrollo de software a medida",
+    "apps a medida",
+    "wordpress profesional",
+    "ecommerce wordpress",
+    "inteligencia artificial",
+    "automatización con IA",
+    "chatbot IA",
+    "software house buenos aires",
+    "desarrollo mobile",
+    "react",
+    "next.js",
   ],
-  authors: [{ name: "Nodo", url: "https://nodo.com.ar" }],
+  authors: [{ name: "Nodo", url: "https://nodotech.dev" }],
   openGraph: {
     type: "website",
     locale: "es_AR",
-    url: "https://nodo.com.ar",
+    url: "https://nodotech.dev",
     siteName: "Nodo",
     title: "Nodo — Transformamos ideas en software",
     description:
-      "Software house boutique argentina. Desarrollo a medida. WordPress. IA.",
-    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "Nodo" }],
+      "Software house boutique argentina. Desarrollo a medida, WordPress profesional y automatización con IA.",
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "Nodo — Software house argentina" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Nodo — Transformamos ideas en software",
     description:
-      "Software house boutique argentina. Desarrollo a medida. WordPress. IA.",
+      "Software house boutique argentina. Desarrollo a medida, WordPress profesional y automatización con IA.",
     images: ["/og-image.png"],
   },
   alternates: {
-    canonical: "https://nodo.com.ar",
+    canonical: "https://nodotech.dev",
   },
   robots: {
     index: true,
@@ -67,6 +74,63 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es" data-scroll-behavior="smooth" className={`${poppins.variable} h-full antialiased`}>
+      <head>
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="theme-color" content="#0a0a0a" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@graph": [
+                {
+                  "@type": "Organization",
+                  "@id": "https://nodotech.dev/#organization",
+                  name: "Nodo",
+                  url: "https://nodotech.dev",
+                  logo: {
+                    "@type": "ImageObject",
+                    url: "https://nodotech.dev/logos/logo-n.png",
+                  },
+                  description:
+                    "Software house boutique argentina. Desarrollo a medida, WordPress profesional y automatización con IA.",
+                  sameAs: [
+                    "https://instagram.com/nodotech.dev",
+                    "https://linkedin.com/company/nodotech.dev",
+                    "https://github.com/MateoGaviraghi",
+                  ],
+                  contactPoint: {
+                    "@type": "ContactPoint",
+                    contactType: "customer service",
+                    availableLanguage: ["Spanish", "English"],
+                  },
+                },
+                {
+                  "@type": "WebSite",
+                  "@id": "https://nodotech.dev/#website",
+                  url: "https://nodotech.dev",
+                  name: "Nodo",
+                  publisher: { "@id": "https://nodotech.dev/#organization" },
+                  inLanguage: ["es", "en"],
+                },
+                {
+                  "@type": "ProfessionalService",
+                  "@id": "https://nodotech.dev/#service",
+                  name: "Nodo",
+                  url: "https://nodotech.dev",
+                  description: "Transformamos ideas en software.",
+                  areaServed: { "@type": "Country", name: "Argentina" },
+                  serviceType: [
+                    "Desarrollo de software a medida",
+                    "WordPress profesional",
+                    "Automatización con IA",
+                  ],
+                },
+              ],
+            }),
+          }}
+        />
+      </head>
       <body className="min-h-full bg-nodo-black text-nodo-white">
         <LanguageProvider>
           <SmoothScrollProvider>

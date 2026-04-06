@@ -4,18 +4,18 @@
 
 export const SITE_CONFIG = {
   name: "Nodo",
-  domain: "nodo.com.ar",
+  domain: "nodotech.dev",
   tagline: "El punto donde tu idea se conecta con el mundo.",
   description: "Transformamos ideas en software.",
-  url: "https://nodo.com.ar",
+  url: "https://nodotech.dev",
   ogImage: "/og-image.png",
 } as const;
 
 export const SOCIAL_LINKS = {
   whatsapp: "https://wa.me/5493516000000",
-  instagram: "https://instagram.com/nodo.software",
-  linkedin: "https://linkedin.com/company/nodo-software",
-  github: "https://github.com/nodo-software",
+  instagram: "https://instagram.com/nodotech.dev",
+  linkedin: "https://linkedin.com/company/nodotech.dev",
+  github: "https://github.com/MateoGaviraghi",
 } as const;
 
 export const NAV_ITEMS = [

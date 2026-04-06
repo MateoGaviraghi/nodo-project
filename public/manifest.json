@@ -1,0 +1,16 @@
+{
+  "name": "Nodo — Transformamos ideas en software",
+  "short_name": "Nodo",
+  "description": "Software house boutique argentina. Desarrollo a medida, WordPress profesional y automatización con IA.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0a0a",
+  "theme_color": "#0a0a0a",
+  "icons": [
+    {
+      "src": "/logos/logo-n.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
