@@ -54,7 +54,7 @@ export default function NosotrosContent() {
   return (
     <>
       {/* ─── Hero ─── */}
-      <section className="relative pb-16 pt-32 sm:pt-40">
+      <section className="relative pb-10 pt-28 sm:pb-16 sm:pt-40">
         <div className="mx-auto max-w-4xl px-6 text-center lg:px-8">
           <p data-reveal className="reveal-el mb-4 text-[11px] font-medium tracking-[0.3em] text-nodo-indigo uppercase">
             Nosotros
@@ -86,7 +86,7 @@ export default function NosotrosContent() {
       </section>
 
       {/* ─── Values ─── */}
-      <section className="relative py-24">
+      <section className="relative py-14 sm:py-24">
         <GradientLine />
 
         <div className="mx-auto max-w-5xl px-6 pt-16 lg:px-8">
@@ -107,7 +107,7 @@ export default function NosotrosContent() {
                 <div
                   key={key}
                   data-reveal
-                  className="reveal-el group rounded-[6px] border border-white/[0.06] bg-[rgba(26,26,46,0.4)] p-8 transition-all duration-500 hover:border-nodo-indigo/30 hover:bg-[rgba(26,26,46,0.6)]"
+                  className="reveal-el group rounded-[6px] border border-white/[0.06] bg-[rgba(26,26,46,0.4)] p-6 transition-all duration-500 hover:border-nodo-indigo/30 hover:bg-[rgba(26,26,46,0.6)] sm:p-8"
                   style={{ transitionDelay: `${i * 100}ms` }}
                 >
                   <div
@@ -130,7 +130,7 @@ export default function NosotrosContent() {
       </section>
 
       {/* ─── Team ─── */}
-      <section className="relative py-24">
+      <section className="relative py-14 sm:py-24">
         <GradientLine />
 
         <div className="mx-auto max-w-4xl px-6 pt-16 lg:px-8">
@@ -160,7 +160,7 @@ export default function NosotrosContent() {
       </section>
 
       {/* ─── Tech Stack ─── */}
-      <section className="relative py-24">
+      <section className="relative py-14 sm:py-24">
         <GradientLine />
 
         <div className="mx-auto max-w-5xl px-6 pt-16 lg:px-8">
@@ -201,7 +201,7 @@ export default function NosotrosContent() {
       </section>
 
       {/* ─── CTA ─── */}
-      <section className="relative py-24">
+      <section className="relative py-14 sm:py-24">
         <GradientLine />
 
         <div className="mx-auto max-w-3xl px-6 pt-16 text-center lg:px-8">

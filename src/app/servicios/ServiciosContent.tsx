@@ -117,7 +117,7 @@ export default function ServiciosContent() {
   return (
     <>
       {/* ─── Hero ─── */}
-      <section className="relative pb-12 pt-32 sm:pt-40">
+      <section className="relative pb-8 pt-28 sm:pb-12 sm:pt-40">
         <div className="mx-auto max-w-4xl px-6 text-center lg:px-8">
           <p data-reveal className="reveal-el mb-4 text-[11px] font-medium tracking-[0.3em] text-nodo-indigo uppercase">
             Servicios
@@ -147,7 +147,7 @@ export default function ServiciosContent() {
         const num = String(i + 1).padStart(2, "0");
 
         return (
-          <section key={meta.key} className="relative py-20 sm:py-28">
+          <section key={meta.key} className="relative py-14 sm:py-28">
             {/* Section divider */}
             <div className="mx-auto h-px w-full max-w-5xl bg-gradient-to-r from-transparent via-nodo-indigo/30 to-transparent" />
 
@@ -159,7 +159,7 @@ export default function ServiciosContent() {
                   data-reveal
                   className={`flex-1 ${isEven ? "reveal-right" : "reveal-left"}`}
                 >
-                  <div className="group relative overflow-hidden rounded-[6px] border border-white/[0.06] bg-[rgba(26,26,46,0.75)] p-10 backdrop-blur-md transition-all duration-500 hover:border-nodo-indigo/20 sm:p-12">
+                  <div className="group relative overflow-hidden rounded-[6px] border border-white/[0.06] bg-[rgba(26,26,46,0.75)] p-6 backdrop-blur-md transition-all duration-500 hover:border-nodo-indigo/20 sm:p-10 lg:p-12">
                     <span className="mb-6 block text-5xl font-bold tracking-tight gradient-text sm:text-6xl">
                       {num}
                     </span>

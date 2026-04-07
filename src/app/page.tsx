@@ -15,7 +15,7 @@ import { testimonials } from "@/lib/testimonials";
 
 const NetworkSphere = dynamic(() => import("@/components/three/NetworkSphere"), {
   ssr: false,
-  loading: () => <div className="h-[600px] sm:h-[700px]" />,
+  loading: () => <div className="h-[400px] sm:h-[700px]" />,
 });
 
 const serviceIcons = [Code, Globe, Cpu] as const;
@@ -55,10 +55,10 @@ export default function HomePage() {
       <HeroSection />
 
       {/* ═══ SERVICES ═══ */}
-      <section className="relative py-28 sm:py-36">
+      <section className="relative py-16 sm:py-36">
         <div className="section-line" />
-        <div className="mx-auto max-w-6xl px-6 pt-16 lg:px-8">
-          <div className="mb-16 text-center">
+        <div className="mx-auto max-w-6xl px-6 pt-10 sm:pt-16 lg:px-8">
+          <div className="mb-10 sm:mb-16 text-center">
             <p data-reveal className="reveal-el mb-4 text-[11px] font-medium tracking-[0.3em] text-nodo-indigo uppercase">Servicios</p>
             <h2 data-reveal className="reveal-el text-3xl font-semibold tracking-[-0.02em] text-nodo-white sm:text-4xl lg:text-5xl" style={{ transitionDelay: "80ms" }}>{t.services.title}</h2>
             <p data-reveal className="reveal-el mx-auto mt-5 max-w-lg text-[15px] leading-relaxed text-white/70" style={{ transitionDelay: "160ms" }}>{t.services.subtitle}</p>
@@ -69,7 +69,7 @@ export default function HomePage() {
               const Icon = serviceIcons[i];
               return (
                 <div key={i} data-reveal className="reveal-3d" style={{ transitionDelay: `${i * 150}ms` }}>
-                  <TiltCard className="h-full p-8">
+                  <TiltCard className="h-full p-6 sm:p-8">
                     <div className="mb-6 inline-flex h-12 w-12 items-center justify-center rounded-[4px]" style={{ background: "linear-gradient(135deg, rgba(88,99,242,0.12), rgba(39,133,254,0.08))" }}>
                       <Icon className="h-5 w-5 text-nodo-white/80" />
                     </div>
@@ -85,10 +85,10 @@ export default function HomePage() {
       </section>
 
       {/* ═══ STATS ═══ */}
-      <section className="relative py-20">
+      <section className="relative py-14 sm:py-20">
         <div className="section-line" />
-        <div className="mx-auto max-w-5xl px-6 pt-12 lg:px-8">
-          <div className="grid grid-cols-1 gap-12 sm:grid-cols-3">
+        <div className="mx-auto max-w-5xl px-6 pt-8 sm:pt-12 lg:px-8">
+          <div className="grid grid-cols-3 gap-4 sm:gap-12">
             {[
               { target: 20, label: t.stats.projects },
               { target: 15, label: t.stats.clients },
@@ -101,7 +101,7 @@ export default function HomePage() {
                     <div className="absolute top-1/2 right-0 hidden h-16 w-px -translate-y-1/2 bg-gradient-to-b from-transparent via-nodo-indigo/20 to-transparent sm:block" />
                   </>
                 )}
-                <div className="text-5xl font-bold tracking-tight sm:text-6xl">
+                <div className="text-3xl font-bold tracking-tight sm:text-6xl">
                   <span className="gradient-text">
                     <ScrollCounter target={stat.target} suffix="+" />
                   </span>
@@ -114,9 +114,9 @@ export default function HomePage() {
       </section>
 
       {/* ═══ NETWORK SPHERE ═══ */}
-      <section className="relative py-20 sm:py-28">
+      <section className="relative py-14 sm:py-28">
         <div className="section-line" />
-        <div className="mx-auto max-w-5xl px-6 pt-12 lg:px-8">
+        <div className="mx-auto max-w-5xl px-6 pt-8 sm:pt-12 lg:px-8">
           <div className="mb-6 text-center">
             <p data-reveal className="reveal-el mb-4 text-[11px] font-medium tracking-[0.3em] text-nodo-indigo uppercase">Nuestro ecosistema</p>
             <h2 data-reveal className="reveal-el text-3xl font-semibold tracking-[-0.02em] text-nodo-white sm:text-4xl" style={{ transitionDelay: "80ms" }}>
@@ -131,10 +131,10 @@ export default function HomePage() {
       </section>
 
       {/* ═══ PROJECTS ═══ */}
-      <section className="relative py-28 sm:py-36">
+      <section className="relative py-16 sm:py-36">
         <div className="section-line" />
-        <div className="mx-auto max-w-6xl px-6 pt-16 lg:px-8">
-          <div className="mb-14 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+        <div className="mx-auto max-w-6xl px-6 pt-10 sm:pt-16 lg:px-8">
+          <div className="mb-10 sm:mb-14 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <p data-reveal className="reveal-el mb-4 text-[11px] font-medium tracking-[0.3em] text-nodo-indigo uppercase">Portfolio</p>
               <h2 data-reveal className="reveal-el text-3xl font-semibold tracking-[-0.02em] text-nodo-white sm:text-4xl" style={{ transitionDelay: "80ms" }}>{t.projects.title}</h2>
@@ -168,7 +168,7 @@ export default function HomePage() {
                     </span>
                     <div className="absolute inset-0 bg-gradient-to-t from-[rgba(10,10,10,1)] via-transparent to-transparent opacity-60" />
                   </div>
-                  <div className="p-6">
+                  <div className="p-5 sm:p-6">
                     <div className="mb-3">
                       <span className="rounded-[2px] bg-nodo-indigo/10 px-2.5 py-0.5 text-[11px] font-medium tracking-wide text-nodo-indigo">{project.category}</span>
                     </div>
@@ -197,9 +197,9 @@ export default function HomePage() {
       </section>
 
       {/* ═══ TESTIMONIALS ═══ */}
-      <section className="relative overflow-hidden py-20">
+      <section className="relative overflow-hidden py-14 sm:py-20">
         <div className="section-line" />
-        <div className="pt-12">
+        <div className="pt-8 sm:pt-12">
           <div className="mb-12 text-center px-6">
             <p data-reveal className="reveal-el mb-4 text-[11px] font-medium tracking-[0.3em] text-nodo-indigo uppercase">Testimonios</p>
             <h2 data-reveal className="reveal-el text-3xl font-semibold tracking-[-0.02em] text-nodo-white sm:text-4xl" style={{ transitionDelay: "80ms" }}>{t.testimonials.title}</h2>
@@ -210,7 +210,7 @@ export default function HomePage() {
               {testimonials.map((testimonial) => (
                 <div
                   key={testimonial.id}
-                  className="min-w-80 max-w-[22rem] shrink-0 rounded-[6px] border border-white/[0.06] bg-[rgba(26,26,46,0.4)] p-7 transition-colors duration-300 hover:border-nodo-indigo/20 sm:min-w-[22rem]"
+                  className="min-w-[260px] max-w-[20rem] shrink-0 rounded-[6px] border border-white/[0.06] bg-[rgba(26,26,46,0.4)] p-5 transition-colors duration-300 hover:border-nodo-indigo/20 sm:min-w-[22rem] sm:max-w-[22rem] sm:p-7"
                 >
                   <span className="mb-4 block text-2xl leading-none gradient-text">&ldquo;</span>
                   <p className="mb-6 text-[13px] leading-relaxed text-nodo-gray-300">{testimonial.quote}</p>
@@ -231,14 +231,14 @@ export default function HomePage() {
       </section>
 
       {/* ═══ CTA ═══ */}
-      <section className="relative py-28 sm:py-36">
+      <section className="relative py-16 sm:py-36">
         <div className="section-line" />
-        <div className="mx-auto max-w-5xl px-6 pt-16 lg:px-8">
+        <div className="mx-auto max-w-5xl px-6 pt-10 sm:pt-16 lg:px-8">
           <div className="text-center">
             <h2 data-reveal className="reveal-el mb-5 text-3xl font-semibold tracking-[-0.02em] text-white sm:text-4xl lg:text-5xl">{t.cta.title}</h2>
             <p data-reveal className="reveal-el mx-auto mb-10 max-w-md text-[15px] leading-relaxed text-white/70" style={{ transitionDelay: "80ms" }}>{t.cta.subtitle}</p>
             <div data-reveal className="reveal-el" style={{ transitionDelay: "160ms" }}>
-              <GradientButton href="/contacto">{t.cta.button}</GradientButton>
+              <GradientButton href="/contacto" className="w-full sm:w-auto">{t.cta.button}</GradientButton>
             </div>
           </div>
         </div>

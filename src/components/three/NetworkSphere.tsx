@@ -375,7 +375,7 @@ export default function NetworkSphere() {
   }, []);
 
   return (
-    <div className="h-[600px] w-full sm:h-[700px]">
+    <div className="h-[400px] w-full sm:h-[700px]">
       <Canvas
         camera={{ position: [0, 0, 7], fov: 50 }}
         gl={{ antialias: true, alpha: true }}

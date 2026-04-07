@@ -28,9 +28,9 @@ export default function Footer() {
       {/* Top gradient line */}
       <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-nodo-indigo/20 to-transparent" />
 
-      <div className="mx-auto max-w-6xl px-6 pt-16 pb-8 lg:px-8">
+      <div className="mx-auto max-w-6xl px-6 pt-10 pb-6 sm:pt-16 sm:pb-8 lg:px-8">
         {/* Main grid */}
-        <div className="grid gap-12 md:grid-cols-12">
+        <div className="grid gap-8 md:gap-12 md:grid-cols-12">
           {/* Brand — wider */}
           <div className="md:col-span-5">
             <Link href="/" className="inline-block">
@@ -39,7 +39,7 @@ export default function Footer() {
                 alt="Nodo"
                 width={90}
                 height={90}
-                className="h-[90px] w-[90px]"
+                className="h-14 w-14 sm:h-[90px] sm:w-[90px]"
               />
             </Link>
             <p className="mt-4 max-w-xs text-[13px] leading-relaxed text-nodo-gray-400">
@@ -109,7 +109,7 @@ export default function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="mt-14 border-t border-white/[0.04] pt-6">
+        <div className="mt-8 border-t border-white/[0.04] pt-5 sm:mt-14 sm:pt-6">
           <div className="flex flex-col items-center justify-between gap-3 sm:flex-row">
             <p className="text-[11px] text-nodo-gray-600">
               © {new Date().getFullYear()} {SITE_CONFIG.name}. {t.footer.rights}

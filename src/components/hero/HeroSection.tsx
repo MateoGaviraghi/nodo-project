@@ -227,8 +227,7 @@ export default function HeroSection() {
     <section
       ref={sectionRef}
       data-hero
-      className="relative"
-      style={{ height: "600vh" }}
+      className="relative h-[350vh] sm:h-[600vh]"
     >
       <div className="sticky top-0 flex h-screen w-full flex-col items-center justify-center overflow-hidden">
         {/* ── Canvas — fullscreen, no borders ── */}
@@ -296,17 +295,17 @@ export default function HeroSection() {
 
           <div
             ref={ctaRef}
-            className="flex items-center gap-3"
+            className="flex w-full flex-col items-center gap-3 px-4 sm:w-auto sm:flex-row sm:px-0"
             style={{
               opacity: 0,
               transform: "translateY(20px)",
               willChange: "transform, opacity",
             }}
           >
-            <GradientButton href="/contacto">
+            <GradientButton href="/contacto" className="w-full sm:w-auto">
               {t.hero.cta_primary}
             </GradientButton>
-            <GhostButton href="/servicios">
+            <GhostButton href="/servicios" className="w-full sm:w-auto">
               {t.hero.cta_secondary}
             </GhostButton>
           </div>
