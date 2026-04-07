@@ -176,6 +176,23 @@ export default function HeroSection() {
     // Kill any stale triggers from previous mount (client-side navigation)
     ScrollTrigger.getAll().forEach((t) => t.kill());
 
+    // Reset visual state to progress=0 before ScrollTrigger takes over
+    canvasCtn.style.opacity = "1";
+    heroText.style.opacity = "0";
+    heroText.style.pointerEvents = "none";
+    h1El.style.opacity = "0";
+    h1El.style.transform = "translateY(40px)";
+    subtitleEl.style.opacity = "0";
+    subtitleEl.style.transform = "translateY(25px)";
+    ctaEl.style.opacity = "0";
+    ctaEl.style.transform = "translateY(20px)";
+    currentFrameRef.current = 0;
+    scrollProgressRef.current = 0;
+    setPastStart(false);
+
+    // Ensure scroll is at 0 before creating trigger
+    window.scrollTo(0, 0);
+
     const st = ScrollTrigger.create({
       trigger: el,
       start: "top top",
@@ -218,6 +235,11 @@ export default function HeroSection() {
         if (p > 0.03) setPastStart(true);
         else setPastStart(false);
       },
+    });
+
+    // Refresh after DOM is fully laid out (fixes client-side nav)
+    requestAnimationFrame(() => {
+      ScrollTrigger.refresh();
     });
 
     return () => st.kill();
