@@ -173,6 +173,9 @@ export default function HeroSection() {
 
     if (!el || !canvasCtn || !heroText || !h1El || !subtitleEl || !ctaEl) return;
 
+    // Kill any stale triggers from previous mount (client-side navigation)
+    ScrollTrigger.getAll().forEach((t) => t.kill());
+
     const st = ScrollTrigger.create({
       trigger: el,
       start: "top top",

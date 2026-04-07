@@ -7,6 +7,7 @@ import WhatsAppButton from "@/components/layout/WhatsAppButton";
 import MeshBackground from "@/components/layout/MeshBackground";
 import SmoothScrollProvider from "@/components/layout/SmoothScrollProvider";
 import ScrollToTop from "@/components/layout/ScrollToTop";
+import BackToTopButton from "@/components/layout/BackToTopButton";
 import { LanguageProvider } from "@/hooks/useLanguage";
 
 const poppins = Poppins({
@@ -142,6 +143,7 @@ export default function RootLayout({
             <main className="relative z-1 flex-1">{children}</main>
             <Footer />
             <WhatsAppButton />
+            <BackToTopButton />
           </SmoothScrollProvider>
         </LanguageProvider>
       </body>

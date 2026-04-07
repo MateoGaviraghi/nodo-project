@@ -64,15 +64,10 @@ export default function Navbar() {
             <Link
               href="/"
               className="mr-auto flex shrink-0 items-center"
-              onClick={(e) => {
+              onClick={() => {
                 setIsMobileOpen(false);
-                e.preventDefault();
                 if (window.location.pathname === "/") {
-                  // Already on home — scroll to top
                   window.scrollTo({ top: 0, behavior: "instant" });
-                } else {
-                  // Coming from another page — hard navigation to avoid ScrollTrigger stale state
-                  window.location.href = "/";
                 }
               }}
             >

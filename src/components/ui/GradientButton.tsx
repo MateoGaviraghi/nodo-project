@@ -31,7 +31,7 @@ export default function GradientButton({
       <span className="absolute inset-0 translate-x-[-100%] bg-gradient-to-r from-transparent via-white/[0.12] to-transparent transition-transform duration-500 group-hover:translate-x-[100%]" />
       {/* Top highlight edge */}
       <span className="absolute inset-x-0 top-0 h-px bg-white/[0.12]" />
-      <span className="relative">{children}</span>
+      <span className="relative inline-flex items-center gap-2">{children}</span>
     </>
   );
 

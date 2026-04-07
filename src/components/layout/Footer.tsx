@@ -24,7 +24,7 @@ export default function Footer() {
   const navTranslations = t.nav as Record<string, string>;
 
   return (
-    <footer className="relative border-t border-white/[0.04] bg-nodo-black">
+    <footer className="relative border-t border-white/[0.06] bg-[rgba(26,26,46,0.6)] backdrop-blur-xl">
       {/* Top gradient line */}
       <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-nodo-indigo/20 to-transparent" />
 
