@@ -15,7 +15,6 @@ export function useSmoothScroll() {
       touchMultiplier: 2,
     });
 
-    // Connect Lenis scroll position to GSAP ScrollTrigger
     lenis.on("scroll", ScrollTrigger.update);
 
     gsap.ticker.add((time) => {
@@ -25,7 +24,6 @@ export function useSmoothScroll() {
 
     return () => {
       lenis.destroy();
-      gsap.ticker.remove(lenis.raf as Parameters<typeof gsap.ticker.remove>[0]);
     };
   }, []);
 }

@@ -177,7 +177,9 @@ export default function HeroSection() {
       trigger: el,
       start: "top top",
       end: "bottom bottom",
-      scrub: 0.5, // Smoother scrub with slight lag
+      scrub: 0.5,
+      fastScrollEnd: true,
+      invalidateOnRefresh: true,
       onUpdate: (self) => {
         const p = self.progress;
         scrollProgressRef.current = p;

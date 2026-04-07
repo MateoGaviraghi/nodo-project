@@ -21,20 +21,43 @@ export const translations = {
     services: {
       title: "Lo que hacemos",
       subtitle: "Soluciones digitales que escalan con tu negocio.",
+      page_title: "Nuestros servicios",
+      page_subtitle: "Cada proyecto es único. Por eso ofrecemos soluciones adaptadas a lo que tu negocio realmente necesita.",
       dev: {
         title: "Desarrollo a medida",
-        description:
-          "Aplicaciones web y mobile diseñadas desde cero para tu negocio. Código limpio, arquitectura sólida, escalable.",
+        description: "Aplicaciones web y mobile diseñadas desde cero para tu negocio. Código limpio, arquitectura sólida, escalable.",
+        long_description: "Construimos software que se adapta a tu negocio, no al revés. Desde MVPs hasta plataformas complejas, cada línea de código tiene propósito.",
+        features: ["Apps web con React y Next.js", "Apps mobile con React Native", "APIs REST y GraphQL", "Bases de datos escalables", "CI/CD y deploy automatizado"],
       },
       wordpress: {
         title: "WordPress profesional",
-        description:
-          "Sitios rápidos, seguros y administrables. Temas custom, e-commerce, optimización SEO.",
+        description: "Sitios rápidos, seguros y administrables. Temas custom, e-commerce, optimización SEO.",
+        long_description: "WordPress no es solo un blog. Lo convertimos en una plataforma robusta para tu negocio con temas custom, velocidad optimizada y seguridad real.",
+        features: ["Temas custom desde cero", "WooCommerce y tiendas online", "Optimización de velocidad", "SEO técnico y on-page", "Plugins a medida"],
       },
       ia: {
         title: "Automatización con IA",
-        description:
-          "Integramos inteligencia artificial en tus procesos. Chatbots, análisis de datos, automatización de tareas.",
+        description: "Integramos inteligencia artificial en tus procesos. Chatbots, análisis de datos, automatización de tareas.",
+        long_description: "La IA no es el futuro, es el presente. Automatizamos procesos repetitivos y creamos asistentes inteligentes que trabajan 24/7 para tu negocio.",
+        features: ["Chatbots con OpenAI y LLMs", "Automatización de flujos de trabajo", "Análisis de datos inteligente", "Integración con sistemas existentes", "Asistentes virtuales personalizados"],
+      },
+      uiux: {
+        title: "Diseño UI/UX",
+        description: "Interfaces intuitivas y experiencias de usuario que convierten visitantes en clientes.",
+        long_description: "Un buen diseño no es solo estético — es funcional. Diseñamos interfaces que tus usuarios entienden al instante y disfrutan usar.",
+        features: ["Wireframes y prototipos interactivos", "Design systems escalables", "Testing de usabilidad", "Diseño responsive mobile-first", "Branding digital"],
+      },
+      maintenance: {
+        title: "Mantenimiento y soporte",
+        description: "Tu software siempre actualizado, seguro y funcionando. Soporte técnico cuando lo necesites.",
+        long_description: "Lanzar es solo el principio. Nos encargamos de que tu software siga funcionando perfecto con actualizaciones, monitoreo y soporte continuo.",
+        features: ["Monitoreo 24/7", "Actualizaciones de seguridad", "Backups automáticos", "Soporte técnico prioritario", "Reportes mensuales de rendimiento"],
+      },
+      ecommerce: {
+        title: "E-commerce",
+        description: "Tiendas online que venden. Desde Shopify hasta soluciones custom con pasarelas de pago locales.",
+        long_description: "No alcanza con tener una tienda online — tiene que vender. Creamos experiencias de compra optimizadas con las herramientas que mejor se adaptan a tu negocio.",
+        features: ["Shopify y WooCommerce", "Pasarelas de pago argentinas", "Gestión de inventario", "Email marketing integrado", "Analíticas de conversión"],
       },
     },
     stats: {
@@ -77,12 +100,26 @@ export const translations = {
     },
     about: {
       title: "El equipo que hace que pase",
+      page_title: "Nosotros",
+      page_subtitle: "Somos una software house boutique argentina. Pequeños por elección, grandes en lo que entregamos.",
+      story_title: "La historia",
+      story_p1: "Nodo nació de una idea simple: que el software debería adaptarse al negocio, no al revés. Cansados de ver empresas atrapadas en soluciones genéricas, decidimos ofrecer algo diferente.",
+      story_p2: "Trabajamos como equipo reducido porque creemos que los mejores resultados vienen de relaciones directas, comunicación clara y gente que realmente se involucra en cada proyecto.",
+      values_title: "Nuestros valores",
       values: {
         clean_code: "Código limpio",
+        clean_code_desc: "Cada línea tiene propósito. Sin atajos, sin deuda técnica innecesaria.",
         design: "Diseño con propósito",
+        design_desc: "Lo bonito importa, pero lo funcional importa más. Diseñamos para resolver.",
         communication: "Comunicación directa",
+        communication_desc: "Sin intermediarios, sin burocracia. Hablás directo con quien construye tu producto.",
         results: "Resultados reales",
+        results_desc: "No vendemos humo. Medimos el impacto real de cada solución que entregamos.",
       },
+      team_title: "El equipo",
+      team_mateo: "Fundador & Lead Developer",
+      team_mateo_bio: "Fullstack developer con experiencia en startups, agencias y proyectos propios. Apasionado por el código limpio, el diseño minimalista y las soluciones que realmente funcionan.",
+      tech_title: "Nuestro stack",
     },
   },
   en: {
@@ -102,20 +139,43 @@ export const translations = {
     services: {
       title: "What we do",
       subtitle: "Digital solutions that scale with your business.",
+      page_title: "Our services",
+      page_subtitle: "Every project is unique. That's why we offer solutions tailored to what your business actually needs.",
       dev: {
         title: "Custom development",
-        description:
-          "Web and mobile applications designed from scratch for your business. Clean code, solid architecture, scalable.",
+        description: "Web and mobile applications designed from scratch for your business. Clean code, solid architecture, scalable.",
+        long_description: "We build software that adapts to your business, not the other way around. From MVPs to complex platforms, every line of code has purpose.",
+        features: ["Web apps with React and Next.js", "Mobile apps with React Native", "REST and GraphQL APIs", "Scalable databases", "CI/CD and automated deployment"],
       },
       wordpress: {
         title: "Professional WordPress",
-        description:
-          "Fast, secure, and manageable websites. Custom themes, e-commerce, SEO optimization.",
+        description: "Fast, secure, and manageable websites. Custom themes, e-commerce, SEO optimization.",
+        long_description: "WordPress isn't just a blog. We turn it into a robust platform for your business with custom themes, optimized speed, and real security.",
+        features: ["Custom themes from scratch", "WooCommerce and online stores", "Speed optimization", "Technical and on-page SEO", "Custom plugins"],
       },
       ia: {
         title: "AI Automation",
-        description:
-          "We integrate artificial intelligence into your processes. Chatbots, data analysis, task automation.",
+        description: "We integrate artificial intelligence into your processes. Chatbots, data analysis, task automation.",
+        long_description: "AI isn't the future — it's the present. We automate repetitive processes and create intelligent assistants that work 24/7 for your business.",
+        features: ["Chatbots with OpenAI and LLMs", "Workflow automation", "Intelligent data analysis", "Integration with existing systems", "Custom virtual assistants"],
+      },
+      uiux: {
+        title: "UI/UX Design",
+        description: "Intuitive interfaces and user experiences that convert visitors into customers.",
+        long_description: "Good design isn't just aesthetic — it's functional. We design interfaces your users understand instantly and enjoy using.",
+        features: ["Interactive wireframes and prototypes", "Scalable design systems", "Usability testing", "Mobile-first responsive design", "Digital branding"],
+      },
+      maintenance: {
+        title: "Maintenance & Support",
+        description: "Your software always updated, secure, and running. Technical support when you need it.",
+        long_description: "Launch is just the beginning. We keep your software running perfectly with updates, monitoring, and ongoing support.",
+        features: ["24/7 monitoring", "Security updates", "Automatic backups", "Priority technical support", "Monthly performance reports"],
+      },
+      ecommerce: {
+        title: "E-commerce",
+        description: "Online stores that sell. From Shopify to custom solutions with local payment gateways.",
+        long_description: "Having an online store isn't enough — it needs to sell. We create optimized shopping experiences with the tools that best fit your business.",
+        features: ["Shopify and WooCommerce", "Local payment gateways", "Inventory management", "Integrated email marketing", "Conversion analytics"],
       },
     },
     stats: {
@@ -158,12 +218,26 @@ export const translations = {
     },
     about: {
       title: "The team that makes it happen",
+      page_title: "About us",
+      page_subtitle: "We're a boutique Argentine software house. Small by choice, big in what we deliver.",
+      story_title: "The story",
+      story_p1: "Nodo was born from a simple idea: software should adapt to the business, not the other way around. Tired of seeing companies trapped in generic solutions, we decided to offer something different.",
+      story_p2: "We work as a small team because we believe the best results come from direct relationships, clear communication, and people who truly get involved in every project.",
+      values_title: "Our values",
       values: {
         clean_code: "Clean code",
+        clean_code_desc: "Every line has purpose. No shortcuts, no unnecessary tech debt.",
         design: "Purposeful design",
+        design_desc: "Pretty matters, but functional matters more. We design to solve.",
         communication: "Direct communication",
+        communication_desc: "No middlemen, no bureaucracy. You talk directly to who builds your product.",
         results: "Real results",
+        results_desc: "We don't sell hype. We measure the real impact of every solution we deliver.",
       },
+      team_title: "The team",
+      team_mateo: "Founder & Lead Developer",
+      team_mateo_bio: "Fullstack developer with experience in startups, agencies, and personal projects. Passionate about clean code, minimalist design, and solutions that actually work.",
+      tech_title: "Our stack",
     },
   },
 } as const;

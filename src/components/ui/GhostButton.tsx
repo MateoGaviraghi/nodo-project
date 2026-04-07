@@ -21,7 +21,7 @@ export default function GhostButton({
     <>
       {/* Gradient border glow on hover */}
       <span className="absolute inset-0 rounded-[3px] opacity-0 transition-opacity duration-300 group-hover:opacity-100" style={{ background: "linear-gradient(135deg, rgba(139,47,239,0.06), rgba(0,193,244,0.06))" }} />
-      <span className="relative">{children}</span>
+      <span className="relative flex items-center gap-2">{children}</span>
     </>
   );
 

@@ -10,7 +10,6 @@ import GhostButton from "@/components/ui/GhostButton";
 import TiltCard from "@/components/ui/TiltCard";
 import ScrollCounter from "@/components/ui/ScrollCounter";
 import DepthMarquee from "@/components/ui/DepthMarquee";
-import GradientMesh from "@/components/ui/GradientMesh";
 import { projects } from "@/lib/projects";
 import { testimonials } from "@/lib/testimonials";
 
@@ -62,7 +61,7 @@ export default function HomePage() {
           <div className="mb-16 text-center">
             <p data-reveal className="reveal-el mb-4 text-[11px] font-medium tracking-[0.3em] text-nodo-indigo uppercase">Servicios</p>
             <h2 data-reveal className="reveal-el text-3xl font-semibold tracking-[-0.02em] text-nodo-white sm:text-4xl lg:text-5xl" style={{ transitionDelay: "80ms" }}>{t.services.title}</h2>
-            <p data-reveal className="reveal-el mx-auto mt-5 max-w-lg text-[15px] leading-relaxed text-nodo-gray-400" style={{ transitionDelay: "160ms" }}>{t.services.subtitle}</p>
+            <p data-reveal className="reveal-el mx-auto mt-5 max-w-lg text-[15px] leading-relaxed text-white/70" style={{ transitionDelay: "160ms" }}>{t.services.subtitle}</p>
           </div>
 
           <div className="grid gap-6 md:grid-cols-3">
@@ -74,9 +73,9 @@ export default function HomePage() {
                     <div className="mb-6 inline-flex h-12 w-12 items-center justify-center rounded-[4px]" style={{ background: "linear-gradient(135deg, rgba(88,99,242,0.12), rgba(39,133,254,0.08))" }}>
                       <Icon className="h-5 w-5 text-nodo-white/80" />
                     </div>
-                    <p className="mb-4 text-[11px] font-medium tracking-[0.2em] text-nodo-gray-600 uppercase">0{i + 1}</p>
+                    <p className="mb-4 text-[11px] font-medium tracking-[0.2em] text-white/40 uppercase">0{i + 1}</p>
                     <h3 className="mb-3 text-lg font-semibold text-nodo-white">{service.title}</h3>
-                    <p className="text-[14px] leading-relaxed text-nodo-gray-400">{service.description}</p>
+                    <p className="text-[14px] leading-relaxed text-white/70">{service.description}</p>
                   </TiltCard>
                 </div>
               );
@@ -107,7 +106,7 @@ export default function HomePage() {
                     <ScrollCounter target={stat.target} suffix="+" />
                   </span>
                 </div>
-                <p className="mt-3 text-[13px] font-medium tracking-wide text-nodo-gray-400">{stat.label}</p>
+                <p className="mt-3 text-[13px] font-medium tracking-wide text-white/70">{stat.label}</p>
               </div>
             ))}
           </div>
@@ -123,7 +122,7 @@ export default function HomePage() {
             <h2 data-reveal className="reveal-el text-3xl font-semibold tracking-[-0.02em] text-nodo-white sm:text-4xl" style={{ transitionDelay: "80ms" }}>
               Cada tecnología, un <span className="gradient-text">nodo</span>
             </h2>
-            <p data-reveal className="reveal-el mx-auto mt-4 max-w-lg text-[14px] leading-relaxed text-nodo-gray-400" style={{ transitionDelay: "160ms" }}>
+            <p data-reveal className="reveal-el mx-auto mt-4 max-w-lg text-[14px] leading-relaxed text-white/70" style={{ transitionDelay: "160ms" }}>
               Dominamos las herramientas más potentes del mercado. Las conectamos entre sí para construir exactamente lo que tu proyecto necesita.
             </p>
           </div>
@@ -139,7 +138,7 @@ export default function HomePage() {
             <div>
               <p data-reveal className="reveal-el mb-4 text-[11px] font-medium tracking-[0.3em] text-nodo-indigo uppercase">Portfolio</p>
               <h2 data-reveal className="reveal-el text-3xl font-semibold tracking-[-0.02em] text-nodo-white sm:text-4xl" style={{ transitionDelay: "80ms" }}>{t.projects.title}</h2>
-              <p data-reveal className="reveal-el mt-3 max-w-sm text-[14px] leading-relaxed text-nodo-gray-400" style={{ transitionDelay: "160ms" }}>{t.projects.subtitle}</p>
+              <p data-reveal className="reveal-el mt-3 max-w-sm text-[14px] leading-relaxed text-white/70" style={{ transitionDelay: "160ms" }}>{t.projects.subtitle}</p>
             </div>
             <div data-reveal className="reveal-el" style={{ transitionDelay: "200ms" }}>
               <GhostButton href="/proyectos" className="hidden sm:inline-flex">
@@ -174,10 +173,10 @@ export default function HomePage() {
                       <span className="rounded-[2px] bg-nodo-indigo/10 px-2.5 py-0.5 text-[11px] font-medium tracking-wide text-nodo-indigo">{project.category}</span>
                     </div>
                     <h3 className="mb-2 text-base font-semibold text-nodo-white">{project.title}</h3>
-                    <p className="mb-5 text-[13px] leading-relaxed text-nodo-gray-400">{project.description}</p>
+                    <p className="mb-5 text-[13px] leading-relaxed text-white/70">{project.description}</p>
                     <div className="flex flex-wrap gap-1.5">
                       {project.tags.map((tag) => (
-                        <span key={tag} className="rounded-[2px] border border-white/[0.04] bg-white/[0.02] px-2 py-0.5 text-[11px] text-nodo-gray-400">{tag}</span>
+                        <span key={tag} className="rounded-[2px] border border-white/[0.04] bg-white/[0.02] px-2 py-0.5 text-[11px] text-white/70">{tag}</span>
                       ))}
                     </div>
                   </div>
@@ -221,7 +220,7 @@ export default function HomePage() {
                     </div>
                     <div>
                       <p className="text-[13px] font-medium text-nodo-white">{testimonial.author}</p>
-                      <p className="text-[11px] text-nodo-gray-400">{testimonial.role}, {testimonial.company}</p>
+                      <p className="text-[11px] text-white/70">{testimonial.role}, {testimonial.company}</p>
                     </div>
                   </div>
                 </div>
@@ -235,23 +234,11 @@ export default function HomePage() {
       <section className="relative py-28 sm:py-36">
         <div className="section-line" />
         <div className="mx-auto max-w-5xl px-6 pt-16 lg:px-8">
-          <div data-reveal className="reveal-el">
-            <div className="relative overflow-hidden rounded-[8px] border border-white/[0.06] px-8 py-20 text-center sm:px-16 sm:py-28">
-              <GradientMesh />
-              <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-nodo-indigo/40 to-transparent" />
-
-              <div className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-                <div className="h-[300px] w-[300px] animate-pulse-glow rounded-full border border-nodo-indigo/[0.06]" />
-              </div>
-              <div className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-                <div className="h-[500px] w-[500px] animate-pulse-glow rounded-full border border-nodo-indigo/[0.03]" style={{ animationDelay: "1.5s" }} />
-              </div>
-
-              <div className="relative">
-                <h2 className="mb-5 text-3xl font-semibold tracking-[-0.02em] text-nodo-white sm:text-4xl lg:text-5xl">{t.cta.title}</h2>
-                <p className="mx-auto mb-10 max-w-md text-[15px] leading-relaxed text-nodo-gray-400">{t.cta.subtitle}</p>
-                <GradientButton href="/contacto">{t.cta.button}</GradientButton>
-              </div>
+          <div className="text-center">
+            <h2 data-reveal className="reveal-el mb-5 text-3xl font-semibold tracking-[-0.02em] text-white sm:text-4xl lg:text-5xl">{t.cta.title}</h2>
+            <p data-reveal className="reveal-el mx-auto mb-10 max-w-md text-[15px] leading-relaxed text-white/70" style={{ transitionDelay: "80ms" }}>{t.cta.subtitle}</p>
+            <div data-reveal className="reveal-el" style={{ transitionDelay: "160ms" }}>
+              <GradientButton href="/contacto">{t.cta.button}</GradientButton>
             </div>
           </div>
         </div>

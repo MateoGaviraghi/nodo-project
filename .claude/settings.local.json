@@ -24,7 +24,15 @@
       "Bash(netstat -ano)",
       "Bash(cmd.exe /c \"taskkill /F /PID 5152 & taskkill /F /PID 216444\")",
       "Bash(ffprobe -v error -select_streams v:0 -show_entries stream=width,height,r_frame_rate,duration -of csv=p=0 \"C:\\\\Users\\\\mateo\\\\Desktop\\\\nodo-project\\\\nodo-brain\\\\nodo-video-scroll-web.mp4\")",
-      "Bash(ffmpeg -i \"C:\\\\Users\\\\mateo\\\\Desktop\\\\nodo-project\\\\nodo-brain\\\\nodo-video-scroll-web.mp4\" -r 15 -q:v 3 \"C:\\\\Users\\\\mateo\\\\Desktop\\\\nodo-project\\\\.claude\\\\worktrees\\\\elastic-margulis\\\\public\\\\hero-frames\\\\%04d.jpg\")"
+      "Bash(ffmpeg -i \"C:\\\\Users\\\\mateo\\\\Desktop\\\\nodo-project\\\\nodo-brain\\\\nodo-video-scroll-web.mp4\" -r 15 -q:v 3 \"C:\\\\Users\\\\mateo\\\\Desktop\\\\nodo-project\\\\.claude\\\\worktrees\\\\elastic-margulis\\\\public\\\\hero-frames\\\\%04d.jpg\")",
+      "mcp__mcp-registry__search_mcp_registry",
+      "mcp__mcp-registry__suggest_connectors",
+      "mcp__88b32686-1795-41a7-9497-20dc0a478d40__create-design-from-candidate",
+      "mcp__88b32686-1795-41a7-9497-20dc0a478d40__upload-asset-from-url",
+      "mcp__88b32686-1795-41a7-9497-20dc0a478d40__start-editing-transaction",
+      "mcp__88b32686-1795-41a7-9497-20dc0a478d40__perform-editing-operations",
+      "mcp__88b32686-1795-41a7-9497-20dc0a478d40__cancel-editing-transaction",
+      "Bash(npx tsx:*)"
     ]
   }
 }

@@ -6,6 +6,7 @@ import Footer from "@/components/layout/Footer";
 import WhatsAppButton from "@/components/layout/WhatsAppButton";
 import MeshBackground from "@/components/layout/MeshBackground";
 import SmoothScrollProvider from "@/components/layout/SmoothScrollProvider";
+import ScrollToTop from "@/components/layout/ScrollToTop";
 import { LanguageProvider } from "@/hooks/useLanguage";
 
 const poppins = Poppins({
@@ -75,6 +76,7 @@ export default function RootLayout({
   return (
     <html lang="es" data-scroll-behavior="smooth" className={`${poppins.variable} h-full antialiased`}>
       <head>
+        <script dangerouslySetInnerHTML={{ __html: `if("scrollRestoration"in history)history.scrollRestoration="manual";window.scrollTo(0,0);` }} />
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#0a0a0a" />
         <script
@@ -134,6 +136,7 @@ export default function RootLayout({
       <body className="min-h-full bg-nodo-black text-nodo-white">
         <LanguageProvider>
           <SmoothScrollProvider>
+            <ScrollToTop />
             <MeshBackground />
             <Navbar />
             <main className="relative z-1 flex-1">{children}</main>

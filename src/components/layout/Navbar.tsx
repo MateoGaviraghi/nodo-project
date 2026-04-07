@@ -66,15 +66,13 @@ export default function Navbar() {
               className="mr-auto flex shrink-0 items-center"
               onClick={(e) => {
                 setIsMobileOpen(false);
-                // If on home page, scroll to hero text (past the video)
+                e.preventDefault();
                 if (window.location.pathname === "/") {
-                  e.preventDefault();
-                  const hero = document.querySelector("[data-hero]");
-                  if (hero) {
-                    const heroHeight = hero.getBoundingClientRect().height;
-                    // Scroll to ~75% of hero (where text appears)
-                    window.scrollTo({ top: heroHeight * 0.75, behavior: "smooth" });
-                  }
+                  // Already on home — scroll to top
+                  window.scrollTo({ top: 0, behavior: "instant" });
+                } else {
+                  // Coming from another page — hard navigation to avoid ScrollTrigger stale state
+                  window.location.href = "/";
                 }
               }}
             >

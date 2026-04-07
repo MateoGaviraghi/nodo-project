@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import NosotrosContent from "./NosotrosContent";
 
 export const metadata: Metadata = {
-  title: "Nosotros",
+  title: "Nosotros — Software house boutique argentina",
   description:
-    "Conoce al equipo detrás de Nodo. Software house boutique argentina con foco en código limpio, diseño con propósito y resultados reales.",
+    "Conocé al equipo detrás de Nodo. Software house boutique argentina con foco en código limpio, diseño con propósito y resultados reales.",
   alternates: { canonical: "https://nodotech.dev/nosotros" },
 };
 

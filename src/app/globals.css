@@ -333,7 +333,7 @@ body {
   height: 1px;
   width: 100%;
   max-width: 64rem;
-  background: linear-gradient(90deg, transparent, rgba(88, 99, 242, 0.25), transparent);
+  background: linear-gradient(90deg, transparent 5%, rgba(88, 99, 242, 0.5) 50%, transparent 95%);
 }
 
 /* ═══════════════════════════════════════════════════════
