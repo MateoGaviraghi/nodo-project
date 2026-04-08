@@ -150,30 +150,54 @@ export default function HomePage() {
             </div>
           </div>
 
-          <div className="grid gap-6 sm:grid-cols-2">
+          <div className="grid gap-8 sm:grid-cols-2 sm:gap-10">
             {projects.slice(0, 4).map((project, idx) => (
               <div key={project.id} data-reveal className={idx % 2 === 0 ? "reveal-left" : "reveal-right"} style={{ transitionDelay: `${idx * 120}ms` }}>
                 <TiltCard className="h-full">
-                  <div
-                    className="relative flex h-48 items-center justify-center overflow-hidden"
-                    style={{
-                      background: `linear-gradient(${135 + idx * 25}deg, ${
-                        ["rgba(139,47,239,0.15)", "rgba(0,193,244,0.15)", "rgba(39,133,254,0.15)", "rgba(88,99,242,0.15)"][idx]
-                      }, rgba(10,10,10,0.8) 70%)`,
-                    }}
-                  >
-                    <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: "linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)", backgroundSize: "40px 40px" }} />
-                    <span className="text-6xl font-extralight tracking-tighter text-white/[0.06] transition-all duration-500 group-hover:text-white/[0.12] group-hover:scale-110">
-                      {project.title.charAt(0)}
-                    </span>
-                    <div className="absolute inset-0 bg-gradient-to-t from-[rgba(10,10,10,1)] via-transparent to-transparent opacity-60" />
+                  {/* ── Monitor frame ── */}
+                  <div className="p-3 pb-0 sm:p-4 sm:pb-0">
+                    {/* Browser toolbar */}
+                    <div className="flex items-center gap-2 rounded-t-[4px] border border-b-0 border-white/[0.08] bg-white/[0.03] px-3 py-2">
+                      <div className="flex gap-1.5">
+                        <span className="h-2 w-2 rounded-full bg-white/[0.12]" />
+                        <span className="h-2 w-2 rounded-full bg-white/[0.12]" />
+                        <span className="h-2 w-2 rounded-full bg-white/[0.12]" />
+                      </div>
+                      <div className="mx-2 flex-1 rounded-[2px] bg-white/[0.04] px-3 py-0.5">
+                        <span className="text-[10px] text-white/30">{project.title.toLowerCase().replace(/\s+/g, "-")}.app</span>
+                      </div>
+                    </div>
+
+                    {/* Screen */}
+                    <div
+                      className="relative flex aspect-[16/10] items-center justify-center overflow-hidden border-x border-b border-white/[0.08] rounded-b-[4px]"
+                      style={{
+                        background: `linear-gradient(${135 + idx * 25}deg, ${
+                          ["rgba(139,47,239,0.18)", "rgba(0,193,244,0.18)", "rgba(39,133,254,0.18)", "rgba(88,99,242,0.18)"][idx]
+                        }, rgba(10,10,10,0.9) 70%)`,
+                      }}
+                    >
+                      <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: "linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)", backgroundSize: "32px 32px" }} />
+                      <span className="text-7xl font-extralight tracking-tighter text-white/[0.06] transition-all duration-500 group-hover:text-white/[0.1] group-hover:scale-110 sm:text-8xl">
+                        {project.title.charAt(0)}
+                      </span>
+                      {/* Screen reflection */}
+                      <div className="absolute inset-0 bg-gradient-to-br from-white/[0.02] via-transparent to-transparent" />
+                    </div>
                   </div>
-                  <div className="p-5 sm:p-6">
+
+                  {/* ── Monitor stand ── */}
+                  <div className="flex justify-center py-1">
+                    <div className="h-3 w-8 rounded-b-[2px] bg-gradient-to-b from-white/[0.06] to-white/[0.02] sm:h-4 sm:w-10" />
+                  </div>
+
+                  {/* ── Project info ── */}
+                  <div className="px-4 pb-5 sm:px-5 sm:pb-6">
                     <div className="mb-3">
                       <span className="rounded-[2px] bg-nodo-indigo/10 px-2.5 py-0.5 text-[11px] font-medium tracking-wide text-nodo-indigo">{project.category}</span>
                     </div>
                     <h3 className="mb-2 text-base font-semibold text-nodo-white">{project.title}</h3>
-                    <p className="mb-5 text-[13px] leading-relaxed text-white/70">{project.description}</p>
+                    <p className="mb-4 text-[13px] leading-relaxed text-white/70">{project.description}</p>
                     <div className="flex flex-wrap gap-1.5">
                       {project.tags.map((tag) => (
                         <span key={tag} className="rounded-[2px] border border-white/[0.04] bg-white/[0.02] px-2 py-0.5 text-[11px] text-white/70">{tag}</span>
