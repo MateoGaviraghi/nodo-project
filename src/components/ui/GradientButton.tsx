@@ -9,6 +9,7 @@ interface GradientButtonProps {
   className?: string;
   type?: "button" | "submit";
   fullWidth?: boolean;
+  disabled?: boolean;
 }
 
 export default function GradientButton({
@@ -18,8 +19,9 @@ export default function GradientButton({
   className = "",
   type = "button",
   fullWidth = false,
+  disabled = false,
 }: GradientButtonProps) {
-  const baseClasses = `group relative inline-flex items-center justify-center overflow-hidden rounded-[3px] px-7 py-3 text-[13px] font-medium tracking-wide text-nodo-white transition-all duration-300 hover:shadow-[0_0_28px_rgba(39,133,254,0.25)] hover:scale-[1.03] active:scale-[0.98] ${
+  const baseClasses = `group relative inline-flex items-center justify-center overflow-hidden rounded-[3px] px-7 py-3 text-[13px] font-medium tracking-wide text-nodo-white transition-all duration-300 hover:shadow-[0_0_28px_rgba(39,133,254,0.25)] hover:scale-[1.03] active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:scale-100 ${
     fullWidth ? "w-full" : ""
   } ${className}`;
 
@@ -44,7 +46,7 @@ export default function GradientButton({
   }
 
   return (
-    <button onClick={onClick} type={type} className={baseClasses}>
+    <button onClick={onClick} type={type} disabled={disabled} className={baseClasses}>
       {inner}
     </button>
   );
