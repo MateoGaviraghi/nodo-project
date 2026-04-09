@@ -32,7 +32,11 @@
       "mcp__88b32686-1795-41a7-9497-20dc0a478d40__start-editing-transaction",
       "mcp__88b32686-1795-41a7-9497-20dc0a478d40__perform-editing-operations",
       "mcp__88b32686-1795-41a7-9497-20dc0a478d40__cancel-editing-transaction",
-      "Bash(npx tsx:*)"
+      "Bash(npx tsx:*)",
+      "Bash(vercel --version)",
+      "Bash(vercel ls:*)",
+      "Bash(vercel domains:*)",
+      "Bash(vercel inspect:*)"
     ]
   }
 }
