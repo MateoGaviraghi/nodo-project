@@ -414,6 +414,23 @@ body {
   50% { box-shadow: 0 0 30px rgba(88, 99, 242, 0.3); }
 }
 
+/* ── Nosotros hero orbs ── */
+.nosotros-orb-purple {
+  background: radial-gradient(ellipse, #8b2fef 0%, #5863f2 40%, transparent 70%);
+  filter: blur(80px);
+}
+.nosotros-orb-blue {
+  background: radial-gradient(ellipse, #2785fe, transparent 70%);
+  filter: blur(60px);
+}
+.nosotros-orb-cyan {
+  background: radial-gradient(ellipse, #00c1f4, transparent 70%);
+  filter: blur(60px);
+}
+.nosotros-hero-accent {
+  background: linear-gradient(90deg, #8b2fef, #5863f2, #2785fe, #00c1f4);
+}
+
 /* ── Reduced motion ── */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
