@@ -7,11 +7,6 @@ export default function NosotrosHero() {
 
   return (
     <section className="relative flex min-h-[72vh] flex-col items-center justify-center overflow-hidden pb-8 pt-28 sm:pb-12 sm:pt-40">
-      {/* Background gradient orbs */}
-      <div className="nosotros-orb-purple pointer-events-none absolute left-1/2 top-1/2 h-150 w-150 -translate-x-1/2 -translate-y-1/2 rounded-full opacity-[0.07]" />
-      <div className="nosotros-orb-blue pointer-events-none absolute right-0 top-0 h-100 w-100 rounded-full opacity-[0.05]" />
-      <div className="nosotros-orb-cyan pointer-events-none absolute bottom-0 left-0 h-75 w-75 rounded-full opacity-[0.04]" />
-
       <div className="relative mx-auto max-w-4xl px-6 text-center lg:px-8">
         {/* Eyebrow */}
         <p
@@ -42,7 +37,7 @@ export default function NosotrosHero() {
         {/* Divider under hero, matching Servicios style */}
         <div
           data-reveal
-          className="reveal-el mx-auto mt-6 h-px w-full max-w-4xl bg-gradient-to-r from-transparent via-nodo-indigo/30 to-transparent"
+          className="reveal-el mx-auto mt-6 h-px w-full max-w-4xl bg-linear-to-r from-transparent via-nodo-indigo/30 to-transparent"
           style={{ transitionDelay: "260ms" }}
         />
       </div>
