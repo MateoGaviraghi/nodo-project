@@ -375,6 +375,45 @@ body {
   50% { transform: translateY(-20px); opacity: 1; }
 }
 
+/* Orbital ring rotation */
+@keyframes orbital-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Orbital dot — individual orbit paths */
+@keyframes orbit-dot-1 {
+  0% { transform: rotate(0deg) translateX(52px) rotate(0deg); }
+  100% { transform: rotate(360deg) translateX(52px) rotate(-360deg); }
+}
+
+@keyframes orbit-dot-2 {
+  0% { transform: rotate(120deg) translateX(56px) rotate(-120deg); }
+  100% { transform: rotate(480deg) translateX(56px) rotate(-480deg); }
+}
+
+@keyframes orbit-dot-3 {
+  0% { transform: rotate(240deg) translateX(48px) rotate(-240deg); }
+  100% { transform: rotate(600deg) translateX(48px) rotate(-600deg); }
+}
+
+/* Subtle float for tech pills */
+@keyframes pill-float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-6px); }
+}
+
+/* Timeline line grow */
+@keyframes timeline-grow {
+  from { height: 0%; }
+  to { height: 100%; }
+}
+
+/* Gradient glow pulse for stats icons */
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 20px rgba(88, 99, 242, 0.15); }
+  50% { box-shadow: 0 0 30px rgba(88, 99, 242, 0.3); }
+}
+
 /* ── Reduced motion ── */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
