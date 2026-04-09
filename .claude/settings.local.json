@@ -36,7 +36,15 @@
       "Bash(vercel --version)",
       "Bash(vercel ls:*)",
       "Bash(vercel domains:*)",
-      "Bash(vercel inspect:*)"
+      "Bash(vercel inspect:*)",
+      "Bash(nslookup nodotech.dev)",
+      "Bash(nslookup nodotech.store)",
+      "Bash(nslookup nodotech.online)",
+      "Bash(nslookup nodotech.ar)",
+      "Bash(curl -I https://nodotech.dev/sitemap.xml)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)"
     ]
   }
 }
