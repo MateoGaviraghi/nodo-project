@@ -10,6 +10,7 @@ import ScrollToTop from "@/components/layout/ScrollToTop";
 import BackToTopButton from "@/components/layout/BackToTopButton";
 import { LanguageProvider } from "@/hooks/useLanguage";
 import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -148,6 +149,7 @@ export default function RootLayout({
           </SmoothScrollProvider>
         </LanguageProvider>
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
