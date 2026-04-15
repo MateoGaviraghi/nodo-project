@@ -45,6 +45,15 @@ export const metadata: Metadata = {
     "next.js",
   ],
   authors: [{ name: "Nodo", url: "https://nodotech.dev" }],
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "48x48" },
+      { url: "/icon.png", sizes: "32x32", type: "image/png" },
+    ],
+    apple: [
+      { url: "/apple-icon.png", sizes: "180x180", type: "image/png" },
+    ],
+  },
   openGraph: {
     type: "website",
     locale: "es_AR",
@@ -53,7 +62,7 @@ export const metadata: Metadata = {
     title: "Nodo — Transformamos ideas en software",
     description:
       "Software house boutique argentina. Desarrollo a medida, WordPress profesional y automatización con IA.",
-    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "Nodo — Software house argentina" }],
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "Nodo — Transformamos ideas en software" }],
   },
   twitter: {
     card: "summary_large_image",

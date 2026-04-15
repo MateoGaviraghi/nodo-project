@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Video,
@@ -9,10 +9,12 @@ import {
   CheckCircle,
   AlertCircle,
   ArrowRight,
+  MessageCircle,
 } from "lucide-react";
 import { useLanguage } from "@/hooks/useLanguage";
 import { SOCIAL_LINKS } from "@/lib/constants";
 import GradientButton from "@/components/ui/GradientButton";
+import TiltCard from "@/components/ui/TiltCard";
 
 /* ── Types ─────────────────────────────────────────────── */
 type FormStatus = "idle" | "loading" | "success" | "error";
@@ -25,9 +27,9 @@ interface FormData {
 }
 
 /* ── WhatsApp SVG ───────────────────────────────────────── */
-function WhatsAppIcon() {
+function WhatsAppIcon({ size = 22 }: { size?: number }) {
   return (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none">
       <path
         d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"
         fill="#25D366"
@@ -38,95 +40,6 @@ function WhatsAppIcon() {
         opacity="0.5"
       />
     </svg>
-  );
-}
-
-/* ── Orbital contact card ───────────────────────────────── */
-interface OrbitalCardProps {
-  icon: React.ReactNode;
-  title: string;
-  description: string;
-  cta: string;
-  href: string;
-  ringColor: string;
-  ringColor2: string;
-  glowRgba: string;
-  delay: number;
-}
-function OrbitalCard({
-  icon, title, description, cta, href,
-  ringColor, ringColor2, glowRgba, delay,
-}: OrbitalCardProps) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 40, filter: "blur(10px)" }}
-      whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-      viewport={{ once: true, margin: "-60px" }}
-      transition={{ duration: 0.65, delay, ease: [0.22, 1, 0.36, 1] }}
-      className="group relative"
-    >
-      {/* Spinning conic ring CW */}
-      <div
-        className="pointer-events-none absolute -inset-px rounded-xl overflow-hidden"
-        style={{ animation: "orbital-spin 7s linear infinite" }}
-      >
-        <div
-          className="absolute inset-0 rounded-xl"
-          style={{
-            background: `conic-gradient(from 0deg, transparent 62%, ${ringColor}55 79%, ${ringColor2}88 89%, ${ringColor}44 95%, transparent)`,
-          }}
-        />
-      </div>
-      {/* Spinning conic ring CCW */}
-      <div
-        className="pointer-events-none absolute -inset-0.5 rounded-xl overflow-hidden opacity-50"
-        style={{ animation: "orbital-spin 13s linear infinite reverse" }}
-      >
-        <div
-          className="absolute inset-0 rounded-xl"
-          style={{
-            background: `conic-gradient(from 180deg, transparent 70%, ${ringColor2}33 86%, ${ringColor}44 93%, transparent)`,
-          }}
-        />
-      </div>
-
-      {/* Card body */}
-      <motion.a
-        href={href}
-        target={href.startsWith("http") ? "_blank" : undefined}
-        rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
-        whileHover={{ y: -6 }}
-        transition={{ type: "spring", stiffness: 320, damping: 24 }}
-        className="relative flex flex-col gap-5 rounded-xl border border-white/[0.06] bg-[rgba(16,16,32,0.92)] p-6 backdrop-blur-[14px] cursor-pointer"
-      >
-        {/* Hover glow overlay */}
-        <div
-          className="pointer-events-none absolute inset-0 rounded-xl opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-          style={{ boxShadow: `inset 0 0 40px ${glowRgba}, 0 8px 40px ${glowRgba}` }}
-        />
-        {/* Icon */}
-        <div
-          className="relative flex h-12 w-12 items-center justify-center rounded-lg transition-transform duration-300 group-hover:scale-110"
-          style={{ background: glowRgba.replace("0.12", "0.14") }}
-        >
-          {icon}
-          <span
-            className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full animate-pulse"
-            style={{ background: ringColor, boxShadow: `0 0 8px ${ringColor}` }}
-          />
-        </div>
-        {/* Text */}
-        <div className="flex flex-col gap-1.5">
-          <h3 className="text-base font-semibold text-nodo-white">{title}</h3>
-          <p className="text-[13px] leading-relaxed text-nodo-gray-400">{description}</p>
-        </div>
-        {/* CTA */}
-        <div className="mt-auto flex items-center gap-2 text-[13px] font-medium text-nodo-gray-300 transition-colors duration-200 group-hover:text-nodo-white">
-          {cta}
-          <ArrowRight size={13} className="transition-transform duration-200 group-hover:translate-x-1" />
-        </div>
-      </motion.a>
-    </motion.div>
   );
 }
 
@@ -144,7 +57,7 @@ export default function ContactoContent() {
   const [status, setStatus] = useState<FormStatus>("idle");
   const [focusedField, setFocusedField] = useState<string | null>(null);
 
-  /* IntersectionObserver — same as /servicios and /nosotros */
+  /* IntersectionObserver — reveal system */
   useEffect(() => {
     if (typeof window === "undefined") return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
@@ -168,9 +81,19 @@ export default function ContactoContent() {
     return () => observerRef.current?.disconnect();
   }, []);
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
-  ) => setFormData((p) => ({ ...p, [e.target.name]: e.target.value }));
+  /* Re-observe after form status changes (success → idle) */
+  useEffect(() => {
+    if (!observerRef.current) return;
+    document.querySelectorAll("[data-reveal]:not(.revealed)").forEach((el) => {
+      observerRef.current?.observe(el);
+    });
+  }, [status]);
+
+  const handleChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>
+      setFormData((p) => ({ ...p, [e.target.name]: e.target.value })),
+    [],
+  );
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -188,9 +111,10 @@ export default function ContactoContent() {
     }
   };
 
+  /* ── Form glow positions ── */
   const glowPos: Record<string, string> = {
     name: "20% 30%", email: "80% 30%",
-    service: "25% 55%", budget: "75% 55%", message: "50% 75%",
+    service: "25% 55%", budget: "75% 55%", message: "50% 78%",
   };
   const glowColor: Record<string, string> = {
     name: "rgba(39,133,254,0.07)", email: "rgba(0,193,244,0.07)",
@@ -203,7 +127,7 @@ export default function ContactoContent() {
   const labelCls = "mb-1.5 block text-xs font-medium text-nodo-gray-300";
 
   const serviceOpts = [
-    { value: "", label: es ? "Seleccioná un servicio" : "Select a service" },
+    { value: "", label: es ? "Seleccion\u00e1 un servicio" : "Select a service" },
     { value: "desarrollo", label: t.services.dev.title },
     { value: "wordpress", label: t.services.wordpress.title },
     { value: "ia", label: t.services.ia.title },
@@ -213,12 +137,43 @@ export default function ContactoContent() {
     { value: "otro", label: es ? "Otro" : "Other" },
   ];
   const budgetOpts = [
-    { value: "", label: es ? "Seleccioná un rango" : "Select a range" },
+    { value: "", label: es ? "Seleccion\u00e1 un rango" : "Select a range" },
     { value: "menos-500", label: "< USD 500" },
-    { value: "500-2000", label: "USD 500 – 2.000" },
-    { value: "2000-5000", label: "USD 2.000 – 5.000" },
+    { value: "500-2000", label: "USD 500 \u2013 2.000" },
+    { value: "2000-5000", label: "USD 2.000 \u2013 5.000" },
     { value: "5000-mas", label: "USD 5.000+" },
-    { value: "no-se", label: es ? "No lo sé aún" : "Not sure yet" },
+    { value: "no-se", label: es ? "No lo s\u00e9 a\u00fan" : "Not sure yet" },
+  ];
+
+  /* ── Contact method configs ── */
+  const methods = [
+    {
+      icon: <WhatsAppIcon />,
+      title: "WhatsApp",
+      description: t.contact.wa_desc,
+      cta: t.contact.wa_cta,
+      href: SOCIAL_LINKS.whatsapp,
+      accentColor: "#25D366",
+      iconBg: "rgba(37,211,102,0.12)",
+    },
+    {
+      icon: <Video size={20} className="text-nodo-blue" />,
+      title: es ? "Videollamada" : "Video call",
+      description: t.contact.video_desc,
+      cta: t.contact.video_cta,
+      href: "https://calendly.com/nodotech",
+      accentColor: "#2785fe",
+      iconBg: "rgba(39,133,254,0.12)",
+    },
+    {
+      icon: <Mail size={20} className="text-nodo-purple" />,
+      title: es ? "Formulario" : "Form",
+      description: t.contact.form_card_desc,
+      cta: t.contact.form_card_cta,
+      href: "#form",
+      accentColor: "#8b2fef",
+      iconBg: "rgba(139,47,239,0.12)",
+    },
   ];
 
   /* ═════════════════════════════════════════════════════
@@ -226,18 +181,15 @@ export default function ContactoContent() {
   ═════════════════════════════════════════════════════ */
   return (
     <>
-      {/* ─── Hero — identical structure to /servicios and /nosotros ─── */}
+      {/* ─── HERO ─── */}
       <section className="relative overflow-hidden pb-8 pt-28 sm:pb-12 sm:pt-40">
         <div className="relative mx-auto max-w-4xl px-6 text-center lg:px-8">
-          {/* Eyebrow */}
           <p
             data-reveal
             className="reveal-el mb-4 text-[11px] font-medium tracking-[0.3em] text-nodo-indigo uppercase"
           >
             {es ? "Contacto" : "Contact"}
           </p>
-
-          {/* Main headline */}
           <h1
             data-reveal
             className="reveal-el mb-6 text-4xl font-semibold tracking-[-0.02em] text-nodo-white sm:text-5xl lg:text-6xl"
@@ -245,8 +197,6 @@ export default function ContactoContent() {
           >
             {t.contact.title}
           </h1>
-
-          {/* Subtitle */}
           <p
             data-reveal
             className="reveal-el mx-auto mb-10 max-w-2xl text-[16px] leading-relaxed text-white/80"
@@ -254,8 +204,6 @@ export default function ContactoContent() {
           >
             {t.contact.subtitle}
           </p>
-
-          {/* Divider */}
           <div
             data-reveal
             className="reveal-el mx-auto h-px w-full max-w-4xl bg-linear-to-r from-transparent via-nodo-indigo/30 to-transparent"
@@ -264,335 +212,513 @@ export default function ContactoContent() {
         </div>
       </section>
 
-      {/* ─── Contact Methods — 3 Orbital Cards ─── */}
-      <section className="relative py-20 sm:py-28">
+      {/* ─── CONTACT METHODS — 3 TiltCards with reveal-3d ─── */}
+      <section className="relative py-14 sm:py-24">
         <div className="section-line" />
-        <div className="mx-auto max-w-5xl px-6 pt-12 lg:px-8">
-
-          <div className="mb-12 text-center">
+        <div className="mx-auto max-w-6xl px-6 pt-12 sm:pt-16 lg:px-8">
+          {/* Header */}
+          <div className="mb-8 sm:mb-12 text-center">
             <p
               data-reveal
               className="reveal-el mb-4 text-[11px] font-medium tracking-[0.3em] text-nodo-indigo uppercase"
             >
-              {es ? "Elegí cómo conectar" : "Choose how to connect"}
+              {t.contact.methods_eyebrow}
             </p>
             <h2
               data-reveal
-              className="reveal-el text-3xl font-semibold tracking-[-0.02em] text-nodo-white sm:text-4xl lg:text-5xl"
+              className="reveal-el mb-4 text-3xl font-semibold tracking-[-0.02em] text-nodo-white sm:text-4xl lg:text-5xl"
               style={{ transitionDelay: "80ms" }}
             >
-              {es ? "Tres formas de empezar." : "Three ways to start."}
+              {t.contact.methods_title}
             </h2>
+            <p
+              data-reveal
+              className="reveal-el mx-auto max-w-lg text-[15px] leading-relaxed text-nodo-gray-400"
+              style={{ transitionDelay: "160ms" }}
+            >
+              {t.contact.methods_subtitle}
+            </p>
           </div>
 
+          {/* Cards grid */}
           <div className="grid gap-5 sm:grid-cols-3">
-            <OrbitalCard
-              icon={<WhatsAppIcon />}
-              title="WhatsApp"
-              description={
-                es
-                  ? "Respuesta en minutos. La forma más directa de hablar con nosotros."
-                  : "Response in minutes. The most direct way to reach us."
-              }
-              cta={es ? "Escribir ahora" : "Write now"}
-              href={SOCIAL_LINKS.whatsapp}
-              ringColor="#25D366"
-              ringColor2="#00c1f4"
-              glowRgba="rgba(37,211,102,0.12)"
-              delay={0}
-            />
-            <OrbitalCard
-              icon={<Video size={20} className="text-nodo-blue" />}
-              title={es ? "Videollamada" : "Video call"}
-              description={
-                es
-                  ? "Agendá 30 minutos gratis para hablar en detalle de tu proyecto."
-                  : "Schedule 30 free minutes to discuss your project in detail."
-              }
-              cta={es ? "Agendar llamada" : "Schedule call"}
-              href="https://calendly.com/nodotech"
-              ringColor="#2785fe"
-              ringColor2="#5863f2"
-              glowRgba="rgba(39,133,254,0.12)"
-              delay={0.1}
-            />
-            <OrbitalCard
-              icon={<Mail size={20} className="text-nodo-purple" />}
-              title={es ? "Formulario" : "Form"}
-              description={
-                es
-                  ? "Contanos tu idea en detalle. Te respondemos en menos de 24hs."
-                  : "Tell us your idea in detail. We respond within 24h."
-              }
-              cta={es ? "Ir al formulario ↓" : "Go to form ↓"}
-              href="#form"
-              ringColor="#8b2fef"
-              ringColor2="#5863f2"
-              glowRgba="rgba(139,47,239,0.12)"
-              delay={0.2}
-            />
+            {methods.map((m, i) => (
+              <div
+                key={m.title}
+                data-reveal
+                className="reveal-3d"
+                style={{ transitionDelay: `${i * 120}ms` }}
+              >
+                <TiltCard className="h-full">
+                  <a
+                    href={m.href}
+                    target={m.href.startsWith("http") ? "_blank" : undefined}
+                    rel={m.href.startsWith("http") ? "noopener noreferrer" : undefined}
+                    className="group/card flex h-full flex-col gap-5 p-6 sm:p-7"
+                  >
+                    {/* Step number */}
+                    <p className="text-[11px] font-medium tracking-[0.2em] text-white/30 uppercase">
+                      {String(i + 1).padStart(2, "0")} / 03
+                    </p>
+
+                    {/* Icon */}
+                    <div className="relative">
+                      <div
+                        className="flex h-12 w-12 items-center justify-center rounded-lg transition-transform duration-300 group-hover/card:scale-110"
+                        style={{ background: m.iconBg }}
+                      >
+                        {m.icon}
+                      </div>
+                      {/* Pulse dot */}
+                      <span
+                        className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full animate-pulse"
+                        style={{ background: m.accentColor, boxShadow: `0 0 8px ${m.accentColor}` }}
+                      />
+                    </div>
+
+                    {/* Text */}
+                    <div className="flex flex-col gap-1.5">
+                      <h3 className="text-base font-semibold text-nodo-white sm:text-lg">{m.title}</h3>
+                      <p className="text-[13px] leading-relaxed text-nodo-gray-400 sm:text-[14px]">
+                        {m.description}
+                      </p>
+                    </div>
+
+                    {/* CTA */}
+                    <div className="mt-auto flex items-center gap-2 text-[13px] font-medium text-nodo-gray-300 transition-colors duration-200 group-hover/card:text-nodo-white">
+                      {m.cta}
+                      <ArrowRight
+                        size={13}
+                        className="transition-transform duration-200 group-hover/card:translate-x-1"
+                      />
+                    </div>
+                  </a>
+                </TiltCard>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* ─── Form — Reactive glassmorphic ─── */}
-      <section className="relative pb-32 sm:pb-44">
+      {/* ─── FORM SECTION — Progressive reveal + animated border ─── */}
+      <section className="relative pb-16 sm:pb-28">
         <div className="section-line" />
-        <div className="mx-auto max-w-3xl px-6 pt-12 lg:px-8">
-
-          <div className="mb-10 text-center">
+        <div className="mx-auto max-w-3xl px-6 pt-12 sm:pt-16 lg:px-8">
+          {/* Header */}
+          <div className="mb-8 sm:mb-10 text-center">
             <p
               data-reveal
-              className="reveal-el text-[11px] font-medium tracking-[0.3em] text-nodo-indigo uppercase"
+              className="reveal-el mb-4 text-[11px] font-medium tracking-[0.3em] text-nodo-indigo uppercase"
             >
-              {es ? "o completá el formulario" : "or fill the form"}
+              {t.contact.form_eyebrow}
             </p>
+            <h2
+              data-reveal
+              className="reveal-el text-3xl font-semibold tracking-[-0.02em] text-nodo-white sm:text-4xl"
+              style={{ transitionDelay: "80ms" }}
+            >
+              {t.contact.form_title}
+            </h2>
           </div>
 
-          {/* Form card */}
-          <motion.div
+          {/* Form card — reveal-3d with animated gradient border */}
+          <div
             id="form"
-            initial={{ opacity: 0, y: 40, filter: "blur(10px)" }}
-            whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-            viewport={{ once: true, margin: "-60px" }}
-            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-            className="relative scroll-mt-28 overflow-hidden rounded-xl border border-white/[0.07]"
-            style={{
-              transition: "background 0.45s ease",
-              background: focusedField
-                ? `radial-gradient(ellipse 55% 45% at ${glowPos[focusedField]}, ${glowColor[focusedField]}, transparent 65%), rgba(18,18,36,0.92)`
-                : "rgba(18,18,36,0.92)",
-              backdropFilter: "blur(14px)",
-            }}
+            data-reveal
+            className="reveal-3d relative scroll-mt-28 overflow-hidden rounded-xl"
+            style={{ transitionDelay: "160ms" }}
           >
-            {/* Top accent line */}
-            <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-nodo-purple/60 to-transparent" />
+            {/* Animated rotating gradient border */}
+            <div
+              className="pointer-events-none absolute inset-0 rounded-xl opacity-60"
+              style={{
+                background:
+                  "conic-gradient(from var(--border-angle, 0deg), transparent 40%, rgba(88,99,242,0.35) 50%, rgba(39,133,254,0.25) 55%, transparent 60%)",
+                mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                maskComposite: "exclude",
+                WebkitMaskComposite: "xor",
+                padding: "1px",
+                animation: "rotate-border 4s linear infinite",
+              }}
+            />
 
-            <AnimatePresence mode="wait">
-              {/* ── Success state ── */}
-              {status === "success" ? (
-                <motion.div
-                  key="success"
-                  initial={{ opacity: 0, scale: 0.96 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-                  className="flex flex-col items-center justify-center gap-5 px-8 py-20 text-center"
-                >
-                  <div className="relative flex items-center justify-center">
-                    {[1, 2, 3].map((i) => (
-                      <div
-                        key={i}
-                        className="absolute rounded-full border border-nodo-success/25"
-                        style={{
-                          width: `${i * 52}px`,
-                          height: `${i * 52}px`,
-                          animation: `pulse-glow ${i * 0.8 + 1}s ease-in-out ${i * 0.2}s infinite`,
+            {/* Static border fallback */}
+            <div className="pointer-events-none absolute inset-0 rounded-xl border border-white/[0.06]" />
+
+            {/* Reactive glow background */}
+            <div
+              className="relative rounded-xl"
+              style={{
+                transition: "background 0.45s ease",
+                background: focusedField
+                  ? `radial-gradient(ellipse 55% 45% at ${glowPos[focusedField]}, ${glowColor[focusedField]}, transparent 65%), rgba(18,18,36,0.92)`
+                  : "rgba(18,18,36,0.92)",
+                backdropFilter: "blur(14px)",
+              }}
+            >
+              {/* Top accent line */}
+              <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-nodo-purple/60 to-transparent" />
+
+              <AnimatePresence mode="wait">
+                {/* ── Success state ── */}
+                {status === "success" ? (
+                  <motion.div
+                    key="success"
+                    initial={{ opacity: 0, scale: 0.96 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+                    className="flex flex-col items-center justify-center gap-5 px-8 py-20 text-center"
+                  >
+                    {/* Pulse rings */}
+                    <div className="relative flex items-center justify-center">
+                      {[1, 2, 3].map((i) => (
+                        <div
+                          key={i}
+                          className="absolute rounded-full border border-nodo-success/25"
+                          style={{
+                            width: `${i * 52}px`,
+                            height: `${i * 52}px`,
+                            animation: `pulse-glow ${i * 0.8 + 1}s ease-in-out ${i * 0.2}s infinite`,
+                          }}
+                        />
+                      ))}
+                      <motion.div
+                        initial={{ scale: 0, rotate: -15 }}
+                        animate={{ scale: 1, rotate: 0 }}
+                        transition={{
+                          duration: 0.5,
+                          delay: 0.1,
+                          type: "spring",
+                          stiffness: 240,
+                          damping: 14,
                         }}
-                      />
-                    ))}
-                    <motion.div
-                      initial={{ scale: 0, rotate: -15 }}
-                      animate={{ scale: 1, rotate: 0 }}
-                      transition={{ duration: 0.5, delay: 0.1, type: "spring", stiffness: 240, damping: 14 }}
-                      className="relative z-10 flex h-16 w-16 items-center justify-center rounded-full border border-nodo-success/20 bg-nodo-success/10"
-                    >
-                      <CheckCircle size={28} className="text-nodo-success" />
-                    </motion.div>
-                  </div>
-                  <motion.h3
-                    initial={{ opacity: 0, y: 8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.25 }}
-                    className="text-xl font-semibold text-nodo-white"
-                  >
-                    {es ? "¡Mensaje enviado!" : "Message sent!"}
-                  </motion.h3>
-                  <motion.p
-                    initial={{ opacity: 0, y: 8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.32 }}
-                    className="max-w-sm text-sm text-nodo-gray-400"
-                  >
-                    {es
-                      ? "Te respondemos en menos de 24hs. Mientras tanto, podés escribirnos directamente por WhatsApp."
-                      : "We'll get back to you within 24h. In the meantime, feel free to reach us on WhatsApp."}
-                  </motion.p>
-                  <motion.a
-                    initial={{ opacity: 0, y: 8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.38 }}
-                    href={SOCIAL_LINKS.whatsapp}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-1.5 text-sm font-medium text-nodo-blue transition-colors hover:text-nodo-cyan"
-                  >
-                    {es ? "Ir a WhatsApp" : "Go to WhatsApp"}
-                    <ArrowRight size={13} />
-                  </motion.a>
-                </motion.div>
-              ) : (
-                /* ── Form ── */
-                <motion.form
-                  key="form"
-                  onSubmit={handleSubmit}
-                  className="flex flex-col gap-6 p-6 md:p-10"
-                >
-                  <div className="mb-1">
-                    <h2 className="text-xl font-semibold text-nodo-white md:text-2xl">
-                      {es ? "Contanos tu proyecto" : "Tell us about your project"}
-                    </h2>
-                    <p className="mt-1 text-sm text-nodo-gray-400">
-                      {es ? "Campos con * son requeridos." : "Fields marked with * are required."}
-                    </p>
-                  </div>
-
-                  {/* Name + Email */}
-                  <div className="grid gap-4 sm:grid-cols-2">
-                    <div>
-                      <label htmlFor="name" className={labelCls}>
-                        {t.contact.form.name} <span className="text-nodo-purple">*</span>
-                      </label>
-                      <input
-                        id="name" name="name" type="text" required autoComplete="name"
-                        placeholder={es ? "Tu nombre" : "Your name"}
-                        value={formData.name}
-                        onChange={handleChange}
-                        onFocus={() => setFocusedField("name")}
-                        onBlur={() => setFocusedField(null)}
-                        className={inputCls}
-                      />
-                    </div>
-                    <div>
-                      <label htmlFor="email" className={labelCls}>
-                        {t.contact.form.email} <span className="text-nodo-purple">*</span>
-                      </label>
-                      <input
-                        id="email" name="email" type="email" required autoComplete="email"
-                        placeholder={es ? "tu@email.com" : "your@email.com"}
-                        value={formData.email}
-                        onChange={handleChange}
-                        onFocus={() => setFocusedField("email")}
-                        onBlur={() => setFocusedField(null)}
-                        className={inputCls}
-                      />
-                    </div>
-                  </div>
-
-                  {/* Service + Budget */}
-                  <div className="grid gap-4 sm:grid-cols-2">
-                    <div>
-                      <label htmlFor="service" className={labelCls}>
-                        {t.contact.form.service}
-                      </label>
-                      <select
-                        id="service" name="service"
-                        value={formData.service}
-                        onChange={handleChange}
-                        onFocus={() => setFocusedField("service")}
-                        onBlur={() => setFocusedField(null)}
-                        className={`${inputCls} cursor-pointer`}
+                        className="relative z-10 flex h-16 w-16 items-center justify-center rounded-full border border-nodo-success/20 bg-nodo-success/10"
                       >
-                        {serviceOpts.map((o) => (
-                          <option key={o.value} value={o.value} className="bg-nodo-gray-900 text-nodo-white">
-                            {o.label}
-                          </option>
-                        ))}
-                      </select>
+                        <CheckCircle size={28} className="text-nodo-success" />
+                      </motion.div>
                     </div>
-                    <div>
-                      <label htmlFor="budget" className={labelCls}>
-                        {t.contact.form.budget}
-                      </label>
-                      <select
-                        id="budget" name="budget"
-                        value={formData.budget}
-                        onChange={handleChange}
-                        onFocus={() => setFocusedField("budget")}
-                        onBlur={() => setFocusedField(null)}
-                        className={`${inputCls} cursor-pointer`}
-                      >
-                        {budgetOpts.map((o) => (
-                          <option key={o.value} value={o.value} className="bg-nodo-gray-900 text-nodo-white">
-                            {o.label}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                  </div>
-
-                  {/* Message */}
-                  <div>
-                    <label htmlFor="message" className={labelCls}>
-                      {t.contact.form.message} <span className="text-nodo-purple">*</span>
-                    </label>
-                    <textarea
-                      id="message" name="message" required rows={5}
-                      placeholder={
-                        es
-                          ? "Contanos sobre tu proyecto, qué necesitás y cualquier detalle relevante..."
-                          : "Tell us about your project, what you need and any relevant details..."
-                      }
-                      value={formData.message}
-                      onChange={handleChange}
-                      onFocus={() => setFocusedField("message")}
-                      onBlur={() => setFocusedField(null)}
-                      className={`${inputCls} resize-none`}
-                    />
-                    <div className="mt-1.5 flex justify-end">
-                      <span
-                        className="text-[11px] tabular-nums transition-colors duration-200"
-                        style={{
-                          color: formData.message.length > 20
-                            ? "rgba(88,99,242,0.7)"
-                            : "rgba(136,136,170,0.45)",
-                        }}
-                      >
-                        {formData.message.length}{es ? " caracteres" : " chars"}
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Error */}
-                  {status === "error" && (
-                    <motion.div
-                      initial={{ opacity: 0, y: -6 }}
+                    <motion.h3
+                      initial={{ opacity: 0, y: 8 }}
                       animate={{ opacity: 1, y: 0 }}
-                      className="flex items-center gap-2 rounded-lg border border-nodo-error/20 bg-nodo-error/5 px-4 py-3 text-sm text-nodo-error"
+                      transition={{ delay: 0.25 }}
+                      className="text-xl font-semibold text-nodo-white"
                     >
-                      <AlertCircle size={15} />
-                      {es
-                        ? "Hubo un error al enviar. Intentá de nuevo o escribinos por WhatsApp."
-                        : "Something went wrong. Try again or message us on WhatsApp."}
-                    </motion.div>
-                  )}
+                      {t.contact.form_success_title}
+                    </motion.h3>
+                    <motion.p
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.32 }}
+                      className="max-w-sm text-sm text-nodo-gray-400"
+                    >
+                      {t.contact.form_success_text}
+                    </motion.p>
+                    <motion.a
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.38 }}
+                      href={SOCIAL_LINKS.whatsapp}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-1.5 text-sm font-medium text-nodo-blue transition-colors hover:text-nodo-cyan"
+                    >
+                      {t.contact.form_success_wa}
+                      <ArrowRight size={13} />
+                    </motion.a>
+                  </motion.div>
+                ) : (
+                  /* ── Form ── */
+                  <motion.form
+                    key="form"
+                    onSubmit={handleSubmit}
+                    className="flex flex-col gap-0 p-6 md:p-10"
+                  >
+                    {/* Form header */}
+                    <div
+                      data-reveal
+                      className="reveal-el mb-6"
+                      style={{ transitionDelay: "240ms" }}
+                    >
+                      <h3 className="text-xl font-semibold text-nodo-white md:text-2xl">
+                        {es ? "Contanos tu proyecto" : "Tell us about your project"}
+                      </h3>
+                      <p className="mt-1 text-sm text-nodo-gray-400">
+                        {t.contact.form_subtitle}
+                      </p>
+                    </div>
 
-                  {/* Submit */}
-                  <div className="flex flex-col items-start gap-3 sm:flex-row sm:items-center">
-                    <GradientButton type="submit" disabled={status === "loading"}>
-                      {status === "loading" ? (
-                        <span className="flex items-center gap-2">
-                          <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none">
-                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-                          </svg>
-                          {es ? "Enviando..." : "Sending..."}
+                    {/* Name + Email — stagger row 1 */}
+                    <div
+                      data-reveal
+                      className="reveal-el mb-5 grid gap-4 sm:grid-cols-2"
+                      style={{ transitionDelay: "320ms" }}
+                    >
+                      <div>
+                        <label htmlFor="name" className={labelCls}>
+                          {t.contact.form.name} <span className="text-nodo-purple">*</span>
+                        </label>
+                        <input
+                          id="name"
+                          name="name"
+                          type="text"
+                          required
+                          autoComplete="name"
+                          placeholder={es ? "Tu nombre" : "Your name"}
+                          value={formData.name}
+                          onChange={handleChange}
+                          onFocus={() => setFocusedField("name")}
+                          onBlur={() => setFocusedField(null)}
+                          className={inputCls}
+                        />
+                      </div>
+                      <div>
+                        <label htmlFor="email" className={labelCls}>
+                          {t.contact.form.email} <span className="text-nodo-purple">*</span>
+                        </label>
+                        <input
+                          id="email"
+                          name="email"
+                          type="email"
+                          required
+                          autoComplete="email"
+                          placeholder={es ? "tu@email.com" : "your@email.com"}
+                          value={formData.email}
+                          onChange={handleChange}
+                          onFocus={() => setFocusedField("email")}
+                          onBlur={() => setFocusedField(null)}
+                          className={inputCls}
+                        />
+                      </div>
+                    </div>
+
+                    {/* Service + Budget — stagger row 2 */}
+                    <div
+                      data-reveal
+                      className="reveal-el mb-5 grid gap-4 sm:grid-cols-2"
+                      style={{ transitionDelay: "400ms" }}
+                    >
+                      <div>
+                        <label htmlFor="service" className={labelCls}>
+                          {t.contact.form.service}
+                        </label>
+                        <select
+                          id="service"
+                          name="service"
+                          value={formData.service}
+                          onChange={handleChange}
+                          onFocus={() => setFocusedField("service")}
+                          onBlur={() => setFocusedField(null)}
+                          className={`${inputCls} cursor-pointer`}
+                        >
+                          {serviceOpts.map((o) => (
+                            <option
+                              key={o.value}
+                              value={o.value}
+                              className="bg-nodo-gray-900 text-nodo-white"
+                            >
+                              {o.label}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                      <div>
+                        <label htmlFor="budget" className={labelCls}>
+                          {t.contact.form.budget}
+                        </label>
+                        <select
+                          id="budget"
+                          name="budget"
+                          value={formData.budget}
+                          onChange={handleChange}
+                          onFocus={() => setFocusedField("budget")}
+                          onBlur={() => setFocusedField(null)}
+                          className={`${inputCls} cursor-pointer`}
+                        >
+                          {budgetOpts.map((o) => (
+                            <option
+                              key={o.value}
+                              value={o.value}
+                              className="bg-nodo-gray-900 text-nodo-white"
+                            >
+                              {o.label}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    </div>
+
+                    {/* Message — stagger row 3 */}
+                    <div
+                      data-reveal
+                      className="reveal-el mb-5"
+                      style={{ transitionDelay: "480ms" }}
+                    >
+                      <label htmlFor="message" className={labelCls}>
+                        {t.contact.form.message} <span className="text-nodo-purple">*</span>
+                      </label>
+                      <textarea
+                        id="message"
+                        name="message"
+                        required
+                        rows={5}
+                        placeholder={t.contact.form_project_placeholder}
+                        value={formData.message}
+                        onChange={handleChange}
+                        onFocus={() => setFocusedField("message")}
+                        onBlur={() => setFocusedField(null)}
+                        className={`${inputCls} resize-none`}
+                      />
+                      <div className="mt-1.5 flex justify-end">
+                        <span
+                          className="text-[11px] tabular-nums transition-colors duration-200"
+                          style={{
+                            color:
+                              formData.message.length > 20
+                                ? "rgba(88,99,242,0.7)"
+                                : "rgba(136,136,170,0.45)",
+                          }}
+                        >
+                          {formData.message.length}
+                          {es ? " caracteres" : " chars"}
                         </span>
-                      ) : (
-                        <span className="flex items-center gap-2">
-                          <Send size={14} />
-                          {t.contact.form.submit}
-                        </span>
-                      )}
-                    </GradientButton>
-                    <p className="text-xs text-nodo-gray-400">
-                      {es ? "Respondemos en menos de 24hs." : "We respond within 24h."}
-                    </p>
-                  </div>
-                </motion.form>
-              )}
-            </AnimatePresence>
-          </motion.div>
+                      </div>
+                    </div>
+
+                    {/* Error */}
+                    {status === "error" && (
+                      <motion.div
+                        initial={{ opacity: 0, y: -6 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="mb-5 flex items-center gap-2 rounded-lg border border-nodo-error/20 bg-nodo-error/5 px-4 py-3 text-sm text-nodo-error"
+                      >
+                        <AlertCircle size={15} />
+                        {t.contact.form_error}
+                      </motion.div>
+                    )}
+
+                    {/* Submit — stagger row 4 */}
+                    <div
+                      data-reveal
+                      className="reveal-el flex flex-col items-start gap-3 sm:flex-row sm:items-center"
+                      style={{ transitionDelay: "560ms" }}
+                    >
+                      <GradientButton type="submit" disabled={status === "loading"}>
+                        {status === "loading" ? (
+                          <span className="flex items-center gap-2">
+                            <svg
+                              className="h-4 w-4 animate-spin"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                            >
+                              <circle
+                                className="opacity-25"
+                                cx="12"
+                                cy="12"
+                                r="10"
+                                stroke="currentColor"
+                                strokeWidth="4"
+                              />
+                              <path
+                                className="opacity-75"
+                                fill="currentColor"
+                                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+                              />
+                            </svg>
+                            {t.contact.form_sending}
+                          </span>
+                        ) : (
+                          <span className="flex items-center gap-2">
+                            <Send size={14} />
+                            {t.contact.form.submit}
+                          </span>
+                        )}
+                      </GradientButton>
+                      <p className="text-xs text-nodo-gray-400">
+                        {t.contact.form_response_time}
+                      </p>
+                    </div>
+                  </motion.form>
+                )}
+              </AnimatePresence>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── CTA FINAL — Gradient mesh + bold message ─── */}
+      <section className="relative py-16 sm:py-36">
+        <div className="section-line" />
+
+        {/* Gradient mesh background */}
+        <div className="pointer-events-none absolute inset-0 overflow-hidden">
+          <div
+            className="absolute left-1/4 top-1/3 h-[400px] w-[400px] rounded-full opacity-[0.04]"
+            style={{
+              background: "radial-gradient(circle, #8b2fef, transparent 70%)",
+              filter: "blur(80px)",
+              animation: "mesh-cta-1 25s ease-in-out infinite",
+            }}
+          />
+          <div
+            className="absolute right-1/4 bottom-1/4 h-[350px] w-[350px] rounded-full opacity-[0.035]"
+            style={{
+              background: "radial-gradient(circle, #2785fe, transparent 70%)",
+              filter: "blur(70px)",
+              animation: "mesh-cta-2 30s ease-in-out infinite",
+            }}
+          />
+          <div
+            className="absolute left-1/2 top-1/2 h-[300px] w-[300px] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-[0.03]"
+            style={{
+              background: "radial-gradient(circle, #00c1f4, transparent 70%)",
+              filter: "blur(60px)",
+              animation: "mesh-cta-3 20s ease-in-out infinite",
+            }}
+          />
+        </div>
+
+        <div className="relative mx-auto max-w-5xl px-6 pt-10 sm:pt-16 lg:px-8">
+          <div className="text-center">
+            <h2
+              data-reveal
+              className="reveal-el mb-5 text-3xl font-semibold tracking-[-0.02em] text-white sm:text-4xl lg:text-5xl"
+            >
+              {t.contact.cta_title}
+            </h2>
+            <p
+              data-reveal
+              className="reveal-el mx-auto mb-10 max-w-md text-[15px] leading-relaxed text-white/70"
+              style={{ transitionDelay: "80ms" }}
+            >
+              {t.contact.cta_subtitle}
+            </p>
+            <div
+              data-reveal
+              className="reveal-el flex flex-col items-center gap-4 sm:flex-row sm:justify-center"
+              style={{ transitionDelay: "160ms" }}
+            >
+              <GradientButton href={SOCIAL_LINKS.whatsapp} className="w-full sm:w-auto">
+                <span className="flex items-center gap-2">
+                  <MessageCircle size={15} />
+                  {t.contact.whatsapp}
+                </span>
+              </GradientButton>
+              <a
+                href="https://calendly.com/nodotech"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group inline-flex items-center gap-2 rounded-[3px] border border-white/[0.08] bg-white/[0.03] px-7 py-3 text-[13px] font-medium tracking-wide text-nodo-white transition-all duration-300 hover:border-white/[0.15] hover:bg-white/[0.06]"
+              >
+                <Video size={15} />
+                {t.contact.calendly}
+                <ArrowRight
+                  size={13}
+                  className="transition-transform duration-200 group-hover:translate-x-0.5"
+                />
+              </a>
+            </div>
+          </div>
         </div>
       </section>
     </>
