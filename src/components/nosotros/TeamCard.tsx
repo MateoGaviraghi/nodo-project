@@ -3,7 +3,6 @@
 import { useState, useRef, useCallback, useEffect } from "react";
 import { RotateCcw } from "lucide-react";
 import { useLanguage } from "@/hooks/useLanguage";
-import { SOCIAL_LINKS } from "@/lib/constants";
 
 interface TeamMemberData {
   initials: string;
@@ -83,7 +82,7 @@ function MemberCard({ member }: { member: TeamMemberData }) {
           ref={cardRef}
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
-          className="relative aspect-[3/4] overflow-hidden rounded-[8px] border border-white/[0.06]"
+          className="relative aspect-[3/4.3] overflow-hidden rounded-[8px] border border-white/[0.06]"
           style={{ backfaceVisibility: "hidden", willChange: "transform" }}
         >
           {/* Spotlight */}
@@ -218,12 +217,12 @@ export default function TeamCard() {
       bio: t.about.team_mateo_bio,
       skills: t.about.team_mateo_skills,
       stats: [
-        { num: "5+", label: "Años" },
+        { num: "2+", label: "Años" },
         { num: "20+", label: "Proyectos" },
         { num: "30+", label: "Techs" },
       ],
-      github: SOCIAL_LINKS.github,
-      linkedin: SOCIAL_LINKS.linkedin,
+      github: "https://github.com/MateoGaviraghi",
+      linkedin: "https://www.linkedin.com/in/mateo-gaviraghi-2133482a8/",
     },
     {
       initials: "JG",
@@ -233,10 +232,11 @@ export default function TeamCard() {
       skills: t.about.team_justo_skills,
       stats: [
         { num: "4+", label: "Años" },
-        { num: "15+", label: "Proyectos" },
-        { num: "20+", label: "Techs" },
+        { num: "20+", label: "Proyectos" },
+        { num: "30+", label: "Techs" },
       ],
-      linkedin: SOCIAL_LINKS.linkedin,
+      github: "https://github.com/JustoGV",
+      linkedin: "https://www.linkedin.com/in/justo-gonzalez-viescas-11456b237/",
     },
   ];
 

@@ -89,7 +89,7 @@ export default function PhilosophySection() {
           {beats.map((beat, i) => (
             <div key={i} data-reveal className="reveal-el mb-14 last:mb-0" style={{ transitionDelay: `${i * 120}ms` }}>
               <p className="mb-3 text-[11px] font-medium tracking-[0.3em] text-nodo-indigo uppercase">
-                {String(i + 1).padStart(2, "0")} / 03
+                {i + 1} / 3
               </p>
               <h3 className="mb-4 text-2xl font-semibold tracking-[-0.02em] text-nodo-white">
                 {beat.title}
@@ -135,7 +135,7 @@ export default function PhilosophySection() {
               }}
             >
               <p className="mb-4 text-[11px] font-medium tracking-[0.3em] text-nodo-indigo uppercase">
-                {String(i + 1).padStart(2, "0")} / 03
+                {i + 1} / 3
               </p>
               <h3 className="mb-6 text-3xl font-semibold tracking-[-0.02em] text-nodo-white sm:text-4xl lg:text-5xl">
                 {beat.title}

@@ -1,10 +1,10 @@
 "use client";
 
-import { Code, Palette, MessageCircle, Target } from "lucide-react";
+import { Ear, Palette, Users, HeartHandshake } from "lucide-react";
 import { useLanguage } from "@/hooks/useLanguage";
 import TiltCard from "@/components/ui/TiltCard";
 
-const VALUE_ICONS = [Code, Palette, MessageCircle, Target] as const;
+const VALUE_ICONS = [Ear, Palette, Users, HeartHandshake] as const;
 const VALUE_KEYS = ["clean_code", "design", "communication", "results"] as const;
 
 export default function ValuesSection() {
@@ -47,9 +47,6 @@ export default function ValuesSection() {
                   >
                     <Icon className="h-5 w-5 text-nodo-white/80" />
                   </div>
-                  <p className="mb-3 text-[11px] font-medium tracking-[0.2em] text-white/40 uppercase">
-                    0{i + 1}
-                  </p>
                   <h3 className="mb-3 text-lg font-semibold text-nodo-white sm:text-xl">
                     {t.about.values[key]}
                   </h3>

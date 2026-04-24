@@ -7,7 +7,7 @@ import ValuesSection from "@/components/nosotros/ValuesSection";
 import TimelineSection from "@/components/nosotros/TimelineSection";
 import TeamCard from "@/components/nosotros/TeamCard";
 import TechStackSection from "@/components/nosotros/TechStackSection";
-import ClientsSection from "@/components/nosotros/ClientsSection";
+// import ClientsSection from "@/components/nosotros/ClientsSection";
 import CtaSection from "@/components/nosotros/CtaSection";
 
 export default function NosotrosContent() {
@@ -44,7 +44,7 @@ export default function NosotrosContent() {
       <TimelineSection />
       <TeamCard />
       <TechStackSection />
-      <ClientsSection />
+      {/* <ClientsSection /> */}
       <CtaSection />
     </>
   );
