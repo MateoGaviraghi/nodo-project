@@ -2,27 +2,28 @@
 
 import { useRef, useEffect } from "react";
 import dynamic from "next/dynamic";
-import { Code, Globe, Cpu, ArrowRight } from "lucide-react";
+import { Code, Cpu, ArrowRight } from "lucide-react";
 import { useLanguage } from "@/hooks/useLanguage";
 import HeroSection from "@/components/hero/HeroSection";
 import GradientButton from "@/components/ui/GradientButton";
 import GhostButton from "@/components/ui/GhostButton";
 import TiltCard from "@/components/ui/TiltCard";
 import ScrollCounter from "@/components/ui/ScrollCounter";
-import DepthMarquee from "@/components/ui/DepthMarquee";
+import FeedbackForm from "@/components/feedback/FeedbackForm";
 import { projects } from "@/lib/projects";
-import { testimonials } from "@/lib/testimonials";
+// Testimonials section is hidden until we accumulate 10+ real opinions via /api/feedback.
+// Re-enable by importing DepthMarquee + testimonials and restoring the <TESTIMONIALS> section.
 
 const NetworkSphere = dynamic(() => import("@/components/three/NetworkSphere"), {
   ssr: false,
   loading: () => <div className="h-[400px] sm:h-[700px]" />,
 });
 
-const serviceIcons = [Code, Globe, Cpu] as const;
+const serviceIcons = [Code, Cpu] as const;
 
 export default function HomePage() {
   const { t } = useLanguage();
-  const services = [t.services.dev, t.services.wordpress, t.services.ia];
+  const services = [t.services.dev, t.services.ia];
 
   // CSS scroll-driven animations via IntersectionObserver
   const observerRef = useRef<IntersectionObserver | null>(null);
@@ -64,7 +65,7 @@ export default function HomePage() {
             <p data-reveal className="reveal-el mx-auto mt-5 max-w-lg text-[15px] leading-relaxed text-white/70" style={{ transitionDelay: "160ms" }}>{t.services.subtitle}</p>
           </div>
 
-          <div className="grid gap-6 md:grid-cols-3">
+          <div className="mx-auto grid max-w-4xl gap-6 md:grid-cols-2">
             {services.map((service, i) => {
               const Icon = serviceIcons[i];
               return (
@@ -80,6 +81,15 @@ export default function HomePage() {
                 </div>
               );
             })}
+          </div>
+
+          <div data-reveal className="reveal-el mt-10 flex justify-center sm:mt-14" style={{ transitionDelay: "320ms" }}>
+            <GradientButton href="/servicios">
+              <span className="flex items-center gap-2">
+                {t.services.cta}
+                <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5" />
+              </span>
+            </GradientButton>
           </div>
         </div>
       </section>
@@ -220,36 +230,32 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ═══ TESTIMONIALS ═══ */}
-      <section className="relative overflow-hidden py-14 sm:py-20">
+      {/* ═══ FEEDBACK ═══ (replaces Testimonials until we have 10+ real opinions) */}
+      <section className="relative py-16 sm:py-28">
         <div className="section-line" />
-        <div className="pt-8 sm:pt-12">
-          <div className="mb-12 text-center px-6">
-            <p data-reveal className="reveal-el mb-4 text-[11px] font-medium tracking-[0.3em] text-nodo-indigo uppercase">Testimonios</p>
-            <h2 data-reveal className="reveal-el text-3xl font-semibold tracking-[-0.02em] text-nodo-white sm:text-4xl" style={{ transitionDelay: "80ms" }}>{t.testimonials.title}</h2>
+        <div className="mx-auto max-w-5xl px-6 pt-10 sm:pt-16 lg:px-8">
+          <div className="mb-10 sm:mb-14 text-center">
+            <p data-reveal className="reveal-el mb-4 text-[11px] font-medium tracking-[0.3em] text-nodo-indigo uppercase">
+              {t.feedback.eyebrow}
+            </p>
+            <h2
+              data-reveal
+              className="reveal-el text-3xl font-semibold tracking-[-0.02em] text-nodo-white sm:text-4xl lg:text-5xl"
+              style={{ transitionDelay: "80ms" }}
+            >
+              {t.feedback.title}
+            </h2>
+            <p
+              data-reveal
+              className="reveal-el mx-auto mt-5 max-w-xl text-[15px] leading-relaxed text-white/70"
+              style={{ transitionDelay: "160ms" }}
+            >
+              {t.feedback.subtitle}
+            </p>
           </div>
 
-          <div data-reveal className="reveal-el" style={{ transitionDelay: "150ms" }}>
-            <DepthMarquee speed={0.4}>
-              {testimonials.map((testimonial) => (
-                <div
-                  key={testimonial.id}
-                  className="min-w-[260px] max-w-[20rem] shrink-0 rounded-[6px] border border-white/[0.06] bg-[rgba(26,26,46,0.4)] p-5 transition-colors duration-300 hover:border-nodo-indigo/20 sm:min-w-[22rem] sm:max-w-[22rem] sm:p-7"
-                >
-                  <span className="mb-4 block text-2xl leading-none gradient-text">&ldquo;</span>
-                  <p className="mb-6 text-[13px] leading-relaxed text-nodo-gray-300">{testimonial.quote}</p>
-                  <div className="flex items-center gap-3">
-                    <div className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-nodo-indigo/20 to-nodo-purple/20 text-[12px] font-semibold text-nodo-white/70">
-                      {testimonial.author.charAt(0)}
-                    </div>
-                    <div>
-                      <p className="text-[13px] font-medium text-nodo-white">{testimonial.author}</p>
-                      <p className="text-[11px] text-white/70">{testimonial.role}, {testimonial.company}</p>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </DepthMarquee>
+          <div data-reveal className="reveal-3d" style={{ transitionDelay: "240ms" }}>
+            <FeedbackForm />
           </div>
         </div>
       </section>

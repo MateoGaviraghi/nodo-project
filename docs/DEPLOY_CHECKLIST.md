@@ -63,6 +63,8 @@ En el dashboard de Vercel → Project `nodo-project` → Settings → Environmen
 | `BOOKING_WINDOW_DAYS` | `30` | Rango de días agendables |
 | `RESEND_API_KEY` | *(desde Resend dashboard, ver §0.5)* | Envío de email branded |
 | `RESEND_FROM` | `Nodo <hola@nodotech.dev>` | Remitente del email branded |
+| `SUPABASE_URL` | *(desde Supabase, ver `docs/SUPABASE_SETUP.md`)* | Persistencia de feedback |
+| `SUPABASE_SERVICE_ROLE_KEY` | *(desde Supabase, secret)* | Persistencia de feedback |
 
 **⚠️ Importante:** en el OAuth Client de Google Cloud Console, agregar `https://nodotech.dev/api/google/callback` como **Authorized redirect URI** (además del de localhost que ya está).
 
