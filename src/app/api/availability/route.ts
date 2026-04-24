@@ -11,15 +11,16 @@ interface Slot {
 }
 
 // Weekly availability (host timezone). 0 = Sunday, 6 = Saturday.
-// Adjust here or via env later.
-const WEEKLY_HOURS: Record<number, { start: number; end: number } | null> = {
-  0: null,
-  1: { start: 10, end: 18 },
-  2: { start: 10, end: 18 },
-  3: { start: 10, end: 18 },
-  4: { start: 10, end: 18 },
-  5: { start: 10, end: 18 },
-  6: null,
+// Each day can have multiple blocks (e.g. morning + afternoon with lunch break).
+type DayBlock = { start: number; end: number };
+const WEEKLY_HOURS: Record<number, DayBlock[] | null> = {
+  0: null, // Sunday — closed
+  1: [{ start: 7, end: 13 }, { start: 15, end: 19 }], // Mon
+  2: [{ start: 7, end: 13 }, { start: 15, end: 19 }],
+  3: [{ start: 7, end: 13 }, { start: 15, end: 19 }],
+  4: [{ start: 7, end: 13 }, { start: 15, end: 19 }],
+  5: [{ start: 7, end: 13 }, { start: 15, end: 19 }], // Fri
+  6: [{ start: 9, end: 12 }], // Sat — short morning
 };
 
 function pad(n: number) {
@@ -68,30 +69,32 @@ export async function GET(request: Request) {
       sun: 0, mon: 1, tue: 2, wed: 3, thu: 4, fri: 5, sat: 6,
     };
     const dow = weekdayMap[weekdayLabel.slice(0, 3)];
-    const hours = WEEKLY_HOURS[dow];
+    const blocks = WEEKLY_HOURS[dow];
 
-    if (!hours) {
+    if (!blocks || blocks.length === 0) {
       return NextResponse.json({ slots: [], reason: "closed" });
     }
 
-    // Build candidate slots — iterate on whole minutes to avoid float drift
+    // Build candidate slots — iterate on whole minutes per block
     const candidates: Slot[] = [];
     const step = durationMin + bufferMin;
-    const dayStartMin = hours.start * 60;
-    const dayEndMin = hours.end * 60;
-    for (let totalMin = dayStartMin; totalMin + durationMin <= dayEndMin; totalMin += step) {
-      const startH = Math.floor(totalMin / 60);
-      const startM = totalMin % 60;
-      const endMin = totalMin + durationMin;
-      const endH = Math.floor(endMin / 60);
-      const endM = endMin % 60;
-      const start = dateFromTzParts(dateStr, startH, startM, timezone);
-      const end = dateFromTzParts(dateStr, endH, endM, timezone);
-      candidates.push({
-        startIso: start.toISOString(),
-        endIso: end.toISOString(),
-        label: `${pad(startH)}:${pad(startM)}`,
-      });
+    for (const block of blocks) {
+      const blockStartMin = block.start * 60;
+      const blockEndMin = block.end * 60;
+      for (let totalMin = blockStartMin; totalMin + durationMin <= blockEndMin; totalMin += step) {
+        const startH = Math.floor(totalMin / 60);
+        const startM = totalMin % 60;
+        const endMin = totalMin + durationMin;
+        const endH = Math.floor(endMin / 60);
+        const endM = endMin % 60;
+        const start = dateFromTzParts(dateStr, startH, startM, timezone);
+        const end = dateFromTzParts(dateStr, endH, endM, timezone);
+        candidates.push({
+          startIso: start.toISOString(),
+          endIso: end.toISOString(),
+          label: `${pad(startH)}:${pad(startM)}`,
+        });
+      }
     }
 
     // Filter out past slots (if today)

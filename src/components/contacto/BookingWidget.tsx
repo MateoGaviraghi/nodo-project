@@ -20,6 +20,10 @@ import { useLanguage } from "@/hooks/useLanguage";
 type Slot = { startIso: string; endIso: string; label: string };
 type Step = "date" | "slot" | "form" | "success";
 
+// Weekdays with no availability. Must match backend WEEKLY_HOURS nulls.
+// 0 = Sunday, 6 = Saturday.
+const CLOSED_WEEKDAYS: ReadonlySet<number> = new Set([0]);
+
 interface BookingResult {
   meetLink: string | null;
   htmlLink?: string | null;
@@ -148,6 +152,7 @@ export default function BookingWidget() {
 
   const selectDate = useCallback((d: Date) => {
     if (d < today || d > maxBookableDate) return;
+    if (CLOSED_WEEKDAYS.has(d.getDay())) return;
     setSelectedDate(d);
     setSelectedSlot(null);
     setStep("slot");
@@ -394,7 +399,8 @@ export default function BookingWidget() {
                       if (!cell.date) return <div key={i} aria-hidden />;
                       const isPast = cell.date < today;
                       const isFuture = cell.date > maxBookableDate;
-                      const disabled = isPast || isFuture;
+                      const isClosed = CLOSED_WEEKDAYS.has(cell.date.getDay());
+                      const disabled = isPast || isFuture || isClosed;
                       const isToday = sameYmd(cell.date, today);
                       const isSelected = !!(selectedDate && sameYmd(cell.date, selectedDate));
                       const ariaLabel = cell.date.toLocaleDateString(
