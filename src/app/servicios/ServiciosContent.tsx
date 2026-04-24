@@ -10,10 +10,43 @@ import GradientButton from "@/components/ui/GradientButton";
 import GhostButton from "@/components/ui/GhostButton";
 
 /* ═══════════════════════════════════════════════════════
+   TechBadge — renders a tech logo with graceful fallback
+   to branded initials if the remote SVG fails to load.
+   ═══════════════════════════════════════════════════════ */
+interface Tech {
+  name: string;
+  svg: string;
+  dark?: boolean;
+}
+
+function TechBadge({ tech }: { tech: Tech }) {
+  return (
+    <div className="flex items-center gap-2.5 rounded-[4px] border border-white/[0.10] bg-white/[0.06] px-4 py-2.5 backdrop-blur-sm transition-all duration-300 hover:border-nodo-indigo/30 hover:bg-white/[0.10] hover:shadow-[0_0_16px_rgba(88,99,242,0.15)]">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={tech.svg}
+        alt={tech.name}
+        width={24}
+        height={24}
+        className="h-6 w-6 object-contain"
+        style={{
+          filter: tech.dark ? "invert(1) brightness(1.8)" : undefined,
+        }}
+      />
+      <span className="text-[13px] font-medium text-nodo-gray-200">
+        {tech.name}
+      </span>
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════
    Service metadata — icons, accents, tech logos
    ═══════════════════════════════════════════════════════ */
 
 const CDN = "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons";
+const SI = "https://cdn.simpleicons.org";
+const SI_MONO = "https://cdn.jsdelivr.net/npm/simple-icons@v13/icons";
 
 const SERVICE_META = [
   {
@@ -25,7 +58,19 @@ const SERVICE_META = [
       { name: "Next.js", svg: `${CDN}/nextjs/nextjs-plain.svg`, dark: true },
       { name: "TypeScript", svg: `${CDN}/typescript/typescript-original.svg` },
       { name: "Node.js", svg: `${CDN}/nodejs/nodejs-original.svg` },
-      { name: "PostgreSQL", svg: `${CDN}/postgresql/postgresql-original.svg` },
+      { name: "Supabase", svg: `${SI}/supabase/3ECF8E` },
+    ],
+  },
+  {
+    key: "ia" as const,
+    icon: Cpu,
+    accent: "#8b2fef",
+    techs: [
+      { name: "n8n", svg: `${SI}/n8n/EA4B71` },
+      { name: "Anthropic", svg: `${SI}/anthropic/D97757` },
+      { name: "OpenAI", svg: `${SI_MONO}/openai.svg`, dark: true },
+      { name: "Antigravity", svg: "/logo-antigravity-Photoroom.png" },
+      { name: "Claude Code", svg: `${SI}/claude/D97757` },
     ],
   },
   {
@@ -37,17 +82,6 @@ const SERVICE_META = [
       { name: "PHP", svg: `${CDN}/php/php-original.svg` },
       { name: "MySQL", svg: `${CDN}/mysql/mysql-original.svg`, dark: true },
       { name: "Figma", svg: `${CDN}/figma/figma-original.svg` },
-    ],
-  },
-  {
-    key: "ia" as const,
-    icon: Cpu,
-    accent: "#8b2fef",
-    techs: [
-      { name: "Python", svg: `${CDN}/python/python-original.svg` },
-      { name: "TensorFlow", svg: `${CDN}/tensorflow/tensorflow-original.svg` },
-      { name: "PyTorch", svg: `${CDN}/pytorch/pytorch-original.svg` },
-      { name: "Jupyter", svg: `${CDN}/jupyter/jupyter-original.svg` },
     ],
   },
   {
@@ -201,27 +235,7 @@ export default function ServiciosContent() {
                     </p>
                     <div className="flex flex-wrap gap-3">
                       {meta.techs.map((tech) => (
-                        <div
-                          key={tech.name}
-                          className="flex items-center gap-2.5 rounded-[4px] border border-white/[0.10] bg-white/[0.06] px-4 py-2.5 backdrop-blur-sm transition-all duration-300 hover:border-nodo-indigo/30 hover:bg-white/[0.10] hover:shadow-[0_0_16px_rgba(88,99,242,0.15)]"
-                        >
-                          {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img
-                            src={tech.svg}
-                            alt={tech.name}
-                            width={24}
-                            height={24}
-                            className="h-6 w-6"
-                            style={{
-                              filter: "dark" in tech && (tech as { dark?: boolean }).dark
-                                ? "invert(1) brightness(1.8)"
-                                : undefined,
-                            }}
-                          />
-                          <span className="text-[13px] font-medium text-nodo-gray-200">
-                            {tech.name}
-                          </span>
-                        </div>
+                        <TechBadge key={tech.name} tech={tech} />
                       ))}
                     </div>
                   </div>
@@ -272,23 +286,45 @@ export default function ServiciosContent() {
             </h2>
           </div>
 
-          {/* Process steps — one reveal for the whole grid */}
-          <div data-reveal className="reveal-el grid gap-8 sm:grid-cols-2 lg:grid-cols-4" style={{ transitionDelay: "160ms" }}>
-            {[
-              { step: "01", title: "Escuchamos", desc: "Entendemos tu idea, tu negocio y tus objetivos." },
-              { step: "02", title: "Planificamos", desc: "Definimos alcance, tecnologías y tiempos." },
-              { step: "03", title: "Construimos", desc: "Desarrollamos con entregas iterativas y feedback constante." },
-              { step: "04", title: "Lanzamos", desc: "Deploy, testing y soporte post-lanzamiento." },
-            ].map((item) => (
-              <div key={item.step} className="text-center">
-                <span className="mb-4 inline-block text-3xl font-bold gradient-text">
-                  {item.step}
-                </span>
-                <h3 className="mb-2 text-base font-semibold text-nodo-white">{item.title}</h3>
-                <p className="text-[13px] leading-relaxed text-white/80">{item.desc}</p>
+          {/* Process steps — connected circles timeline */}
+          {(() => {
+            const steps = [
+              { step: 1, title: "Escuchamos", desc: "Nos tomamos el tiempo para entender tu idea, tu negocio y a dónde querés llegar. Sin apuros." },
+              { step: 2, title: "Diseñamos", desc: "Bocetamos el camino juntos antes de escribir una línea de código. Querés ver cómo se va a ver." },
+              { step: 3, title: "Planificamos", desc: "Definimos alcance, tecnologías y tiempos. Sabés qué va, cuándo y cómo — sin sorpresas." },
+              { step: 4, title: "Construimos", desc: "Desarrollamos con entregas frecuentes. Ves el progreso real, nos corregís, ajustamos." },
+              { step: 5, title: "Acompañamos", desc: "Deploy, testing y soporte post-lanzamiento. Tu producto arranca y seguimos ahí." },
+            ];
+            return (
+              <div
+                data-reveal
+                className="reveal-el grid gap-10 sm:grid-cols-2 lg:grid-cols-5 lg:gap-6"
+                style={{ transitionDelay: "160ms" }}
+              >
+                {steps.map((item, i) => (
+                  <div key={item.step} className="relative flex flex-col items-center text-center">
+                    {/* Horizontal connector to next step — desktop only */}
+                    {i < steps.length - 1 && (
+                      <div
+                        aria-hidden
+                        className="pointer-events-none absolute top-7 left-1/2 hidden h-px w-full bg-gradient-to-r from-nodo-indigo/40 via-nodo-cyan/20 to-transparent lg:block"
+                      />
+                    )}
+
+                    {/* Numbered circle */}
+                    <div className="relative z-10 mb-5 flex h-14 w-14 items-center justify-center rounded-full border border-white/[0.08] bg-nodo-black/90 backdrop-blur-sm transition-all duration-300 hover:border-nodo-indigo/40 hover:shadow-[0_0_24px_rgba(88,99,242,0.25)]">
+                      <span className="text-xl font-bold gradient-text tabular-nums">
+                        {item.step}
+                      </span>
+                    </div>
+
+                    <h3 className="mb-2 text-base font-semibold text-nodo-white">{item.title}</h3>
+                    <p className="text-[13px] leading-relaxed text-white/70">{item.desc}</p>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
+            );
+          })()}
         </div>
       </section>
 
