@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextResponse, after } from "next/server";
 import { getOwnerCalendar, BOOKING_CONFIG } from "@/lib/google";
 import { SOCIAL_LINKS } from "@/lib/constants";
 import { sendBookingConfirmation } from "@/lib/email";
@@ -298,23 +298,27 @@ export async function POST(request: Request) {
     });
     const icsUrl = `/api/book/ics?${icsParams.toString()}`;
 
-    // Fire-and-forget branded confirmation email (does not block response)
+    // Branded confirmation email — deferred via after() so Vercel keeps the
+    // function alive until Resend finishes (void/fire-and-forget gets killed
+    // by the serverless runtime when the response returns).
     const origin = request.headers.get("origin") || new URL(request.url).origin;
-    void sendBookingConfirmation(
-      {
-        name,
-        email,
-        dateLabel,
-        timeLabel,
-        timezoneLabel: tzLabel,
-        meetLink,
-        htmlLink: res.data.htmlLink,
-        icsUrl,
-        waShareUrl,
-        topic: topicForDisplay,
-        language: lang,
-      },
-      origin,
+    after(() =>
+      sendBookingConfirmation(
+        {
+          name,
+          email,
+          dateLabel,
+          timeLabel,
+          timezoneLabel: tzLabel,
+          meetLink,
+          htmlLink: res.data.htmlLink,
+          icsUrl,
+          waShareUrl,
+          topic: topicForDisplay,
+          language: lang,
+        },
+        origin,
+      ),
     );
 
     return NextResponse.json({
