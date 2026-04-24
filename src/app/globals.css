@@ -5,22 +5,6 @@
    Nodo — Design System Tokens (Tailwind v4)
    ═══════════════════════════════════════════════════════ */
 
-@font-face {
-  font-family: "Codec Pro";
-  src: url("/fonts/CodecPro-Regular.ttf") format("truetype");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Codec Pro";
-  src: url("/fonts/CodecPro-Italic.ttf") format("truetype");
-  font-weight: 400;
-  font-style: italic;
-  font-display: swap;
-}
-
 @theme {
   /* ── Colors ── */
   --color-nodo-black: #0a0a0a;
@@ -43,7 +27,7 @@
   --color-nodo-error: #ff3d71;
 
   /* ── Typography ── */
-  --font-sans: "Codec Pro", "Poppins", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
   --font-mono: "JetBrains Mono", "Fira Code", ui-monospace, monospace;
 
   /* ── Animations ── */
@@ -137,7 +121,7 @@ html {
 body {
   background-color: var(--nodo-black);
   color: var(--nodo-white);
-  font-family: "Codec Pro", "Poppins", sans-serif;
+  font-family: var(--font-poppins), sans-serif;
   overflow-x: hidden;
 }
 

@@ -12,11 +12,25 @@ export const SITE_CONFIG = {
 } as const;
 
 export const SOCIAL_LINKS = {
-  whatsapp: "https://wa.me/5493516000000",
-  instagram: "https://instagram.com/nodotech.dev",
+  whatsapp: "https://wa.me/5493425162081",
+  instagram: "https://www.instagram.com/nodotech.dev/",
   linkedin: "https://linkedin.com/company/nodotech.dev",
   github: "https://github.com/MateoGaviraghi",
+  email: "nodotech.dev@gmail.com",
 } as const;
+
+export const FOUNDERS = [
+  {
+    name: "Mateo Gaviraghi",
+    phoneDisplay: "+54 9 3425 16-2081",
+    whatsapp: "https://wa.me/5493425162081",
+  },
+  {
+    name: "Justo González Viescas",
+    phoneDisplay: "+54 9 3425 26-7005",
+    whatsapp: "https://wa.me/5493425267005",
+  },
+] as const;
 
 export const NAV_ITEMS = [
   { label: "servicios", href: "/servicios" },

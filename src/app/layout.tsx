@@ -62,14 +62,12 @@ export const metadata: Metadata = {
     title: "Nodo — Transformamos ideas en software",
     description:
       "Software house boutique argentina. Desarrollo a medida, WordPress profesional y automatización con IA.",
-    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "Nodo — Transformamos ideas en software" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Nodo — Transformamos ideas en software",
     description:
       "Software house boutique argentina. Desarrollo a medida, WordPress profesional y automatización con IA.",
-    images: ["/og-image.png"],
   },
   alternates: {
     canonical: "https://nodotech.dev",
