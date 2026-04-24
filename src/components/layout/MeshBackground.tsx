@@ -2,7 +2,10 @@
 
 /**
  * MeshBackground — Full-screen looping video background.
- * GPU-accelerated, no JS overhead. The <video> element handles loop natively.
+ * - preload="metadata" so the 7MB video doesn't block LCP; browser only
+ *   fetches byte-range headers upfront and streams the rest in parallel.
+ * - fetchPriority="low" hints this is decoration, not critical content.
+ * - The body bg (#0a0a0a) shows while the video buffers — matches brand.
  */
 export default function MeshBackground() {
   return (
@@ -12,7 +15,9 @@ export default function MeshBackground() {
         loop
         muted
         playsInline
-        preload="auto"
+        preload="metadata"
+        // @ts-expect-error — fetchPriority is valid HTML but typed narrowly in React
+        fetchPriority="low"
         className="h-full w-full object-cover"
         style={{ opacity: 0.55, willChange: "transform" }}
       >

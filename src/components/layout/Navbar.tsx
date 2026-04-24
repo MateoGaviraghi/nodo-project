@@ -10,19 +10,12 @@ import { NAV_ITEMS } from "@/lib/constants";
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [heroComplete, setHeroComplete] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const { t, language, setLanguage } = useLanguage();
 
   useEffect(() => {
     function handleScroll() {
       setIsScrolled(window.scrollY > 20);
-      const hasHero = document.querySelector("[data-hero]");
-      if (hasHero) {
-        setHeroComplete(window.scrollY > window.innerHeight * 1.3);
-      } else {
-        setHeroComplete(true);
-      }
     }
     handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
@@ -48,24 +41,19 @@ export default function Navbar() {
 
   // Navbar background logic:
   // - Mobile menu open → always glass
-  // - Hero not complete → hidden (pointer-events-none)
-  // - Scrolled → glass
-  // - Default → transparent
-  const navBg = isMobileOpen
+  // - Scrolled > 20px → glass (for readability when content is behind)
+  // - Default → transparent (shows over the hero)
+  const navBg = isMobileOpen || isScrolled
     ? "glass border-b border-white/6"
-    : heroComplete
-      ? isScrolled
-        ? "glass border-b border-white/6"
-        : "bg-transparent"
-      : "pointer-events-none";
-
-  const navOpacity = isMobileOpen ? 1 : heroComplete ? 1 : 0;
+    : "bg-transparent";
 
   return (
     <>
-      <nav
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${navBg}`}
-        style={{ opacity: navOpacity }}
+      <motion.nav
+        initial={{ opacity: 0, y: -12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: 0.25 }}
+        className={`fixed top-0 left-0 right-0 z-50 transition-colors duration-500 ${navBg}`}
       >
         <div className="mx-auto w-full px-8 lg:px-16">
           <div className="flex h-16 items-center md:h-20">
@@ -164,7 +152,7 @@ export default function Navbar() {
             </div>
           </div>
         </div>
-      </nav>
+      </motion.nav>
 
       {/* Mobile Menu */}
       <AnimatePresence>

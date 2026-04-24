@@ -55,3 +55,41 @@ export const BREAKPOINTS = {
   xl: 1280,
   "2xl": 1536,
 } as const;
+
+/* ═══════════════════════════════════════════════════════
+   Contact helpers — prefilled WhatsApp / mailto links
+   ═══════════════════════════════════════════════════════ */
+
+/** Build a wa.me URL from a phone (raw digits or full URL) with optional prefilled text. */
+export function waLink(phoneOrUrl: string, text?: string): string {
+  const number = phoneOrUrl.match(/\d+/g)?.join("") || "";
+  const base = `https://wa.me/${number}`;
+  return text ? `${base}?text=${encodeURIComponent(text)}` : base;
+}
+
+/** Build a mailto URL with optional prefilled subject and body. */
+export function emailMailto(email: string, subject?: string, body?: string): string {
+  const params = new URLSearchParams();
+  if (subject) params.set("subject", subject);
+  if (body) params.set("body", body);
+  const query = params.toString();
+  return `mailto:${email}${query ? `?${query}` : ""}`;
+}
+
+/** Default prefilled messages for contact CTAs across the site. */
+export function getContactDefaults(language: "es" | "en") {
+  const es = language === "es";
+  return {
+    waGeneric: es
+      ? "¡Hola Nodo! 👋 Quiero contarles sobre un proyecto."
+      : "Hi Nodo! 👋 I'd like to tell you about a project.",
+    waPersonal: (firstName: string) =>
+      es
+        ? `¡Hola ${firstName}! 👋 Me interesa conocer más sobre Nodo.`
+        : `Hi ${firstName}! 👋 I'd like to know more about Nodo.`,
+    emailSubject: es ? "Consulta desde nodotech.dev" : "Inquiry from nodotech.dev",
+    emailBody: es
+      ? "¡Hola Nodo!\n\nTe escribo porque me interesa conocer más sobre sus servicios.\n\nContame un poco de lo que tienen en mente:\n- \n\n¡Gracias!"
+      : "Hi Nodo,\n\nI'm reaching out because I'd like to know more about your services.\n\nA bit about what I have in mind:\n- \n\nThanks!",
+  };
+}

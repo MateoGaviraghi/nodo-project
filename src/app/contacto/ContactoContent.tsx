@@ -3,7 +3,7 @@
 import { useRef, useEffect } from "react";
 import { Video, Mail, ArrowRight, MessageCircle } from "lucide-react";
 import { useLanguage } from "@/hooks/useLanguage";
-import { SOCIAL_LINKS } from "@/lib/constants";
+import { SOCIAL_LINKS, waLink, emailMailto, getContactDefaults } from "@/lib/constants";
 import GradientButton from "@/components/ui/GradientButton";
 import TiltCard from "@/components/ui/TiltCard";
 import BookingWidget from "@/components/contacto/BookingWidget";
@@ -57,6 +57,11 @@ export default function ContactoContent() {
     return () => observerRef.current?.disconnect();
   }, []);
 
+  /* ── Prefilled contact links (shared helper) ── */
+  const defaults = getContactDefaults(language);
+  const waHref = waLink(SOCIAL_LINKS.whatsapp, defaults.waGeneric);
+  const emailHref = emailMailto(SOCIAL_LINKS.email, defaults.emailSubject, defaults.emailBody);
+
   /* ── Contact method configs ── */
   const methods = [
     {
@@ -64,7 +69,7 @@ export default function ContactoContent() {
       title: "WhatsApp",
       description: t.contact.wa_desc,
       cta: t.contact.wa_cta,
-      href: SOCIAL_LINKS.whatsapp,
+      href: waHref,
       accentColor: "#25D366",
       iconBg: "rgba(37,211,102,0.12)",
     },
@@ -82,7 +87,7 @@ export default function ContactoContent() {
       title: "Email",
       description: t.contact.email_desc,
       cta: t.contact.email_cta,
-      href: `mailto:${SOCIAL_LINKS.email}`,
+      href: emailHref,
       accentColor: "#8b2fef",
       iconBg: "rgba(139,47,239,0.12)",
     },
@@ -267,7 +272,7 @@ export default function ContactoContent() {
               className="reveal-el flex flex-col items-center gap-4 sm:flex-row sm:justify-center"
               style={{ transitionDelay: "160ms" }}
             >
-              <GradientButton href={SOCIAL_LINKS.whatsapp} className="w-full sm:w-auto">
+              <GradientButton href={waHref} className="w-full sm:w-auto">
                 <span className="flex items-center gap-2">
                   <MessageCircle size={15} />
                   {t.contact.whatsapp}

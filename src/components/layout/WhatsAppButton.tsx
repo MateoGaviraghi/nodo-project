@@ -2,9 +2,11 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { SOCIAL_LINKS } from "@/lib/constants";
+import { SOCIAL_LINKS, waLink, getContactDefaults } from "@/lib/constants";
+import { useLanguage } from "@/hooks/useLanguage";
 
 export default function WhatsAppButton() {
+  const { language } = useLanguage();
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -19,11 +21,13 @@ export default function WhatsAppButton() {
     };
   }, []);
 
+  const href = waLink(SOCIAL_LINKS.whatsapp, getContactDefaults(language).waGeneric);
+
   return (
     <AnimatePresence>
       {isVisible && (
         <motion.a
-          href={SOCIAL_LINKS.whatsapp}
+          href={href}
           target="_blank"
           rel="noopener noreferrer"
           initial={{ opacity: 0, scale: 0.9 }}
