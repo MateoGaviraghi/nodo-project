@@ -16,7 +16,7 @@ import type { Project, ProjectCategory } from "@/types";
 export const projects: Project[] = [
   {
     slug: "guzman-motors",
-    order: 1,
+    order: 3,
     published: true,
     category: "dev",
     year: 2025,
@@ -186,7 +186,7 @@ export const projects: Project[] = [
   },
   {
     slug: "presisso-expo",
-    order: 2,
+    order: 1,
     published: true,
     category: "ia",
     year: 2026,
@@ -357,6 +357,182 @@ export const projects: Project[] = [
     accent: "purple",
     repos: [
       { label: "Repositorio", url: "https://github.com/MateoGaviraghi/presisso-expo" },
+    ],
+  },
+  {
+    slug: "mercedes-benz-leonardo-guzman",
+    order: 2,
+    published: true,
+    category: "dev",
+    year: 2026,
+    duration: { es: "20 semanas", en: "20 weeks" },
+    industry: { es: "Automotor · Marca premium", en: "Automotive · Premium brand" },
+    client: {
+      name: "Leonardo Guzmán · Mercedes-Benz",
+      visibility: "public",
+      liveUrl: "https://leonardo-guzman-mercedes-benz.vercel.app",
+    },
+    role: "lead",
+    title: "Mercedes-Benz · Leonardo Guzmán",
+    tagline: {
+      es: "Sitio cinematográfico y CRM propio para un vendedor oficial Mercedes-Benz.",
+      en: "Cinematic site and custom CRM for an official Mercedes-Benz sales advisor.",
+    },
+    summary: {
+      es: "Plataforma propia de Leonardo Guzmán, vendedor oficial Mercedes-Benz para Automotores Mega SA en Entre Ríos. Catálogo completo (Autos, SUV, Vans, Sprinter y camiones AMG/comerciales) con página dedicada por modelo, CRM custom con zonas y reschedule automático a 20 días, y admin con drag-and-drop para que el equipo cargue vehículos sin pedir afuera. Next.js 16 + React 19 + Supabase, deploy en Vercel.",
+      en: "Personal platform for Leonardo Guzmán, official Mercedes-Benz sales advisor for Automotores Mega SA in Entre Ríos. Full catalog (Autos, SUV, Vans, Sprinter and AMG/commercial trucks) with a dedicated page per model, custom CRM with zones and automatic 20-day reschedule, and a drag-and-drop admin so the team loads vehicles without outside help. Next.js 16 + React 19 + Supabase, deployed on Vercel.",
+    },
+    caseStudy: {
+      problem: {
+        es: "Leonardo no tenía cómo capturar prospectos: vendía Mercedes-Benz para Automotores Mega pero su libreta de contactos vivía en cuadernos y WhatsApps sueltos. La conversación con un interesado se perdía si no la retomaba al día siguiente, y el catálogo MB que mostraba era el genérico de la marca, sin presencia personal del vendedor.",
+        en: "Leonardo had no way to capture prospects: he sold Mercedes-Benz for Automotores Mega but his client book lived in notebooks and scattered WhatsApps. A conversation with an interested buyer was lost if he didn't pick it up the next day, and the MB catalog he showed was the brand's generic one, with no personal presence of the salesperson.",
+      },
+      approach: [
+        {
+          title: { es: "Catálogo MB completo con página propia por modelo", en: "Full MB catalog with a dedicated page per model" },
+          body: {
+            es: "Levantamos las cinco verticales que vende Mercedes-Benz: Autos, SUV, Vans, Sprinter y camiones (Accelo, Atego, Actros, Arocs, Axor). Cada modelo tiene landing dedicada con galería de exterior e interior, paleta de colores reales, ficha técnica con nueve grupos de specs y CTA al contacto. Variante AMG con tratamiento visual diferenciado.",
+            en: "We mapped Mercedes-Benz's five verticals: Autos, SUV, Vans, Sprinter and trucks (Accelo, Atego, Actros, Arocs, Axor). Each model gets a dedicated landing with exterior and interior gallery, real color palette, a spec sheet with nine groups and a CTA to contact. AMG variant with a distinct visual treatment.",
+          },
+        },
+        {
+          title: { es: "Estética cinematográfica para una marca premium", en: "Cinematic aesthetic for a premium brand" },
+          body: {
+            es: "Diseño blanco/negro/serif con tres videos hero (sedanes, SUV y camiones) y carouseles editoriales. La barra superior y los detalles tipográficos respetan el código visual MB sin caer en la plantilla genérica. Mobile responsive sin perder tono editorial.",
+            en: "Black/white/serif design with three hero videos (sedans, SUV and trucks) and editorial carousels. The top bar and typographic details respect MB's visual code without falling into the generic template. Mobile responsive without losing the editorial tone.",
+          },
+        },
+        {
+          title: { es: "CRM propio con zonas y reschedule a 20 días", en: "Custom CRM with zones and 20-day reschedule" },
+          body: {
+            es: "Backoffice CRM completo: cada prospecto entra con zona geográfica (Paraná, Concordia, Gualeguaychú), historial de cambios y reschedule automático a 20 días. Si Leonardo no avanza una tarjeta, un cron diario en Vercel la mueve a 'reagendar' para que ningún lead se enfríe en silencio. Auth Supabase + RLS por usuario.",
+            en: "Full CRM backoffice: every prospect comes in with a geographic zone (Paraná, Concordia, Gualeguaychú), change history and automatic 20-day reschedule. If Leonardo doesn't advance a card, a daily Vercel cron moves it to 'reschedule' so no lead silently goes cold. Supabase auth + per-user RLS.",
+          },
+        },
+        {
+          title: { es: "Admin con drag-and-drop para cargar sin pedir afuera", en: "Drag-and-drop admin to load without outside help" },
+          body: {
+            es: "Forms separados para vehículos y camiones, drag-and-drop con dnd-kit para reordenar imágenes (exterior, interior, colores, equipamiento), guía visual con los specs MB y validación en cada paso. Loguearse, cargar un modelo y publicarlo es trabajo del equipo, no nuestro.",
+            en: "Separate forms for vehicles and trucks, dnd-kit drag-and-drop to reorder images (exterior, interior, colors, equipment), visual guide with MB specs and validation at each step. Logging in, loading a model and publishing it is the team's job, not ours.",
+          },
+        },
+      ],
+      outcome: {
+        es: "Leonardo pasó de vender desde su cuaderno a tener su nombre como marca digital MB en Entre Ríos: catálogo completo de Mercedes-Benz con su firma personal, prospectos como tarjetas con zona y vencimiento, y un equipo que carga modelos sin depender de nosotros. Cero leads enfriados en silencio.",
+        en: "Leonardo went from selling out of his notebook to having his name as a digital MB brand in Entre Ríos: a full Mercedes-Benz catalog with his personal signature, prospects as cards with zone and expiration, and a team that loads models without depending on us. Zero leads silently going cold.",
+      },
+      // Quote pendiente — descomentar cuando Leonardo pase la frase.
+      // quote: {
+      //   text: { es: "...", en: "..." },
+      //   author: "Leonardo Guzmán",
+      //   role: { es: "Vendedor Oficial · Mercedes-Benz / Automotores Mega", en: "Official Sales Advisor · Mercedes-Benz / Automotores Mega" },
+      // },
+    },
+    thumbnail: {
+      src: "/images/projects/mercedes-benz-leonardo-guzman/hero-home.png",
+      alt: { es: "Home Mercedes-Benz Leonardo Guzmán", en: "Mercedes-Benz Leonardo Guzmán home" },
+      aspect: "16:10",
+      frame: "browser",
+    },
+    screenshots: [
+      {
+        src: "/images/projects/mercedes-benz-leonardo-guzman/hero.png",
+        alt: { es: "Home cinematográfico con video reveal Mercedes-Benz", en: "Cinematic home with Mercedes-Benz reveal video" },
+        caption: {
+          es: "Home cinematográfico con video reveal Mercedes-Benz, headline serif y firma personal de Leonardo Guzmán como vendedor oficial en Entre Ríos.",
+          en: "Cinematic home with the Mercedes-Benz reveal video, serif headline and Leonardo Guzmán's personal signature as official sales advisor in Entre Ríos.",
+        },
+        aspect: "16:9",
+        frame: "browser",
+        hero: true,
+      },
+      {
+        src: "/images/projects/mercedes-benz-leonardo-guzman/vehicles-filtros.png",
+        alt: { es: "Listado de vehículos con sidebar de filtros y switch Mercedes-Benz / AMG", en: "Vehicle catalog with filter sidebar and Mercedes-Benz / AMG switch" },
+        caption: {
+          es: "Listado completo con sidebar de filtros (carrocerías, combustible) y switch entre Mercedes-Benz y AMG para recorrer toda la gama oficial.",
+          en: "Full catalog with a filter sidebar (body type, fuel) and a Mercedes-Benz / AMG switch to walk the entire official lineup.",
+        },
+        aspect: "16:9",
+        frame: "browser",
+      },
+      {
+        src: "/images/projects/mercedes-benz-leonardo-guzman/modelo.png",
+        alt: { es: "Página dedicada de un modelo Mercedes-Benz", en: "Dedicated Mercedes-Benz model page" },
+        caption: {
+          es: "Página dedicada por modelo con galería de exterior e interior, paleta de colores reales y nueve grupos de specs técnicas para cada Mercedes-Benz.",
+          en: "Dedicated page per model with exterior and interior gallery, real color palette and nine groups of technical specs for every Mercedes-Benz.",
+        },
+        aspect: "16:9",
+        frame: "browser",
+      },
+      {
+        src: "/images/projects/mercedes-benz-leonardo-guzman/crm.png",
+        alt: { es: "CRM custom con zonas y reschedule automático", en: "Custom CRM with zones and automatic reschedule" },
+        caption: {
+          es: "CRM propio con prospectos por zona geográfica, historial de cambios y reschedule automático a 20 días vía cron diario para que ningún lead se enfríe.",
+          en: "Custom CRM with prospects by geographic zone, change history and automatic 20-day reschedule via daily cron so no lead silently goes cold.",
+        },
+        aspect: "16:9",
+        frame: "browser",
+      },
+      {
+        src: "/images/projects/mercedes-benz-leonardo-guzman/hero-mobile.png",
+        alt: { es: "Home, listado y filtros en mobile", en: "Home, catalog and filters on mobile" },
+        caption: {
+          es: "Mobile responsive con home cinematográfico, listado por categoría y filtros expandidos lado a lado para navegar el catálogo desde el celular.",
+          en: "Mobile responsive with cinematic home, category catalog and expanded filters side by side to navigate the lineup right from the phone.",
+        },
+        aspect: "9:16",
+        frame: "phone",
+        pair: [
+          {
+            src: "/images/projects/mercedes-benz-leonardo-guzman/mobile-listado.png",
+            alt: { es: "Listado por categoría en mobile", en: "Category catalog on mobile" },
+          },
+          {
+            src: "/images/projects/mercedes-benz-leonardo-guzman/mobile-filtros.png",
+            alt: { es: "Filtros expandidos en mobile", en: "Expanded filters on mobile" },
+          },
+        ],
+      },
+      {
+        src: "/images/projects/mercedes-benz-leonardo-guzman/admin.png",
+        alt: { es: "Admin con drag-and-drop para cargar vehículos", en: "Admin with drag-and-drop to load vehicles" },
+        caption: {
+          es: "Admin con drag-and-drop (dnd-kit) y forms separados de vehículos y camiones para que el equipo del cliente cargue modelos sin pedir afuera.",
+          en: "Admin with drag-and-drop (dnd-kit) and separate forms for vehicles and trucks so the client's team loads models without outside help.",
+        },
+        aspect: "16:9",
+        frame: "browser",
+      },
+    ],
+    stack: [
+      "Next.js 16",
+      "React 19",
+      "TypeScript",
+      "Tailwind v4",
+      "Supabase",
+      "@dnd-kit/core",
+      "Embla Carousel",
+      "Framer Motion",
+      "React Compiler",
+      "Vercel",
+    ],
+    metrics: [
+      {
+        value: 12,
+        prefix: "+",
+        label: { es: "modelos en el catálogo", en: "models in the catalog" },
+      },
+      {
+        value: 5,
+        label: { es: "verticales del catálogo", en: "catalog verticals" },
+      },
+    ],
+    accent: "indigo",
+    repos: [
+      { label: "Repositorio", url: "https://github.com/MateoGaviraghi/Leonardo-Guzman-Mercedes-Benz" },
     ],
   },
 ];

@@ -75,7 +75,7 @@ export default function ProjectThumbnail({
             <span className="h-2 w-2 rounded-full bg-white/[0.12]" />
             <span className="h-2 w-2 rounded-full bg-white/[0.12]" />
           </div>
-          <div className="mx-2 flex-1 truncate rounded-[2px] bg-white/[0.04] px-3 py-0.5">
+          <div className="mx-2 min-w-0 flex-1 truncate rounded-[2px] bg-white/[0.04] px-3 py-0.5">
             <span className="text-[10px] text-white/30">{url}</span>
           </div>
         </div>

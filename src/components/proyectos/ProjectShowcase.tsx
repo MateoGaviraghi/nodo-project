@@ -224,7 +224,7 @@ export default function ProjectShowcase({
             </div>
 
             {/* Screenshot side */}
-            <div className="lg:col-span-7">
+            <div className="min-w-0 lg:col-span-7">
               <div
                 ref={screenLayerRef}
                 className="reveal-el will-change-transform"
