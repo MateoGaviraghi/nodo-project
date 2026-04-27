@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { FileDown } from "lucide-react";
+import { ChevronRight, FileDown } from "lucide-react";
 import type { Project, ProjectScreenshot, ProjectAccent } from "@/types";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -40,6 +40,8 @@ export default function CaseStudyGallery({ project, lang, eyebrow }: CaseStudyGa
   // Track viewport class so we can switch between mobile (native swipe)
   // and desktop (GSAP pin/scrub) on the fly without remounting.
   const [isMobile, setIsMobile] = useState(false);
+  // Mobile-only swipe hint, hides as soon as the user scrolls.
+  const [showSwipeHint, setShowSwipeHint] = useState(true);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -138,6 +140,10 @@ export default function CaseStudyGallery({ project, lang, eyebrow }: CaseStudyGa
           const maxScroll = sticky.scrollWidth - sticky.clientWidth;
           const progress = maxScroll > 0 ? sticky.scrollLeft / maxScroll : 0;
           progressRef.current.style.transform = `scaleX(${progress})`;
+        }
+        // Hide the swipe hint as soon as the user starts scrolling.
+        if (sticky.scrollLeft > 40) {
+          setShowSwipeHint(false);
         }
       };
 
@@ -330,6 +336,17 @@ export default function CaseStudyGallery({ project, lang, eyebrow }: CaseStudyGa
               isActive={i === activeIndex}
             />
           ))}
+        </div>
+
+        {/* Mobile swipe hint — only shows on mobile while still on slide 1,
+            fades out as soon as the user scrolls. */}
+        <div
+          className={`pointer-events-none absolute bottom-14 left-1/2 z-10 flex -translate-x-1/2 items-center gap-2 text-[11px] font-medium tracking-[0.25em] uppercase text-white/65 transition-opacity duration-500 md:hidden ${
+            showSwipeHint ? "opacity-100" : "opacity-0"
+          }`}
+        >
+          <span>{lang === "es" ? "Deslizá" : "Swipe"}</span>
+          <ChevronRight className="h-3.5 w-3.5 animate-[swipeHint_1.4s_ease-in-out_infinite] text-nodo-cyan" />
         </div>
 
         {/* Bottom progress bar — driven by GSAP scrub on desktop,

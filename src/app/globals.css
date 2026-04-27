@@ -65,6 +65,18 @@
     }
   }
 
+  @keyframes swipeHint {
+    0%,
+    100% {
+      transform: translateX(0);
+      opacity: 0.65;
+    }
+    50% {
+      transform: translateX(6px);
+      opacity: 1;
+    }
+  }
+
   @keyframes pulse-glow {
     0%,
     100% {
