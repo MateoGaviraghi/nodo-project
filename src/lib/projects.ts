@@ -178,6 +178,10 @@ export const projects: Project[] = [
       },
     ],
     accent: "blue",
+    repos: [
+      { label: "Frontend", url: "https://github.com/MateoGaviraghi/GM-FRONT-V2" },
+      { label: "Backend", url: "https://github.com/MateoGaviraghi/GM-BACK-V2" },
+    ],
   },
 ];
 

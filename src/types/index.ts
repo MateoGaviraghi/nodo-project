@@ -123,6 +123,10 @@ export interface Project {
 
   /* Brand accent for card / hero glow */
   accent: ProjectAccent;
+
+  /** Optional public repos (back, front, etc.) shown as GitHub buttons
+   *  in the case study hero. Only include when the client agrees. */
+  repos?: Array<{ label: string; url: string }>;
 }
 
 export interface Testimonial {

@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef } from "react";
 import Link from "next/link";
-import { ArrowLeft, ExternalLink, Quote } from "lucide-react";
+import { ArrowLeft, Code2, ExternalLink, Quote } from "lucide-react";
 import { useLanguage } from "@/hooks/useLanguage";
 import { getPublishedProjects } from "@/lib/projects";
 import type { Project } from "@/types";
@@ -149,7 +149,7 @@ export default function ProyectoCaseStudy({ project }: Props) {
           </div>
 
           {/* Action links */}
-          {(project.client.liveUrl || isNda) && (
+          {(project.client.liveUrl || isNda || (project.repos && project.repos.length > 0)) && (
             <div
               data-reveal
               className="reveal-el mt-8 flex flex-wrap items-center gap-3"
@@ -166,6 +166,18 @@ export default function ProyectoCaseStudy({ project }: Props) {
                   {project.client.liveUrl.replace(/^https?:\/\//, "").replace(/\/$/, "")}
                 </Link>
               )}
+              {project.repos?.map((repo) => (
+                <Link
+                  key={repo.url}
+                  href={repo.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group inline-flex items-center gap-2 rounded-[3px] border border-white/[0.12] bg-white/[0.03] px-4 py-2.5 text-[13px] font-medium text-white/80 transition-all duration-300 hover:border-nodo-purple/40 hover:bg-white/[0.06] hover:text-nodo-white"
+                >
+                  <Code2 className="h-3.5 w-3.5" />
+                  {repo.label}
+                </Link>
+              ))}
               {isNda && (
                 <span className="inline-flex items-center gap-2 rounded-[3px] border border-white/[0.10] bg-white/[0.02] px-3 py-2 text-[11px] font-medium tracking-[0.2em] uppercase text-white/55">
                   {t.projects.nda_badge}
