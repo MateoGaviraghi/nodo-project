@@ -37,6 +37,18 @@ export default function CaseStudyGallery({ project, lang, eyebrow }: CaseStudyGa
   const counterRef = useRef<HTMLSpanElement>(null);
   const progressRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
+  // Track viewport class so we can switch between mobile (native swipe)
+  // and desktop (GSAP pin/scrub) on the fly without remounting.
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const mq = window.matchMedia("(max-width: 767px)");
+    setIsMobile(mq.matches);
+    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, []);
 
   const slides: ProjectScreenshot[] =
     project.screenshots.length > 0 ? project.screenshots : [project.thumbnail];
@@ -77,6 +89,108 @@ export default function CaseStudyGallery({ project, lang, eyebrow }: CaseStudyGa
     const track = trackRef.current;
     const sticky = stickyRef.current;
     if (!section || !track || !sticky) return;
+
+    // ─── MOBILE BRANCH ───────────────────────────────────────────
+    // Native horizontal swipe with scroll-snap. We drive the same
+    // per-slide effects (scale / opacity / blur / ty) + counter +
+    // progress bar from the container's scrollLeft — so it looks and
+    // feels like the desktop scrub but uses native touch momentum
+    // (no GSAP pin, no Lenis collision).
+    if (isMobile) {
+      let raf = 0;
+
+      const update = () => {
+        const slideEls = track.querySelectorAll<HTMLElement>("[data-gallery-slide]");
+        const stickyRect = sticky.getBoundingClientRect();
+        const viewportCenter = stickyRect.left + stickyRect.width / 2;
+        let closestIdx = 0;
+        let closestDist = Infinity;
+
+        slideEls.forEach((el, idx) => {
+          const r = el.getBoundingClientRect();
+          const slideCenter = r.left + r.width / 2;
+          const distance = Math.abs(slideCenter - viewportCenter);
+          const norm = Math.min(1, distance / r.width);
+          const eased = norm * norm;
+
+          const inner = el.querySelector<HTMLElement>("[data-gallery-inner]");
+          if (inner) {
+            const scale = 1 - eased * 0.10; // softer on mobile (touch feel)
+            const opacity = 1 - eased * 0.40;
+            const blur = eased * 1.2;
+            const ty = eased * 12;
+            inner.style.transform = `translate3d(0, ${ty}px, 0) scale(${scale})`;
+            inner.style.opacity = `${opacity}`;
+            inner.style.filter = `blur(${blur}px)`;
+          }
+
+          if (distance < closestDist) {
+            closestDist = distance;
+            closestIdx = idx;
+          }
+        });
+
+        setActiveIndex(closestIdx);
+        if (counterRef.current) {
+          counterRef.current.textContent = String(closestIdx + 1).padStart(2, "0");
+        }
+        if (progressRef.current) {
+          const maxScroll = sticky.scrollWidth - sticky.clientWidth;
+          const progress = maxScroll > 0 ? sticky.scrollLeft / maxScroll : 0;
+          progressRef.current.style.transform = `scaleX(${progress})`;
+        }
+      };
+
+      // Triple coverage: scroll event + rAF loop + setInterval polling.
+      // - scroll event fires fast on browsers that dispatch it
+      //   (Chrome desktop, most Android, etc).
+      // - rAF loop covers smooth 60fps when the section is in view.
+      // - setInterval is the bulletproof fallback for headless engines
+      //   and iOS Safari edge cases where scroll/rAF can be throttled
+      //   inside scroll-snap-mandatory containers.
+      // `update()` is idempotent and bails out when scrollLeft hasn't
+      // changed, so the cost is one comparison per tick.
+      let lastScrollLeft = -1;
+      let lastWidth = 0;
+      const tick = () => {
+        const sl = sticky.scrollLeft;
+        const w = sticky.clientWidth;
+        if (sl !== lastScrollLeft || w !== lastWidth) {
+          lastScrollLeft = sl;
+          lastWidth = w;
+          update();
+        }
+      };
+      const onScroll = () => {
+        cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(tick);
+      };
+      const loop = () => {
+        tick();
+        raf = requestAnimationFrame(loop);
+      };
+
+      sticky.addEventListener("scroll", onScroll, { passive: true });
+      const intervalId = window.setInterval(tick, 50);
+      // Initial paint (run before kicking off rAF so first frame is correct)
+      update();
+      raf = requestAnimationFrame(loop);
+
+      return () => {
+        sticky.removeEventListener("scroll", onScroll);
+        cancelAnimationFrame(raf);
+        clearInterval(intervalId);
+        track
+          .querySelectorAll<HTMLElement>("[data-gallery-inner]")
+          .forEach((el) => {
+            el.style.transform = "";
+            el.style.opacity = "";
+            el.style.filter = "";
+          });
+      };
+    }
+
+    // ─── DESKTOP BRANCH (GSAP pin/scrub) ─────────────────────────
 
     let cleanup: (() => void) | null = null;
 
@@ -174,19 +288,19 @@ export default function CaseStudyGallery({ project, lang, eyebrow }: CaseStudyGa
       window.clearTimeout(timeout);
       cleanup?.();
     };
-  }, [slides.length]);
+  }, [slides.length, isMobile]);
 
   return (
     <section ref={sectionRef} className="relative" data-reveal>
       <div
         ref={stickyRef}
-        className="overflow-hidden"
-        style={{ height: "100dvh" }}
+        className="relative h-[80vh] overflow-y-hidden overflow-x-auto snap-x snap-mandatory md:h-[100dvh] md:overflow-hidden md:snap-none [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+        style={{ WebkitOverflowScrolling: "touch" }}
       >
         {/* Top bar — eyebrow + dynamic counter */}
         <div
           data-reveal
-          className="reveal-el pointer-events-none absolute top-0 left-0 right-0 z-10 flex items-center justify-between px-6 pt-24 sm:px-12 sm:pt-28 lg:px-16"
+          className="reveal-el pointer-events-none absolute top-0 left-0 right-0 z-10 flex items-center justify-between px-6 pt-10 sm:px-12 sm:pt-16 md:pt-24 lg:px-16 lg:pt-28"
         >
           <p className="text-[11px] font-medium tracking-[0.3em] text-nodo-indigo uppercase">
             {eyebrow}
@@ -198,7 +312,9 @@ export default function CaseStudyGallery({ project, lang, eyebrow }: CaseStudyGa
           </p>
         </div>
 
-        {/* Horizontal track */}
+        {/* Track — same layout on mobile and desktop. On mobile the
+            container scrolls horizontally with snap; on desktop GSAP
+            translates this track via transform (no native scroll). */}
         <div
           ref={trackRef}
           className="flex h-full items-center will-change-transform"
@@ -216,8 +332,9 @@ export default function CaseStudyGallery({ project, lang, eyebrow }: CaseStudyGa
           ))}
         </div>
 
-        {/* Bottom progress bar */}
-        <div className="pointer-events-none absolute bottom-8 left-1/2 z-10 h-px w-[55%] max-w-[420px] -translate-x-1/2 overflow-hidden bg-white/[0.08] sm:bottom-10">
+        {/* Bottom progress bar — driven by GSAP scrub on desktop,
+            by scroll position on mobile (both via progressRef). */}
+        <div className="pointer-events-none absolute bottom-6 left-1/2 z-10 h-px w-[55%] max-w-[420px] -translate-x-1/2 overflow-hidden bg-white/[0.08] sm:bottom-10">
           <div
             ref={progressRef}
             className="h-full origin-left bg-gradient-to-r from-nodo-purple via-nodo-indigo to-nodo-cyan"
@@ -265,7 +382,7 @@ function GallerySlide({
   return (
     <div
       data-gallery-slide
-      className="flex h-full w-screen shrink-0 items-center justify-center px-4 sm:px-10 lg:px-16"
+      className="flex h-full w-screen shrink-0 items-center justify-center snap-center px-4 sm:px-10 md:snap-none lg:px-16"
     >
       <div
         data-gallery-inner
@@ -323,7 +440,8 @@ function GallerySlide({
           />
         </div>
 
-        {/* Caption + optional link — fades in only when slide is centered */}
+        {/* Caption + optional link — fades in only when slide is centered.
+            isActive is updated by both branches (GSAP on desktop, rAF on mobile). */}
         {(captionText || shot.link) && (
           <div
             className={`mx-auto mt-6 max-w-md text-center transition-all duration-500 sm:mt-7 ${
