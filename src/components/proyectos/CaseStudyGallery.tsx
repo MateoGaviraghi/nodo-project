@@ -34,7 +34,6 @@ export default function CaseStudyGallery({ project, lang, eyebrow }: CaseStudyGa
   const sectionRef = useRef<HTMLElement | null>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const stickyRef = useRef<HTMLDivElement>(null);
-  const counterRef = useRef<HTMLSpanElement>(null);
   const progressRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
   // Track viewport class so we can switch between mobile (native swipe)
@@ -55,8 +54,6 @@ export default function CaseStudyGallery({ project, lang, eyebrow }: CaseStudyGa
   const slides: ProjectScreenshot[] =
     project.screenshots.length > 0 ? project.screenshots : [project.thumbnail];
   const accentRgb = ACCENT_RGB[project.accent];
-  const total = slides.length;
-  const totalStr = String(total).padStart(2, "0");
 
   // Reveal observer (eyebrow / counter / progress strip).
   useEffect(() => {
@@ -133,9 +130,6 @@ export default function CaseStudyGallery({ project, lang, eyebrow }: CaseStudyGa
         });
 
         setActiveIndex(closestIdx);
-        if (counterRef.current) {
-          counterRef.current.textContent = String(closestIdx + 1).padStart(2, "0");
-        }
         if (progressRef.current) {
           const maxScroll = sticky.scrollWidth - sticky.clientWidth;
           const progress = maxScroll > 0 ? sticky.scrollLeft / maxScroll : 0;
@@ -260,9 +254,6 @@ export default function CaseStudyGallery({ project, lang, eyebrow }: CaseStudyGa
           onUpdate: (self) => {
             const idx = updateSlides();
             setActiveIndex(idx);
-            if (counterRef.current) {
-              counterRef.current.textContent = String(idx + 1).padStart(2, "0");
-            }
             if (progressRef.current) {
               progressRef.current.style.transform = `scaleX(${self.progress})`;
             }
@@ -303,18 +294,13 @@ export default function CaseStudyGallery({ project, lang, eyebrow }: CaseStudyGa
         className="relative h-[80vh] overflow-y-hidden overflow-x-auto snap-x snap-mandatory md:h-[100dvh] md:overflow-hidden md:snap-none [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
         style={{ WebkitOverflowScrolling: "touch" }}
       >
-        {/* Top bar — eyebrow + dynamic counter */}
+        {/* Top bar — eyebrow only */}
         <div
           data-reveal
           className="reveal-el pointer-events-none absolute top-0 left-0 right-0 z-10 flex items-center justify-between px-6 pt-10 sm:px-12 sm:pt-16 md:pt-24 lg:px-16 lg:pt-28"
         >
           <p className="text-[11px] font-medium tracking-[0.3em] text-nodo-indigo uppercase">
             {eyebrow}
-          </p>
-          <p className="text-[11px] font-medium tracking-[0.3em] text-white/55 uppercase tabular-nums">
-            <span ref={counterRef}>01</span>
-            <span className="mx-1 text-white/25">/</span>
-            <span className="text-white/40">{totalStr}</span>
           </p>
         </div>
 

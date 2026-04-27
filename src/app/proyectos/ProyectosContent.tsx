@@ -74,7 +74,7 @@ export default function ProyectosContent() {
             {t.projects.page_title_pre}
             <br />
             {t.projects.page_title_post}
-            <span className="italic gradient-text">{t.projects.page_title_emph}</span>.
+            <span className="italic gradient-text pr-[0.08em]">{t.projects.page_title_emph}</span>.
           </h1>
 
           <p

@@ -113,8 +113,6 @@ export default function ProjectShowcase({
   };
 
   const isNda = project.client.visibility === "nda";
-  const number = String(index + 1).padStart(2, "0");
-  const totalStr = String(total).padStart(2, "0");
 
   return (
     <section ref={containerRef} className="relative py-12 sm:py-20" data-reveal>
@@ -152,16 +150,6 @@ export default function ProjectShowcase({
           >
             {/* Copy side */}
             <div className="lg:col-span-5">
-              {/* Big number */}
-              <div className="reveal-el mb-5 flex items-baseline gap-3" data-reveal>
-                <span className="text-5xl font-semibold tracking-tight gradient-text sm:text-6xl">
-                  {number}
-                </span>
-                <span className="text-[11px] font-medium tracking-[0.3em] text-white/35 uppercase">
-                  / {totalStr}
-                </span>
-              </div>
-
               {/* Category + year */}
               <div
                 className="reveal-el mb-3 flex items-center gap-3 text-[12px]"

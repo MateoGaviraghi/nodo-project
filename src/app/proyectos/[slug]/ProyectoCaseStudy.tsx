@@ -20,10 +20,6 @@ export default function ProyectoCaseStudy({ project }: Props) {
   const observerRef = useRef<IntersectionObserver | null>(null);
 
   const all = useMemo(() => getPublishedProjects(), []);
-  const caseIndex = useMemo(
-    () => all.findIndex((p) => p.slug === project.slug) + 1,
-    [all, project.slug],
-  );
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -62,15 +58,6 @@ export default function ProyectoCaseStudy({ project }: Props) {
     maintenance: t.projects.cat_maintenance,
   };
 
-  const roleLabel: Record<Project["role"], string> = {
-    lead: t.projects.role_lead,
-    support: t.projects.role_support,
-    "design-only": t.projects.role_design_only,
-    maintenance: t.projects.role_maintenance,
-  };
-
-  const totalCases = all.length;
-  const caseLabel = `${t.projects.case_label} ${String(caseIndex).padStart(2, "0")} ${t.projects.case_of} ${String(totalCases).padStart(2, "0")}`;
   const isNda = project.client.visibility === "nda";
 
   return (
@@ -94,7 +81,7 @@ export default function ProyectoCaseStudy({ project }: Props) {
             className="reveal-el mb-6 text-[11px] font-medium tracking-[0.3em] text-nodo-indigo uppercase"
             style={{ transitionDelay: "60ms" }}
           >
-            {caseLabel} · {categoryLabel[project.category]} · {project.year}
+            {categoryLabel[project.category]} · {project.year}
           </p>
 
           {/* Title */}
@@ -119,7 +106,7 @@ export default function ProyectoCaseStudy({ project }: Props) {
           {/* Meta strip */}
           <div
             data-reveal
-            className="reveal-el mt-10 grid grid-cols-2 gap-4 border-y border-white/[0.06] py-6 text-[12px] sm:grid-cols-4"
+            className="reveal-el mt-10 grid grid-cols-2 gap-4 border-y border-white/[0.06] py-6 text-[12px] sm:grid-cols-3"
             style={{ transitionDelay: "260ms" }}
           >
             <div>
@@ -139,12 +126,6 @@ export default function ProyectoCaseStudy({ project }: Props) {
                 {t.projects.meta_industry}
               </div>
               <div className="mt-1.5 text-nodo-white">{project.industry[lang]}</div>
-            </div>
-            <div>
-              <div className="text-[10px] uppercase tracking-[0.18em] text-white/40">
-                {t.projects.meta_role}
-              </div>
-              <div className="mt-1.5 text-nodo-white">{roleLabel[project.role]}</div>
             </div>
           </div>
 
