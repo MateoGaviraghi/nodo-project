@@ -291,7 +291,7 @@ export default function CaseStudyGallery({ project, lang, eyebrow }: CaseStudyGa
     <section ref={sectionRef} className="relative" data-reveal>
       <div
         ref={stickyRef}
-        className="relative h-[80vh] overflow-y-hidden overflow-x-auto snap-x snap-mandatory md:h-[100dvh] md:overflow-hidden md:snap-none [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+        className="relative h-auto py-14 overflow-y-visible overflow-x-auto snap-x snap-mandatory md:h-[100dvh] md:py-0 md:overflow-y-hidden md:overflow-hidden md:snap-none [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
         style={{ WebkitOverflowScrolling: "touch" }}
       >
         {/* Top bar — eyebrow only */}
@@ -385,11 +385,11 @@ function GallerySlide({
   return (
     <div
       data-gallery-slide
-      className="flex h-full w-screen shrink-0 items-center justify-center snap-center px-4 sm:px-10 md:snap-none lg:px-16"
+      className="flex h-auto w-screen shrink-0 items-center justify-center snap-center px-4 sm:px-10 md:h-full md:snap-none lg:px-16"
     >
       <div
         data-gallery-inner
-        className={`w-full ${hasPair ? "max-w-md sm:max-w-xl lg:max-w-3xl" : "max-w-md sm:max-w-3xl lg:max-w-6xl"}`}
+        className={`w-full ${hasPair ? "max-w-sm sm:max-w-xl lg:max-w-3xl" : "max-w-none sm:max-w-3xl lg:max-w-6xl"}`}
         style={{
           willChange: "transform, opacity, filter",
           transformOrigin: "center center",
