@@ -377,7 +377,9 @@ function GallerySlide({
             : "aspect-[16/10]";
 
   const captionText = shot.caption?.[lang] ?? shot.alt[lang];
-  const hasPair = !!shot.pair;
+  const pairList = shot.pair ?? [];
+  const hasPair = pairList.length > 0;
+  const totalImgs = hasPair ? pairList.length + 1 : 1;
   // Pair (mobile side-by-side) needs more vertical room limited per image.
   // Single image: take as much height as the viewport allows.
   const maxH = hasPair ? "calc(100dvh - 240px)" : "calc(100dvh - 200px)";
@@ -409,15 +411,18 @@ function GallerySlide({
                   src={shot.src}
                   alt={shot.alt[lang]}
                   className="block h-auto w-auto rounded-[6px]"
-                  style={{ maxHeight: maxH, maxWidth: "48%" }}
+                  style={{ maxHeight: maxH, maxWidth: `${Math.floor(96 / totalImgs)}%` }}
                 />
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={shot.pair!.src}
-                  alt={shot.pair!.alt[lang]}
-                  className="block h-auto w-auto rounded-[6px]"
-                  style={{ maxHeight: maxH, maxWidth: "48%" }}
-                />
+                {pairList.map((extra, i) => (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    key={`${extra.src}-${i}`}
+                    src={extra.src}
+                    alt={extra.alt[lang]}
+                    className="block h-auto w-auto rounded-[6px]"
+                    style={{ maxHeight: maxH, maxWidth: `${Math.floor(96 / totalImgs)}%` }}
+                  />
+                ))}
               </div>
             ) : (
               // eslint-disable-next-line @next/next/no-img-element

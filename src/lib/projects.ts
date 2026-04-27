@@ -137,10 +137,12 @@ export const projects: Project[] = [
         },
         aspect: "9:16",
         frame: "phone",
-        pair: {
-          src: "/images/projects/guzman-motors/mobile-modelo.png",
-          alt: { es: "Página de modelo en mobile", en: "Model page on mobile" },
-        },
+        pair: [
+          {
+            src: "/images/projects/guzman-motors/mobile-modelo.png",
+            alt: { es: "Página de modelo en mobile", en: "Model page on mobile" },
+          },
+        ],
       },
       {
         src: "/images/projects/guzman-motors/lista-avanzada-vehiculo.png",
@@ -180,6 +182,181 @@ export const projects: Project[] = [
     repos: [
       { label: "Frontend", url: "https://github.com/MateoGaviraghi/GM-FRONT-V2" },
       { label: "Backend", url: "https://github.com/MateoGaviraghi/GM-BACK-V2" },
+    ],
+  },
+  {
+    slug: "presisso-expo",
+    order: 2,
+    published: true,
+    category: "ia",
+    year: 2026,
+    duration: { es: "4 semanas", en: "4 weeks" },
+    industry: { es: "Muebles · Diseño de cocinas", en: "Furniture · Kitchen design" },
+    client: {
+      name: "Presisso Amoblamientos",
+      visibility: "public",
+      liveUrl: "https://presisso-expo.vercel.app",
+    },
+    role: "lead",
+    title: "Presisso Expo",
+    tagline: {
+      es: "IA que transforma la foto de tu cocina en un render con muebles Presisso reales.",
+      en: "AI that turns a photo of your kitchen into a render with real Presisso furniture.",
+    },
+    summary: {
+      es: "Atractor digital para EXPOCON 2026 de Presisso Amoblamientos. El visitante saca una foto de su cocina, elige uno de los cinco materiales reales del catálogo y Gemini Imagen 4 genera un render fotorrealista con muebles Presisso. El resultado se entrega como PDF por mail y queda en una URL pública con token corto. Atrás, panel admin con audit-log, recovery de jobs colgados y cron de cleanup.",
+      en: "Digital magnet for Presisso Amoblamientos at EXPOCON 2026. The visitor snaps a photo of their kitchen, picks one of five real materials from the catalog, and Gemini Imagen 4 generates a photorealistic render with Presisso furniture. The output ships as a PDF by email and stays at a public short-token URL. On the back, admin panel with audit-log, stuck-job recovery and a cleanup cron.",
+    },
+    caseStudy: {
+      problem: {
+        es: "Presisso iba a EXPOCON con muestras físicas y catálogo en papel: el visitante curioso veía el material en el stand pero no podía proyectar cómo le iba a quedar en su propia cocina. La conversación se moría después del expo, sin lead capturado y sin nada que el cliente se llevara para volver a mirar.",
+        en: "Presisso used to attend EXPOCON with physical samples and a paper catalog: a curious visitor saw the material at the booth but couldn't picture how it would actually look in their own kitchen. The conversation died after the expo — no lead captured, nothing for the client to take home and revisit.",
+      },
+      approach: [
+        {
+          title: { es: "Catálogo real en lugar de placeholders", en: "Real catalog, no placeholders" },
+          body: {
+            es: "Levantamos los cinco materiales que Presisso quería poner sobre la mesa: melamina litio, melamina grafito scotch, polímero táctil white gloss, politex gris grafito y politex negro. Cada uno con sus fotos reales del stock para que el visitante eligiera viendo el acabado, no leyendo un nombre técnico.",
+            en: "We mapped the five materials Presisso wanted on the table: lithium melamine, graphite-scotch melamine, white-gloss tactile polymer, graphite-grey politex and black politex. Each one shipping with real catalog photos, so the visitor picks by looking at the finish, not by reading a technical name.",
+          },
+        },
+        {
+          title: { es: "Flujo público de tres minutos", en: "A three-minute public flow" },
+          body: {
+            es: "Single-page interactivo en Next.js: subir foto, elegir modo, elegir material, dejar nombre y mail, confirmar. Validación con Zod en cada paso, upload a Supabase Storage, persistencia con token corto. Sin app, sin registro, sin login.",
+            en: "Interactive single-page in Next.js: upload photo, pick mode, pick material, leave name and email, confirm. Zod validation at every step, upload to Supabase Storage, persistence with a short token. No app, no signup, no login.",
+          },
+        },
+        {
+          title: { es: "Generación con Gemini Imagen 4 + entrega", en: "Generation with Gemini Imagen 4 + delivery" },
+          body: {
+            es: "El backend envía la foto + el material elegido a Gemini Imagen 4 con prompt afinado, recibe el render y lo compone en un PDF profesional con pdf-lib y Sharp. El cliente recibe el PDF por mail (Resend + Gmail SMTP) y puede volver a verlo en una URL pública /p/[token] sin login.",
+            en: "The backend sends the photo + chosen material to Gemini Imagen 4 with a tuned prompt, receives the render and composes a professional PDF with pdf-lib and Sharp. The client gets the PDF by email (Resend + Gmail SMTP) and can revisit it at a public /p/[token] URL with no login.",
+          },
+        },
+        {
+          title: { es: "Admin con auditoría y self-healing", en: "Admin with audit and self-healing" },
+          body: {
+            es: "Backoffice para el equipo Presisso: lista de solicitudes con estados, audit-log de cada cambio, recovery automático de jobs colgados (cron cada 10 min), Sentry para errores y RLS sobre Supabase. Cada lead queda trazable y el equipo comercial llama al día siguiente con todo el contexto.",
+            en: "Backoffice for the Presisso team: requests list with states, audit-log of every change, automatic recovery of stuck jobs (cron every 10 min), Sentry for production errors and RLS over Supabase. Every lead stays traceable and the sales team calls the next day with full context.",
+          },
+        },
+      ],
+      outcome: {
+        es: "Presisso entra a EXPOCON con un atractor digital: el visitante deja el stand con un PDF personalizado de su cocina, mail registrado y la marca Presisso en la cabeza. Cada interacción queda como lead trazable en el admin, lista para que el equipo comercial le haga seguimiento al día siguiente.",
+        en: "Presisso walks into EXPOCON with a digital magnet: the visitor leaves the booth with a personalized PDF of their kitchen, email on record and Presisso top of mind. Every interaction becomes a trackable lead in the admin, ready for the sales team to follow up the next day.",
+      },
+      // Quote pendiente — descomentar cuando el equipo de Presisso pase la frase.
+      // quote: {
+      //   text: { es: "...", en: "..." },
+      //   author: "—",
+      //   role: { es: "Presisso Amoblamientos", en: "Presisso Amoblamientos" },
+      // },
+    },
+    thumbnail: {
+      src: "/images/projects/presisso-expo/hero.png",
+      alt: {
+        es: "Home de Presisso Expo",
+        en: "Presisso Expo home",
+      },
+      aspect: "16:10",
+      frame: "browser",
+    },
+    screenshots: [
+      {
+        src: "/images/projects/presisso-expo/hero.png",
+        alt: { es: "Home de Presisso Expo", en: "Presisso Expo home" },
+        caption: {
+          es: "Home con badge EXPOCON 2026, headline 'Visualizá tu cocina ideal con Presisso' y CTA al flujo de tres minutos sin registro.",
+          en: "Home with the EXPOCON 2026 badge, the 'Visualize your ideal kitchen with Presisso' headline and a CTA into the three-minute flow.",
+        },
+        aspect: "16:9",
+        frame: "browser",
+        hero: true,
+      },
+      {
+        src: "/images/projects/presisso-expo/flujo-materiales.png",
+        alt: { es: "Selección de material", en: "Material picker" },
+        caption: {
+          es: "Selector con los cinco acabados reales del catálogo Presisso, cada uno con foto del stock para elegir viendo el material y no un nombre técnico.",
+          en: "Material picker with the five real finishes from the Presisso catalog, each with a stock photo so visitors choose by looking at the finish.",
+        },
+        aspect: "16:9",
+        frame: "browser",
+      },
+      {
+        src: "/images/projects/presisso-expo/resultado-ia.png",
+        alt: { es: "Resultado IA con antes y después", en: "AI result with before and after" },
+        caption: {
+          es: "Vista del admin con el antes y después generado por Gemini Imagen 4 y acciones de aprobar, regenerar PDF y enviar por mail o WhatsApp.",
+          en: "Admin view with the before-and-after generated by Gemini Imagen 4 and actions to approve, regenerate the PDF and send it by email or WhatsApp.",
+        },
+        aspect: "16:9",
+        frame: "browser",
+        link: {
+          url: "/images/projects/presisso-expo/pdf-diseno-presisso.pdf",
+          label: { es: "Ver PDF real generado", en: "View real generated PDF" },
+        },
+      },
+      {
+        src: "/images/projects/presisso-expo/hero-mobile.png",
+        alt: { es: "Home en mobile", en: "Home on mobile" },
+        caption: {
+          es: "Mobile responsive con home, selector de material y antes-después lado a lado: el visitante hace todo el flujo desde el celular en pleno expo.",
+          en: "Mobile responsive with home, material picker and before-and-after side by side: visitors run the entire flow from their phone right on the expo floor.",
+        },
+        aspect: "9:16",
+        frame: "phone",
+        pair: [
+          {
+            src: "/images/projects/presisso-expo/mobile-flujo.png",
+            alt: { es: "Selector de material en mobile", en: "Material picker on mobile" },
+          },
+          {
+            src: "/images/projects/presisso-expo/mobile-resultado.png",
+            alt: { es: "Antes y después en mobile", en: "Before and after on mobile" },
+          },
+        ],
+      },
+      {
+        src: "/images/projects/presisso-expo/admin.png",
+        alt: { es: "Dashboard admin con 19 solicitudes", en: "Admin dashboard with 19 requests" },
+        caption: {
+          es: "Dashboard del backoffice con 19 solicitudes, estados (Generando, En Revisión, Aprobada, Enviada) y datos de cada lead para que ventas siga la conversación.",
+          en: "Backoffice dashboard with 19 requests, states (Generating, In Review, Approved, Sent) and lead data so sales can pick up the conversation.",
+        },
+        aspect: "16:9",
+        frame: "browser",
+      },
+    ],
+    stack: [
+      "Next.js 14",
+      "React 18",
+      "TypeScript",
+      "Tailwind v3",
+      "Supabase",
+      "Gemini Imagen 4",
+      "pdf-lib",
+      "Sharp",
+      "Resend",
+      "Zod",
+      "Sentry",
+      "Vercel",
+    ],
+    metrics: [
+      {
+        value: 5,
+        label: { es: "materiales reales del catálogo", en: "real materials from the catalog" },
+      },
+      {
+        value: 3,
+        suffix: " min",
+        label: { es: "experiencia end-to-end", en: "end-to-end experience" },
+      },
+    ],
+    accent: "purple",
+    repos: [
+      { label: "Repositorio", url: "https://github.com/MateoGaviraghi/presisso-expo" },
     ],
   },
 ];
