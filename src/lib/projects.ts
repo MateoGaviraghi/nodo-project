@@ -535,6 +535,164 @@ export const projects: Project[] = [
       { label: "Repositorio", url: "https://github.com/MateoGaviraghi/Leonardo-Guzman-Mercedes-Benz" },
     ],
   },
+  {
+    slug: "distribuidor-marcial",
+    order: 4,
+    published: true,
+    category: "ecommerce",
+    year: 2026,
+    duration: { es: "8 semanas", en: "8 weeks" },
+    industry: {
+      es: "Libros · Grabaciones · Tecnología magnética",
+      en: "Books · Recordings · Magnetic media",
+    },
+    client: {
+      name: "Distribuidor Marcial",
+      visibility: "public",
+      liveUrl: "https://distribuidor-marcial.vercel.app",
+    },
+    role: "lead",
+    title: "Distribuidor Marcial",
+    tagline: {
+      es: "Ecommerce vintage de libros y grabaciones con MercadoPago y admin a medida.",
+      en: "Vintage ecommerce for books and recordings with MercadoPago and a custom admin.",
+    },
+    summary: {
+      es: "Tienda online de Distribuidor Marcial: libros, grabaciones y tecnología magnética con identidad vintage de pe a pa. React + Redux + Tailwind en el front, NestJS + TypeORM en el back, pasarela MercadoPago para el checkout y admin propio para que el equipo cargue catálogo sin depender de nadie.",
+      en: "Online store for Distribuidor Marcial: books, recordings and magnetic media with a vintage identity from front to back. React + Redux + Tailwind on the front, NestJS + TypeORM on the back, MercadoPago for checkout and a custom admin so the team manages the catalog on its own.",
+    },
+    caseStudy: {
+      problem: {
+        es: "Distribuidor Marcial vendía a sus clientes habituales por mostrador y WhatsApp. No había tienda online ni un lugar único donde viviera el catálogo: cada producto era una foto suelta y cada cobro un mensaje aparte con CBU.",
+        en: "Distribuidor Marcial sold to regulars over the counter and WhatsApp. There was no online store and no single place where the catalog lived: every product was a loose photo and every payment a separate message with bank details.",
+      },
+      approach: [
+        {
+          title: { es: "Identidad vintage end-to-end", en: "End-to-end vintage identity" },
+          body: {
+            es: "Paleta cream/marrón/dorado con Playfair Display y Bebas Neue para que cada pantalla huela a libro viejo. El mismo lenguaje visual recorre home, catálogo, ficha de producto y admin.",
+            en: "Cream/brown/gold palette with Playfair Display and Bebas Neue so every screen smells like an old book. The same visual language runs across home, catalog, product page and admin.",
+          },
+        },
+        {
+          title: { es: "Catálogo, filtros y búsqueda", en: "Catalog, filters and search" },
+          body: {
+            es: "Grid paginado con orden por popularidad y precio, sidebar de filtros por categoría y buscador en el header. Los productos cargan desde la API y se reordenan por familia, dejando los sin stock al final.",
+            en: "Paginated grid with sorting by popularity and price, sidebar filters by category and a search bar in the header. Products load from the API and reorder by family, pushing out-of-stock items to the end.",
+          },
+        },
+        {
+          title: { es: "Carrito + MercadoPago en una pantalla", en: "Cart + MercadoPago on one screen" },
+          body: {
+            es: "Sidebar de carrito persistente, totales calculados en cliente y checkout con MercadoPago integrado vía SDK. El cliente arma el pedido sin recargar nada y termina el pago sin salir del sitio.",
+            en: "Persistent cart sidebar, client-side totals and MercadoPago checkout integrated via SDK. The customer builds the order without reloads and finishes the payment without leaving the site.",
+          },
+        },
+        {
+          title: { es: "Admin propio con auth y CRUD", en: "Custom admin with auth and CRUD" },
+          body: {
+            es: "Backend NestJS con TypeORM y módulos de auth, categorías y productos. Ruta /admin protegida por rol, panel CRUD completo y carga de imágenes para que el equipo gestione el catálogo solo.",
+            en: "NestJS backend with TypeORM and auth, categories and products modules. The /admin route is role-gated, with a full CRUD panel and image upload so the team manages the catalog on its own.",
+          },
+        },
+      ],
+      outcome: {
+        es: "El sitio público respira identidad vintage, el catálogo es navegable con filtros y orden, el carrito y MercadoPago resuelven el checkout sin fricción, y el admin permite cargar libros, casetes y vinilos en minutos. Un ecommerce completo, listo para sumar más categorías.",
+        en: "The public site breathes vintage identity, the catalog is browsable with filters and sorting, the cart and MercadoPago handle checkout with no friction, and the admin lets the team load books, cassettes and vinyls in minutes. A full ecommerce, ready to scale into more categories.",
+      },
+      // Quote pendiente — descomentar cuando el equipo de Distribuidor Marcial pase la frase.
+      // quote: {
+      //   text: { es: "...", en: "..." },
+      //   author: "...",
+      //   role: { es: "Dueño · Distribuidor Marcial", en: "Owner · Distribuidor Marcial" },
+      // },
+    },
+    thumbnail: {
+      src: "/images/projects/distribuidor-marcial/hero.png",
+      alt: {
+        es: "Home de Distribuidor Marcial",
+        en: "Distribuidor Marcial home",
+      },
+      aspect: "16:10",
+      frame: "browser",
+    },
+    screenshots: [
+      {
+        src: "/images/projects/distribuidor-marcial/hero.png",
+        alt: { es: "Home de Distribuidor Marcial", en: "Distribuidor Marcial home" },
+        caption: {
+          es: "Home con hero cinematográfico, logo blanco sobre fondo oscuro tipo mármol y grid de productos paginados con tipografía Playfair Display.",
+          en: "Home with cinematic hero, white logo over dark marble background and paginated product grid with Playfair Display typography.",
+        },
+        aspect: "16:9",
+        frame: "browser",
+        hero: true,
+      },
+      {
+        src: "/images/projects/distribuidor-marcial/producto.png",
+        alt: { es: "Detalle de producto", en: "Product detail" },
+        caption: {
+          es: "Ficha de producto con galería, descripción, precio, stock y CTA para sumar al carrito sin salir de la página.",
+          en: "Product detail page with gallery, description, price, stock and CTA to add to cart without leaving the page.",
+        },
+        aspect: "16:9",
+        frame: "browser",
+      },
+      {
+        src: "/images/projects/distribuidor-marcial/carrito-mp.png",
+        alt: { es: "Carrito abierto con CTA a MercadoPago", en: "Open cart with CTA to MercadoPago" },
+        caption: {
+          es: "Sidebar de carrito abierto con totales en vivo y CTA al checkout de MercadoPago, sin salir de la página del producto.",
+          en: "Cart sidebar open with live totals and CTA to MercadoPago checkout, all without leaving the product page.",
+        },
+        aspect: "16:9",
+        frame: "browser",
+      },
+      {
+        src: "/images/projects/distribuidor-marcial/hero-mobile.png",
+        alt: { es: "Versión mobile del sitio", en: "Mobile version of the site" },
+        caption: {
+          es: "Mobile responsive: home, ficha de producto y carrito lado a lado. Misma jerarquía vintage y velocidad que en desktop.",
+          en: "Mobile responsive: home, product detail and cart side by side. Same vintage hierarchy and speed as desktop.",
+        },
+        aspect: "9:16",
+        frame: "phone",
+        pair: [
+          {
+            src: "/images/projects/distribuidor-marcial/mobile-producto.png",
+            alt: { es: "Ficha de producto en mobile", en: "Product detail on mobile" },
+          },
+          {
+            src: "/images/projects/distribuidor-marcial/mobile-carrito.png",
+            alt: { es: "Carrito en mobile", en: "Cart on mobile" },
+          },
+        ],
+      },
+    ],
+    stack: [
+      "Create React App",
+      "React 18",
+      "React Router 6",
+      "Redux",
+      "axios",
+      "Tailwind v3",
+      "NestJS",
+      "TypeORM",
+      "MercadoPago",
+      "Vercel",
+    ],
+    metrics: [
+      {
+        value: 1,
+        label: { es: "pasarela de pago", en: "payment gateway" },
+      },
+      {
+        value: 3,
+        label: { es: "módulos del backend", en: "backend modules" },
+      },
+    ],
+    accent: "cyan",
+  },
 ];
 
 /* ───────────────────────── helpers ───────────────────────── */
