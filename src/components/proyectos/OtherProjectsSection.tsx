@@ -140,18 +140,29 @@ function CompactCard({
           background: `linear-gradient(135deg, rgba(${rgb}, 0.18), rgba(10,10,10,0.92) 70%)`,
         }}
       >
-        <div
-          aria-hidden
-          className="absolute inset-0 opacity-[0.04]"
-          style={{
-            backgroundImage:
-              "linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)",
-            backgroundSize: "24px 24px",
-          }}
-        />
-        <span className="absolute inset-0 flex items-center justify-center text-7xl font-extralight tracking-tighter text-white/[0.08] transition-all duration-500 group-hover:scale-110 group-hover:text-white/[0.14]">
-          {project.title.charAt(0)}
-        </span>
+        {project.thumbnail.src ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={project.thumbnail.src}
+            alt={project.thumbnail.alt[lang]}
+            className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+          />
+        ) : (
+          <>
+            <div
+              aria-hidden
+              className="absolute inset-0 opacity-[0.04]"
+              style={{
+                backgroundImage:
+                  "linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)",
+                backgroundSize: "24px 24px",
+              }}
+            />
+            <span className="absolute inset-0 flex items-center justify-center text-7xl font-extralight tracking-tighter text-white/[0.08] transition-all duration-500 group-hover:scale-110 group-hover:text-white/[0.14]">
+              {project.title.charAt(0)}
+            </span>
+          </>
+        )}
         <div
           aria-hidden
           className="pointer-events-none absolute -bottom-10 -right-10 h-32 w-32 rounded-full opacity-30 blur-3xl"
