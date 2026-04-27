@@ -28,7 +28,6 @@ export const projects: Project[] = [
       liveUrl: "https://www.guzmanmotors.com.ar",
     },
     role: "lead",
-    team: { es: "Mateo · 1 persona", en: "Mateo · 1 person" },
     title: "Guzman Motors",
     tagline: {
       es: "Sitio nuevo y admin a medida para una concesionaria con 38 años.",

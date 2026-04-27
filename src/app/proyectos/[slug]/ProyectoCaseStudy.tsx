@@ -300,33 +300,23 @@ export default function ProyectoCaseStudy({ project }: Props) {
         />
       )}
 
-      {/* ─── Stack + Role ─── */}
+      {/* ─── Stack ─── */}
       <section className="relative py-12 sm:py-20">
         <div className="section-line" />
         <div className="mx-auto max-w-5xl px-6 pt-12 lg:px-8">
-          <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
-            <div data-reveal className="reveal-left">
-              <p className="mb-5 text-[11px] font-medium tracking-[0.3em] text-nodo-indigo uppercase">
-                {t.projects.section_stack}
-              </p>
-              <div className="flex flex-wrap gap-2">
-                {project.stack.map((tech) => (
-                  <span
-                    key={tech}
-                    className="rounded-[4px] border border-white/[0.10] bg-white/[0.04] px-3 py-1.5 text-[13px] text-white/85"
-                  >
-                    {tech}
-                  </span>
-                ))}
-              </div>
-            </div>
-            <div data-reveal className="reveal-right" style={{ transitionDelay: "120ms" }}>
-              <p className="mb-5 text-[11px] font-medium tracking-[0.3em] text-nodo-indigo uppercase">
-                {t.projects.section_role}
-              </p>
-              <p className="text-[15px] leading-relaxed text-white/80">
-                {roleLabel[project.role]}. {project.team[lang]}.
-              </p>
+          <div data-reveal className="reveal-el">
+            <p className="mb-5 text-[11px] font-medium tracking-[0.3em] text-nodo-indigo uppercase">
+              {t.projects.section_stack}
+            </p>
+            <div className="flex flex-wrap gap-2">
+              {project.stack.map((tech) => (
+                <span
+                  key={tech}
+                  className="rounded-[4px] border border-white/[0.10] bg-white/[0.04] px-3 py-1.5 text-[13px] text-white/85"
+                >
+                  {tech}
+                </span>
+              ))}
             </div>
           </div>
         </div>

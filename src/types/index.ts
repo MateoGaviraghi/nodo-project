@@ -90,9 +90,9 @@ export interface Project {
     liveUrl?: string;
   };
 
-  /* NODO ROLE */
+  /* NODO ROLE — kept at the level of involvement (lead/support/etc),
+     no individual attribution: every project belongs to the team. */
   role: ProjectRole;
-  team: Bilingual;
 
   /* COPY */
   title: string;
