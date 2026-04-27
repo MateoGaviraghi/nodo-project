@@ -16,7 +16,7 @@ import type { Project, ProjectCategory } from "@/types";
 export const projects: Project[] = [
   {
     slug: "guzman-motors",
-    order: 3,
+    order: 4,
     published: true,
     category: "dev",
     year: 2025,
@@ -186,7 +186,7 @@ export const projects: Project[] = [
   },
   {
     slug: "presisso-expo",
-    order: 1,
+    order: 2,
     published: true,
     category: "ia",
     year: 2026,
@@ -361,7 +361,7 @@ export const projects: Project[] = [
   },
   {
     slug: "mercedes-benz-leonardo-guzman",
-    order: 2,
+    order: 3,
     published: true,
     category: "dev",
     year: 2026,
@@ -537,7 +537,7 @@ export const projects: Project[] = [
   },
   {
     slug: "distribuidor-marcial",
-    order: 4,
+    order: 5,
     published: true,
     category: "ecommerce",
     year: 2026,
@@ -692,6 +692,153 @@ export const projects: Project[] = [
       },
     ],
     accent: "cyan",
+  },
+  {
+    slug: "erp-system",
+    order: 1,
+    published: true,
+    category: "dev",
+    year: 2026,
+    duration: { es: "18 semanas", en: "18 weeks" },
+    industry: { es: "SaaS · Software empresarial", en: "SaaS · Enterprise software" },
+    client: {
+      name: "Sistema ERP",
+      visibility: "public",
+      liveUrl: "https://erp-pi-five.vercel.app",
+    },
+    role: "lead",
+    title: "Sistema ERP",
+    tagline: {
+      es: "ERP completo multi-empresa con CRM, inventario, producción y contabilidad seria.",
+      en: "Full multi-tenant ERP with CRM, inventory, manufacturing and serious accounting.",
+    },
+    summary: {
+      es: "Producto SaaS de Nodo: ERP multi-empresa + multi-local con 13 módulos backend (Ventas, Compras, Inventario, Producción con BOM, RRHH, Finanzas, Reportes, Auth) y 47 modelos en Postgres. Front en Next.js 14 con React Query y Hook Form, back en NestJS 11 + Prisma 7 desplegado en Fly.io con Docker, health check y autoscale.",
+      en: "Nodo SaaS product: multi-tenant + multi-branch ERP with 13 backend modules (Sales, Purchasing, Inventory, Manufacturing with BOM, HR, Finance, Reporting, Auth) and 47 models in Postgres. Front in Next.js 14 with React Query and Hook Form, back in NestJS 11 + Prisma 7 deployed on Fly.io with Docker, health check and autoscale.",
+    },
+    caseStudy: {
+      problem: {
+        es: "Las PYMEs argentinas viven con Excel, Google Sheets y WhatsApp para gestionar clientes, presupuestos, facturas, stock y cuentas por cobrar. Cuando crecen, todo se rompe: nadie sabe quién debe qué, los presupuestos se pierden, el stock no cuadra y la contabilidad queda atrasada un mes.",
+        en: "Argentine SMEs run their operations on Excel, Google Sheets and WhatsApp to handle clients, quotes, invoices, stock and receivables. The moment they grow, everything breaks: nobody knows who owes what, quotes get lost, stock doesn't match and accounting falls a month behind.",
+      },
+      approach: [
+        {
+          title: { es: "Multi-empresa + multi-local desde el día uno", en: "Multi-tenant + multi-branch from day one" },
+          body: {
+            es: "Cada usuario opera dentro de una Empresa con uno o varios Locales. El selector arriba cambia de local en caliente y el backend filtra por contexto sin que el front toque queries. Roles, permisos y auditoría sobre cada cambio relevante.",
+            en: "Each user operates inside a company with one or many branches. The top-bar selector switches branch on the fly and the backend filters by context without the frontend touching queries. Roles, permissions and audit log over every relevant change.",
+          },
+        },
+        {
+          title: { es: "13 módulos en NestJS + Prisma sobre PostgreSQL", en: "13 modules in NestJS + Prisma over PostgreSQL" },
+          body: {
+            es: "Backend con Auth (JWT + refresh + Passport), Ventas (CRM, presupuestos, pedidos, facturas, cobranzas), Compras, Inventario, Producción con BOM, RRHH, Finanzas con plan de cuentas y asientos automáticos, Reportes y Empresas. 47 modelos Prisma + 22 enums + Swagger autodocumentado.",
+            en: "Backend with Auth (JWT + refresh + Passport), Sales (CRM, quotes, orders, invoices, collections), Purchasing, Inventory, Manufacturing with BOM, HR, Finance with chart of accounts and automatic journals, Reports and Companies. 47 Prisma models + 22 enums + auto-documented Swagger.",
+          },
+        },
+        {
+          title: { es: "Front Next.js con datos en vivo y formularios serios", en: "Next.js front with live data and serious forms" },
+          body: {
+            es: "Next.js 14 con React Query para cache + retries, Hook Form + Zod en cada formulario, import/export Excel con xlsx, alertas de stock en tiempo real y dashboard con KPIs reales del mes (ventas, compras, alertas, facturas). Diez secciones con sub-rutas profundas.",
+            en: "Next.js 14 with React Query for cache + retries, Hook Form + Zod on every form, Excel import/export via xlsx, real-time stock alerts and a dashboard with real monthly KPIs (sales, purchasing, alerts, invoices). Ten sections with deep sub-routes.",
+          },
+        },
+        {
+          title: { es: "Deploy productivo en Fly.io con health checks", en: "Production deploy on Fly.io with health checks" },
+          body: {
+            es: "Backend dockerizado, NestJS detrás de Helmet + Throttler, Prisma con adapter PG y Accelerate, deploy en Fly.io (gru, autoscale, health check sobre /api/v1/health). Front en Vercel con middleware para rutas protegidas. Listo para encenderse en producción para cualquier PYME.",
+            en: "Backend dockerized, NestJS behind Helmet + Throttler, Prisma with PG adapter and Accelerate, deployed to Fly.io (gru, autoscale, health check on /api/v1/health). Front on Vercel with middleware for protected routes. Ready to flip the switch into production for any SME.",
+          },
+        },
+      ],
+      outcome: {
+        es: "Lo que antes vivía en cinco Excel y un grupo de WhatsApp ahora vive en un solo sistema: clientes con seguimiento, presupuestos que pasan a facturas en un clic, stock que se mueve solo entre depósitos, asientos contables que el sistema arma cuando emitís una factura y reportes en un click. Multi-empresa para escalar a varios clientes en paralelo.",
+        en: "What used to live in five spreadsheets and a WhatsApp group now lives in one system: clients with follow-up, quotes that become invoices in one click, stock that moves itself between branches, accounting entries the system writes when you issue an invoice and one-click reports. Multi-tenant to scale across multiple clients in parallel.",
+      },
+      // Quote pendiente — descomentar cuando el primer cliente productivo pase la frase.
+      // quote: {
+      //   text: { es: "...", en: "..." },
+      //   author: "...",
+      //   role: { es: "Cliente piloto", en: "Pilot client" },
+      // },
+    },
+    thumbnail: {
+      src: "/images/projects/erp-system/hero.png",
+      alt: { es: "Dashboard del Sistema ERP con KPIs del mes", en: "ERP dashboard with monthly KPIs" },
+      aspect: "16:10",
+      frame: "browser",
+    },
+    screenshots: [
+      {
+        src: "/images/projects/erp-system/hero.png",
+        alt: { es: "Dashboard con KPIs del mes y alertas", en: "Dashboard with monthly KPIs and alerts" },
+        caption: {
+          es: "Dashboard con KPIs del mes (ventas, compras, alertas y empleados), facturas recientes y panel de alertas con el stock por debajo del mínimo configurado.",
+          en: "Dashboard with monthly KPIs (sales, purchasing, alerts and employees), recent invoices and an alerts panel with stock items below the configured minimum.",
+        },
+        aspect: "16:9",
+        frame: "browser",
+        hero: true,
+      },
+      {
+        src: "/images/projects/erp-system/ventas-clientes.png",
+        alt: { es: "Listado de clientes con búsqueda e importar Excel", en: "Client list with search and Excel import" },
+        caption: {
+          es: "Listado de Clientes con búsqueda, importar Excel y CRUD. Cada cliente lleva código, CUIT/DNI, contacto y estado, listo para sumar seguimiento del CRM.",
+          en: "Client list with search, Excel import and full CRUD. Every client carries code, tax ID, contact and status, ready for CRM follow-up tracking.",
+        },
+        aspect: "16:9",
+        frame: "browser",
+      },
+      {
+        src: "/images/projects/erp-system/inventario-productos.png",
+        alt: { es: "Productos con stock por depósito y mínimo", en: "Products with per-warehouse stock and minimum" },
+        caption: {
+          es: "Inventario con productos (código, categoría, precio, costo, stock y mínimo), import Excel y sub-módulos de depósitos, ajustes, movimientos y alertas.",
+          en: "Inventory with products (code, category, price, cost, stock and min), Excel import and sub-modules: warehouses, adjustments, movements and alerts.",
+        },
+        aspect: "16:9",
+        frame: "browser",
+      },
+      {
+        src: "/images/projects/erp-system/finanzas.png",
+        alt: { es: "Hub del módulo de Finanzas", en: "Finance module hub" },
+        caption: {
+          es: "Módulo de Finanzas con plan de cuentas, asientos contables, balance, estado de resultados, cuentas por cobrar y pagar, bancos, caja y retenciones.",
+          en: "Finance module with chart of accounts, journal entries, balance sheet, income statement, receivables and payables, banks, cash and withholdings.",
+        },
+        aspect: "16:9",
+        frame: "browser",
+      },
+    ],
+    stack: [
+      "Next.js 14",
+      "React 18",
+      "TypeScript",
+      "Tailwind v3",
+      "React Query",
+      "React Hook Form",
+      "NestJS 11",
+      "Prisma 7",
+      "PostgreSQL",
+      "JWT + Passport",
+      "Swagger",
+      "Fly.io",
+    ],
+    metrics: [
+      {
+        value: 47,
+        label: { es: "modelos en la base", en: "models in the database" },
+      },
+      {
+        value: 13,
+        label: { es: "módulos del backend", en: "backend modules" },
+      },
+    ],
+    accent: "blue",
+    repos: [
+      { label: "Backend", url: "https://github.com/MateoGaviraghi/erp-backend" },
+    ],
   },
 ];
 
