@@ -10,7 +10,8 @@ import GhostButton from "@/components/ui/GhostButton";
 import TiltCard from "@/components/ui/TiltCard";
 import ScrollCounter from "@/components/ui/ScrollCounter";
 import FeedbackForm from "@/components/feedback/FeedbackForm";
-import { projects } from "@/lib/projects";
+import Link from "next/link";
+import { getPublishedProjects } from "@/lib/projects";
 // Testimonials section is hidden until we accumulate 10+ real opinions via /api/feedback.
 // Re-enable by importing DepthMarquee + testimonials and restoring the <TESTIMONIALS> section.
 
@@ -22,8 +23,17 @@ const NetworkSphere = dynamic(() => import("@/components/three/NetworkSphere"), 
 const serviceIcons = [Code, Cpu] as const;
 
 export default function HomePage() {
-  const { t } = useLanguage();
+  const { t, language: lang } = useLanguage();
   const services = [t.services.dev, t.services.ia];
+  const homeProjects = getPublishedProjects().slice(0, 4);
+  const categoryLabel = {
+    dev: t.projects.cat_dev,
+    wordpress: t.projects.cat_wordpress,
+    ia: t.projects.cat_ia,
+    ecommerce: t.projects.cat_ecommerce,
+    uiux: t.projects.cat_uiux,
+    maintenance: t.projects.cat_maintenance,
+  } as const;
 
   // CSS scroll-driven animations via IntersectionObserver
   const observerRef = useRef<IntersectionObserver | null>(null);
@@ -161,60 +171,71 @@ export default function HomePage() {
           </div>
 
           <div className="grid gap-8 sm:grid-cols-2 sm:gap-10">
-            {projects.slice(0, 4).map((project, idx) => (
-              <div key={project.id} data-reveal className={idx % 2 === 0 ? "reveal-left" : "reveal-right"} style={{ transitionDelay: `${idx * 120}ms` }}>
-                <TiltCard className="h-full">
-                  {/* ── Monitor frame ── */}
-                  <div className="p-3 pb-0 sm:p-4 sm:pb-0">
-                    {/* Browser toolbar */}
-                    <div className="flex items-center gap-2 rounded-t-[4px] border border-b-0 border-white/[0.08] bg-white/[0.03] px-3 py-2">
-                      <div className="flex gap-1.5">
-                        <span className="h-2 w-2 rounded-full bg-white/[0.12]" />
-                        <span className="h-2 w-2 rounded-full bg-white/[0.12]" />
-                        <span className="h-2 w-2 rounded-full bg-white/[0.12]" />
+            {homeProjects.map((project, idx) => (
+              <div key={project.slug} data-reveal className={idx % 2 === 0 ? "reveal-left" : "reveal-right"} style={{ transitionDelay: `${idx * 120}ms` }}>
+                <Link href={`/proyectos/${project.slug}`} className="block h-full focus:outline-none focus-visible:ring-2 focus-visible:ring-nodo-blue focus-visible:ring-offset-4 focus-visible:ring-offset-nodo-black">
+                  <TiltCard className="h-full">
+                    {/* ── Monitor frame ── */}
+                    <div className="p-3 pb-0 sm:p-4 sm:pb-0">
+                      {/* Browser toolbar */}
+                      <div className="flex items-center gap-2 rounded-t-[4px] border border-b-0 border-white/[0.08] bg-white/[0.03] px-3 py-2">
+                        <div className="flex gap-1.5">
+                          <span className="h-2 w-2 rounded-full bg-white/[0.12]" />
+                          <span className="h-2 w-2 rounded-full bg-white/[0.12]" />
+                          <span className="h-2 w-2 rounded-full bg-white/[0.12]" />
+                        </div>
+                        <div className="mx-2 flex-1 rounded-[2px] bg-white/[0.04] px-3 py-0.5">
+                          <span className="text-[10px] text-white/30">{project.client.liveUrl ? project.client.liveUrl.replace(/^https?:\/\//, "").replace(/\/$/, "") : `${project.slug}.app`}</span>
+                        </div>
                       </div>
-                      <div className="mx-2 flex-1 rounded-[2px] bg-white/[0.04] px-3 py-0.5">
-                        <span className="text-[10px] text-white/30">{project.title.toLowerCase().replace(/\s+/g, "-")}.app</span>
+
+                      {/* Screen */}
+                      <div
+                        className="relative flex aspect-[16/10] items-center justify-center overflow-hidden border-x border-b border-white/[0.08] rounded-b-[4px]"
+                        style={{
+                          background: `linear-gradient(${135 + idx * 25}deg, ${
+                            ["rgba(139,47,239,0.18)", "rgba(0,193,244,0.18)", "rgba(39,133,254,0.18)", "rgba(88,99,242,0.18)"][idx]
+                          }, rgba(10,10,10,0.9) 70%)`,
+                        }}
+                      >
+                        <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: "linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)", backgroundSize: "32px 32px" }} />
+                        {project.thumbnail.src ? (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img
+                            src={project.thumbnail.src}
+                            alt={project.thumbnail.alt[lang]}
+                            className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+                          />
+                        ) : (
+                          <span className="text-7xl font-extralight tracking-tighter text-white/[0.06] transition-all duration-500 group-hover:text-white/[0.1] group-hover:scale-110 sm:text-8xl">
+                            {project.title.charAt(0)}
+                          </span>
+                        )}
+                        {/* Screen reflection */}
+                        <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/[0.02] via-transparent to-transparent" />
                       </div>
                     </div>
 
-                    {/* Screen */}
-                    <div
-                      className="relative flex aspect-[16/10] items-center justify-center overflow-hidden border-x border-b border-white/[0.08] rounded-b-[4px]"
-                      style={{
-                        background: `linear-gradient(${135 + idx * 25}deg, ${
-                          ["rgba(139,47,239,0.18)", "rgba(0,193,244,0.18)", "rgba(39,133,254,0.18)", "rgba(88,99,242,0.18)"][idx]
-                        }, rgba(10,10,10,0.9) 70%)`,
-                      }}
-                    >
-                      <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: "linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)", backgroundSize: "32px 32px" }} />
-                      <span className="text-7xl font-extralight tracking-tighter text-white/[0.06] transition-all duration-500 group-hover:text-white/[0.1] group-hover:scale-110 sm:text-8xl">
-                        {project.title.charAt(0)}
-                      </span>
-                      {/* Screen reflection */}
-                      <div className="absolute inset-0 bg-gradient-to-br from-white/[0.02] via-transparent to-transparent" />
+                    {/* ── Monitor stand ── */}
+                    <div className="flex justify-center py-1">
+                      <div className="h-3 w-8 rounded-b-[2px] bg-gradient-to-b from-white/[0.06] to-white/[0.02] sm:h-4 sm:w-10" />
                     </div>
-                  </div>
 
-                  {/* ── Monitor stand ── */}
-                  <div className="flex justify-center py-1">
-                    <div className="h-3 w-8 rounded-b-[2px] bg-gradient-to-b from-white/[0.06] to-white/[0.02] sm:h-4 sm:w-10" />
-                  </div>
-
-                  {/* ── Project info ── */}
-                  <div className="px-4 pb-5 sm:px-5 sm:pb-6">
-                    <div className="mb-3">
-                      <span className="rounded-[2px] bg-nodo-indigo/10 px-2.5 py-0.5 text-[11px] font-medium tracking-wide text-nodo-indigo">{project.category}</span>
+                    {/* ── Project info ── */}
+                    <div className="px-4 pb-5 sm:px-5 sm:pb-6">
+                      <div className="mb-3">
+                        <span className="rounded-[2px] bg-nodo-indigo/10 px-2.5 py-0.5 text-[11px] font-medium tracking-wide text-nodo-indigo">{categoryLabel[project.category]}</span>
+                      </div>
+                      <h3 className="mb-2 text-base font-semibold text-nodo-white">{project.title}</h3>
+                      <p className="mb-4 text-[13px] leading-relaxed text-white/70">{project.summary[lang]}</p>
+                      <div className="flex flex-wrap gap-1.5">
+                        {project.stack.slice(0, 4).map((tech) => (
+                          <span key={tech} className="rounded-[2px] border border-white/[0.04] bg-white/[0.02] px-2 py-0.5 text-[11px] text-white/70">{tech}</span>
+                        ))}
+                      </div>
                     </div>
-                    <h3 className="mb-2 text-base font-semibold text-nodo-white">{project.title}</h3>
-                    <p className="mb-4 text-[13px] leading-relaxed text-white/70">{project.description}</p>
-                    <div className="flex flex-wrap gap-1.5">
-                      {project.tags.map((tag) => (
-                        <span key={tag} className="rounded-[2px] border border-white/[0.04] bg-white/[0.02] px-2 py-0.5 text-[11px] text-white/70">{tag}</span>
-                      ))}
-                    </div>
-                  </div>
-                </TiltCard>
+                  </TiltCard>
+                </Link>
               </div>
             ))}
           </div>

@@ -71,7 +71,11 @@
       "Bash(npx -y skills add wondelai/skills/storybrand-messaging -y)",
       "Bash(npx -y skills add wondelai/skills/mom-test -y)",
       "Bash(npx -y skills add wondelai/skills/predictable-revenue -y)",
-      "Bash(git -C /c/Users/mateo/Desktop/nodo-project log --oneline -15)"
+      "Bash(git -C /c/Users/mateo/Desktop/nodo-project log --oneline -15)",
+      "Bash(git -C C:/Users/mateo/Desktop/nodo-project log --oneline -30)",
+      "Bash(git -C C:/Users/mateo/Desktop/nodo-project status)",
+      "Bash(echo \"EXIT=$?\")",
+      "Bash(curl -sI \"http://localhost:3000/images/projects/guzman-motors/cotizacion-tunland-v9.pdf\")"
     ]
   }
 }
