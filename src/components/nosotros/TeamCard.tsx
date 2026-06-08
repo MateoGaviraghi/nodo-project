@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useCallback, useEffect } from "react";
+import Image from "next/image";
 import { RotateCcw } from "lucide-react";
 import { useLanguage } from "@/hooks/useLanguage";
 
@@ -13,6 +14,8 @@ interface TeamMemberData {
   stats: { num: string; label: string }[];
   github?: string;
   linkedin?: string;
+  image?: string;
+  imagePosition?: string;
 }
 
 function MemberCard({ member }: { member: TeamMemberData }) {
@@ -91,20 +94,31 @@ function MemberCard({ member }: { member: TeamMemberData }) {
             className="pointer-events-none absolute inset-0 z-30 opacity-0 transition-opacity duration-300"
           />
 
-          {/* Photo background — gradient placeholder simulating a dark portrait */}
-          <div
-            className="absolute inset-0 z-0"
-            style={{
-              background: `linear-gradient(160deg, rgba(26,26,46,0.95) 0%, rgba(88,99,242,0.15) 40%, rgba(139,47,239,0.1) 70%, rgba(10,10,10,0.98) 100%)`,
-            }}
-          />
-
-          {/* Large initial as portrait placeholder */}
-          <div className="absolute inset-0 z-10 flex items-center justify-center">
-            <span className="text-[120px] font-bold leading-none text-white/[0.04] sm:text-[140px]">
-              {member.initials}
-            </span>
-          </div>
+          {/* Portrait photo (or gradient + initial fallback) */}
+          {member.image ? (
+            <Image
+              src={member.image}
+              alt={member.name}
+              fill
+              sizes="(max-width: 640px) 90vw, 360px"
+              className="z-0 object-cover"
+              style={{ objectPosition: member.imagePosition ?? "center 20%" }}
+            />
+          ) : (
+            <>
+              <div
+                className="absolute inset-0 z-0"
+                style={{
+                  background: `linear-gradient(160deg, rgba(26,26,46,0.95) 0%, rgba(88,99,242,0.15) 40%, rgba(139,47,239,0.1) 70%, rgba(10,10,10,0.98) 100%)`,
+                }}
+              />
+              <div className="absolute inset-0 z-10 flex items-center justify-center">
+                <span className="text-[120px] font-bold leading-none text-white/[0.04] sm:text-[140px]">
+                  {member.initials}
+                </span>
+              </div>
+            </>
+          )}
 
           {/* Noise texture overlay */}
           <div className="absolute inset-0 z-20 opacity-[0.03]" style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='256' height='256' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E\")", backgroundSize: "128px 128px" }} />
@@ -212,6 +226,8 @@ export default function TeamCard() {
   const members: TeamMemberData[] = [
     {
       initials: "MG",
+      image: "/images/team/mateo.jpg",
+      imagePosition: "center 25%",
       name: "Mateo Gaviraghi",
       role: t.about.team_mateo,
       bio: t.about.team_mateo_bio,
@@ -226,6 +242,8 @@ export default function TeamCard() {
     },
     {
       initials: "JG",
+      image: "/images/team/justo.png",
+      imagePosition: "center 18%",
       name: "Justo González Viescas",
       role: t.about.team_justo,
       bio: t.about.team_justo_bio,
