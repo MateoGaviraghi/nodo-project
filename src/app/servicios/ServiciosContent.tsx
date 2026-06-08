@@ -153,7 +153,7 @@ export default function ServiciosContent() {
       {/* ─── Hero ─── */}
       <section className="relative pb-8 pt-28 sm:pb-12 sm:pt-40">
         <div className="mx-auto max-w-4xl px-6 text-center lg:px-8">
-          <p data-reveal className="reveal-el mb-4 text-[11px] font-medium tracking-[0.3em] text-nodo-indigo uppercase">
+          <p data-reveal className="reveal-el mb-4 label-mono text-nodo-cyan">
             Servicios
           </p>
           <h1
@@ -274,7 +274,7 @@ export default function ServiciosContent() {
 
         <div className="mx-auto max-w-4xl px-6 pt-16 lg:px-8">
           <div className="mb-16 text-center">
-            <p data-reveal className="reveal-el mb-4 text-[11px] font-medium tracking-[0.3em] text-nodo-indigo uppercase">
+            <p data-reveal className="reveal-el mb-4 label-mono text-nodo-cyan">
               Proceso
             </p>
             <h2

@@ -103,7 +103,7 @@ export default function ContactoContent() {
         <div className="relative mx-auto max-w-4xl px-6 text-center lg:px-8">
           <p
             data-reveal
-            className="reveal-el mb-4 text-[11px] font-medium tracking-[0.3em] text-nodo-indigo uppercase"
+            className="reveal-el mb-4 label-mono text-nodo-cyan"
           >
             {es ? "Contacto" : "Contact"}
           </p>
@@ -137,7 +137,7 @@ export default function ContactoContent() {
           <div className="mb-8 sm:mb-12 text-center">
             <p
               data-reveal
-              className="reveal-el mb-4 text-[11px] font-medium tracking-[0.3em] text-nodo-indigo uppercase"
+              className="reveal-el mb-4 label-mono text-nodo-cyan"
             >
               {t.contact.methods_eyebrow}
             </p>

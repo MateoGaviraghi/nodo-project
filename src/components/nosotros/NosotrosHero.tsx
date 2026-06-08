@@ -11,7 +11,7 @@ export default function NosotrosHero() {
         {/* Eyebrow */}
         <p
           data-reveal
-          className="reveal-el mb-4 text-[11px] font-medium tracking-[0.3em] text-nodo-indigo uppercase"
+          className="reveal-el mb-4 label-mono text-nodo-cyan"
         >
           Nosotros
         </p>

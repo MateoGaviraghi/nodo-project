@@ -78,7 +78,7 @@ export default function ProyectoCaseStudy({ project }: Props) {
           {/* Caption row */}
           <p
             data-reveal
-            className="reveal-el mb-6 text-[11px] font-medium tracking-[0.3em] text-nodo-indigo uppercase"
+            className="reveal-el mb-6 label-mono text-nodo-cyan"
             style={{ transitionDelay: "60ms" }}
           >
             {categoryLabel[project.category]} · {project.year}
@@ -213,7 +213,7 @@ export default function ProyectoCaseStudy({ project }: Props) {
           <div className="mx-auto max-w-3xl px-6 pt-12 lg:px-8">
             <p
               data-reveal
-              className="reveal-el mb-5 text-[11px] font-medium tracking-[0.3em] text-nodo-indigo uppercase"
+              className="reveal-el mb-5 label-mono text-nodo-cyan"
             >
               {t.projects.section_problem}
             </p>
@@ -235,7 +235,7 @@ export default function ProyectoCaseStudy({ project }: Props) {
           <div className="mx-auto max-w-4xl px-6 pt-12 lg:px-8">
             <p
               data-reveal
-              className="reveal-el mb-10 text-[11px] font-medium tracking-[0.3em] text-nodo-indigo uppercase"
+              className="reveal-el mb-10 label-mono text-nodo-cyan"
             >
               {t.projects.section_approach}
             </p>
@@ -286,7 +286,7 @@ export default function ProyectoCaseStudy({ project }: Props) {
         <div className="section-line" />
         <div className="mx-auto max-w-5xl px-6 pt-12 lg:px-8">
           <div data-reveal className="reveal-el">
-            <p className="mb-5 text-[11px] font-medium tracking-[0.3em] text-nodo-indigo uppercase">
+            <p className="mb-5 label-mono text-nodo-cyan">
               {t.projects.section_stack}
             </p>
             <div className="flex flex-wrap gap-2">
@@ -310,7 +310,7 @@ export default function ProyectoCaseStudy({ project }: Props) {
           <div className="mx-auto max-w-3xl px-6 pt-12 lg:px-8">
             <p
               data-reveal
-              className="reveal-el mb-5 text-[11px] font-medium tracking-[0.3em] text-nodo-indigo uppercase"
+              className="reveal-el mb-5 label-mono text-nodo-cyan"
             >
               {t.projects.section_outcome}
             </p>

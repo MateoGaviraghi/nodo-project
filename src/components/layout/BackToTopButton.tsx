@@ -35,7 +35,7 @@ export default function BackToTopButton() {
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.8 }}
           transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
-          className="fixed bottom-6 left-6 z-50 flex h-10 w-10 items-center justify-center rounded-[6px] border border-white/[0.06] bg-nodo-gray-900/90 text-nodo-gray-400 shadow-lg shadow-black/20 backdrop-blur-md transition-all duration-300 hover:border-nodo-indigo/30 hover:text-nodo-white hover:shadow-[0_0_20px_rgba(88,99,242,0.12)]"
+          className="fixed bottom-6 left-6 z-50 flex h-11 w-11 items-center justify-center rounded-[6px] border border-white/[0.06] bg-nodo-gray-900/90 text-nodo-gray-400 shadow-lg shadow-black/20 backdrop-blur-md transition-all duration-300 hover:border-nodo-indigo/30 hover:text-nodo-white hover:shadow-[0_0_20px_rgba(88,99,242,0.12)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-nodo-indigo focus-visible:ring-offset-2 focus-visible:ring-offset-nodo-black"
           aria-label="Volver arriba"
         >
           <ArrowUp className="h-4 w-4" />

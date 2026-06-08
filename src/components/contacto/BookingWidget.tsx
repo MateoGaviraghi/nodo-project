@@ -248,7 +248,7 @@ export default function BookingWidget() {
         <div className="mb-8 sm:mb-12 text-center">
           <p
             data-reveal
-            className="reveal-el mb-4 text-[11px] font-medium tracking-[0.3em] text-nodo-indigo uppercase"
+            className="reveal-el mb-4 label-mono text-nodo-cyan"
           >
             {tc.booking_eyebrow}
           </p>

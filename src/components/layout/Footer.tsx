@@ -20,7 +20,7 @@ function SocialIcon({ href, label, children }: { href: string; label: string; ch
       target="_blank"
       rel="noopener noreferrer"
       aria-label={label}
-      className="group flex h-9 w-9 items-center justify-center rounded-[3px] border border-white/[0.06] bg-white/[0.02] text-nodo-gray-400 transition-all duration-300 hover:border-nodo-indigo/30 hover:text-nodo-white hover:shadow-[0_0_16px_rgba(88,99,242,0.1)]"
+      className="group flex h-11 w-11 items-center justify-center rounded-[3px] border border-white/[0.06] bg-white/[0.02] text-nodo-gray-400 transition-all duration-300 hover:border-nodo-indigo/30 hover:text-nodo-white hover:shadow-[0_0_16px_rgba(88,99,242,0.1)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-nodo-indigo focus-visible:ring-offset-2 focus-visible:ring-offset-nodo-black"
     >
       {children}
     </a>

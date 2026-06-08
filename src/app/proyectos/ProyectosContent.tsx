@@ -61,7 +61,7 @@ export default function ProyectosContent() {
         <div className="mx-auto max-w-5xl px-6 lg:px-8">
           <p
             data-reveal
-            className="reveal-el mb-6 text-[11px] font-medium tracking-[0.3em] text-nodo-indigo uppercase"
+            className="reveal-el mb-6 label-mono text-nodo-cyan"
           >
             {t.projects.eyebrow}
           </p>

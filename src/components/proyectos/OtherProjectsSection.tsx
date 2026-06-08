@@ -74,7 +74,7 @@ export default function OtherProjectsSection({
           <div>
             <p
               data-reveal
-              className="reveal-el mb-4 text-[11px] font-medium tracking-[0.3em] text-nodo-indigo uppercase"
+              className="reveal-el mb-4 label-mono text-nodo-cyan"
             >
               {t.other_title}
             </p>

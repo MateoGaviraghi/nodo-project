@@ -246,7 +246,7 @@ export default function TeamCard() {
       <div className="mx-auto max-w-5xl px-6 pt-16 lg:px-8">
         {/* Header */}
         <div className="mb-12 text-center">
-          <p data-reveal className="reveal-el mb-4 text-[11px] font-medium tracking-[0.3em] text-nodo-indigo uppercase">
+          <p data-reveal className="reveal-el mb-4 label-mono text-nodo-cyan">
             Equipo
           </p>
           <h2 data-reveal className="reveal-el text-3xl font-semibold tracking-[-0.02em] text-nodo-white sm:text-4xl" style={{ transitionDelay: "80ms" }}>

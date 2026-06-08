@@ -74,7 +74,7 @@ export default function HomePage() {
         <div className="section-line" />
         <div className="mx-auto max-w-6xl px-6 pt-10 sm:pt-16 lg:px-8">
           <div className="mb-10 sm:mb-16 text-center">
-            <p data-reveal className="reveal-el mb-4 text-[11px] font-medium tracking-[0.3em] text-nodo-indigo uppercase">Servicios</p>
+            <p data-reveal className="reveal-el mb-4 label-mono text-nodo-cyan">Servicios</p>
             <h2 data-reveal className="reveal-el text-3xl font-semibold tracking-[-0.02em] text-nodo-white sm:text-4xl lg:text-5xl" style={{ transitionDelay: "80ms" }}>{t.services.title}</h2>
             <p data-reveal className="reveal-el mx-auto mt-5 max-w-lg text-[15px] leading-relaxed text-white/70" style={{ transitionDelay: "160ms" }}>{t.services.subtitle}</p>
           </div>
@@ -142,7 +142,7 @@ export default function HomePage() {
         <div className="section-line" />
         <div className="mx-auto max-w-5xl px-6 pt-8 sm:pt-12 lg:px-8">
           <div className="mb-6 text-center">
-            <p data-reveal className="reveal-el mb-4 text-[11px] font-medium tracking-[0.3em] text-nodo-indigo uppercase">Nuestro ecosistema</p>
+            <p data-reveal className="reveal-el mb-4 label-mono text-nodo-cyan">Nuestro ecosistema</p>
             <h2 data-reveal className="reveal-el text-3xl font-semibold tracking-[-0.02em] text-nodo-white sm:text-4xl" style={{ transitionDelay: "80ms" }}>
               Cada tecnología, un <span className="gradient-text">nodo</span>
             </h2>
@@ -160,7 +160,7 @@ export default function HomePage() {
         <div className="mx-auto max-w-6xl px-6 pt-10 sm:pt-16 lg:px-8">
           <div className="mb-10 sm:mb-14 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <p data-reveal className="reveal-el mb-4 text-[11px] font-medium tracking-[0.3em] text-nodo-indigo uppercase">Portfolio</p>
+              <p data-reveal className="reveal-el mb-4 label-mono text-nodo-cyan">Portfolio</p>
               <h2 data-reveal className="reveal-el text-3xl font-semibold tracking-[-0.02em] text-nodo-white sm:text-4xl" style={{ transitionDelay: "80ms" }}>{t.projects.title}</h2>
               <p data-reveal className="reveal-el mt-3 max-w-sm text-[14px] leading-relaxed text-white/70" style={{ transitionDelay: "160ms" }}>{t.projects.subtitle}</p>
             </div>
@@ -271,7 +271,7 @@ export default function HomePage() {
         <div className="section-line" />
         <div className="mx-auto max-w-5xl px-6 pt-10 sm:pt-16 lg:px-8">
           <div className="mb-10 sm:mb-14 text-center">
-            <p data-reveal className="reveal-el mb-4 text-[11px] font-medium tracking-[0.3em] text-nodo-indigo uppercase">
+            <p data-reveal className="reveal-el mb-4 label-mono text-nodo-cyan">
               {t.feedback.eyebrow}
             </p>
             <h2

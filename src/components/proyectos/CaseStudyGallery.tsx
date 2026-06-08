@@ -299,7 +299,7 @@ export default function CaseStudyGallery({ project, lang, eyebrow }: CaseStudyGa
           data-reveal
           className="reveal-el pointer-events-none absolute top-0 left-0 right-0 z-10 flex items-center justify-between px-6 pt-10 sm:px-12 sm:pt-16 md:pt-24 lg:px-16 lg:pt-28"
         >
-          <p className="text-[11px] font-medium tracking-[0.3em] text-nodo-indigo uppercase">
+          <p className="label-mono text-nodo-cyan">
             {eyebrow}
           </p>
         </div>

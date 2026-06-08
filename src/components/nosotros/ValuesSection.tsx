@@ -16,7 +16,7 @@ export default function ValuesSection() {
       <div className="mx-auto max-w-6xl px-6 pt-12 sm:pt-16 lg:px-8">
         {/* Header — tight spacing to cards */}
         <div className="mb-8 sm:mb-12 text-center">
-          <p data-reveal className="reveal-el mb-4 text-[11px] font-medium tracking-[0.3em] text-nodo-indigo uppercase">
+          <p data-reveal className="reveal-el mb-4 label-mono text-nodo-cyan">
             Valores
           </p>
           <h2
