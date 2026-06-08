@@ -1,0 +1,10 @@
+import { clsx, type ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
+
+/**
+ * Merge Tailwind classes safely (clsx + tailwind-merge).
+ * Used by shadcn/cult-ui-style components and our own primitives.
+ */
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}

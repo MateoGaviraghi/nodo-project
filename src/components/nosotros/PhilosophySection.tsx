@@ -56,6 +56,37 @@ export default function PhilosophySection() {
     return () => st.kill();
   }, [isMobile]);
 
+  // Mobile: self-contained reveal. The page-level IntersectionObserver scans
+  // [data-reveal] once on mount, before this branch swaps in (isMobile flips
+  // after mount), so it never sees these nodes. Observe them here instead.
+  useEffect(() => {
+    if (!isMobile) return;
+    const el = sectionRef.current;
+    if (!el) return;
+    const targets = el.querySelectorAll<HTMLElement>("[data-reveal]");
+    if (targets.length === 0) return;
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      targets.forEach((node) => node.classList.add("revealed"));
+      return;
+    }
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("revealed");
+            io.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.12, rootMargin: "0px 0px -6% 0px" },
+    );
+    targets.forEach((node) => io.observe(node));
+
+    return () => io.disconnect();
+  }, [isMobile]);
+
   // Derive current beat
   const beatIndex = Math.min(2, Math.floor(progress * 3));
   const beatLocal = (progress * 3) - beatIndex;
@@ -83,7 +114,7 @@ export default function PhilosophySection() {
   // Mobile: simple stacked layout
   if (isMobile) {
     return (
-      <section className="relative py-16">
+      <section ref={sectionRef} className="relative py-16">
         <div className="section-line" />
         <div className="mx-auto max-w-3xl px-6 pt-10">
           {beats.map((beat, i) => (

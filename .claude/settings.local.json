@@ -75,7 +75,25 @@
       "Bash(git -C C:/Users/mateo/Desktop/nodo-project log --oneline -30)",
       "Bash(git -C C:/Users/mateo/Desktop/nodo-project status)",
       "Bash(echo \"EXIT=$?\")",
-      "Bash(curl -sI \"http://localhost:3000/images/projects/guzman-motors/cotizacion-tunland-v9.pdf\")"
+      "Bash(curl -sI \"http://localhost:3000/images/projects/guzman-motors/cotizacion-tunland-v9.pdf\")",
+      "Bash(git restore *)",
+      "Bash(git -C \"C:/Users/mateo/Desktop/erp\" remote -v)",
+      "Bash(git -C \"C:/Users/mateo/Desktop/erp\" log --reverse --format=\"%ai %s\")",
+      "Bash(git -C \"C:/Users/mateo/Desktop/erp\" log --format=\"%ai %s\")",
+      "Bash(git -C \"C:/Users/mateo/Desktop/erp\" log --oneline)",
+      "Bash(git -C \"C:/Users/mateo/Desktop/erp-backend\" remote -v)",
+      "Bash(git -C \"C:/Users/mateo/Desktop/erp-backend\" log --reverse --format=\"%ai %s\")",
+      "Bash(git -C \"C:/Users/mateo/Desktop/erp-backend\" log --format=\"%ai %s\")",
+      "Bash(git -C \"C:/Users/mateo/Desktop/erp-backend\" log --oneline)",
+      "Bash(curl -sS -o /dev/null -w \"HTTP %{http_code}\\\\n\" \"https://erp-pi-five.vercel.app/\")",
+      "Bash(curl -sS \"https://erp-pi-five.vercel.app/\")",
+      "Bash(mv \"Screenshot 2026-04-27 182852.png\" \"hero.png\")",
+      "Bash(mv \"Screenshot 2026-04-27 182908.png\" \"ventas-clientes.png\")",
+      "Bash(mv \"Screenshot 2026-04-27 183035.png\" \"inventario-productos.png\")",
+      "Bash(mv \"Screenshot 2026-04-27 183050.png\" \"extra-inventario-productos-alt.png\")",
+      "Bash(mv \"Screenshot 2026-04-27 183119.png\" \"finanzas.png\")",
+      "Bash(npx --yes skills add https://github.com/vercel-labs/skills --skill find-skills --yes)",
+      "WebFetch(domain:www.instagram.com)"
     ]
   }
 }

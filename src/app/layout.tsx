@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Poppins } from "next/font/google";
+import { syne, jakarta, jetbrainsMono } from "@/lib/fonts";
 import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
@@ -11,13 +11,6 @@ import BackToTopButton from "@/components/layout/BackToTopButton";
 import { LanguageProvider } from "@/hooks/useLanguage";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-
-const poppins = Poppins({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700", "800"],
-  variable: "--font-poppins",
-  display: "swap",
-});
 
 export const metadata: Metadata = {
   title: {
@@ -84,7 +77,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es" data-scroll-behavior="smooth" className={`${poppins.variable} h-full antialiased`}>
+    <html lang="es" data-scroll-behavior="smooth" className={`${syne.variable} ${jakarta.variable} ${jetbrainsMono.variable} h-full antialiased`}>
       <head>
         <script dangerouslySetInnerHTML={{ __html: `if("scrollRestoration"in history)history.scrollRestoration="manual";window.scrollTo(0,0);` }} />
         <link rel="manifest" href="/manifest.json" />
