@@ -1,17 +1,22 @@
 "use client";
 
-import { useRef, useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   Code, Globe, Cpu, Palette, Shield, ShoppingCart,
   ArrowRight, Check,
 } from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
 import { useLanguage } from "@/hooks/useLanguage";
 import GradientButton from "@/components/ui/GradientButton";
 import GhostButton from "@/components/ui/GhostButton";
+import GridPattern from "@/components/ui/GridPattern";
+import Spotlight from "@/components/ui/Spotlight";
+import BorderBeam from "@/components/ui/BorderBeam";
+import SpotlightCard from "@/components/ui/SpotlightCard";
+import TracingBeam from "@/components/ui/TracingBeam";
 
 /* ═══════════════════════════════════════════════════════
-   TechBadge — renders a tech logo with graceful fallback
-   to branded initials if the remote SVG fails to load.
+   TechBadge — tech logo chip (no backdrop-blur: perf over the mesh)
    ═══════════════════════════════════════════════════════ */
 interface Tech {
   name: string;
@@ -21,27 +26,23 @@ interface Tech {
 
 function TechBadge({ tech }: { tech: Tech }) {
   return (
-    <div className="flex items-center gap-2.5 rounded-[4px] border border-white/[0.10] bg-white/[0.06] px-4 py-2.5 backdrop-blur-sm transition-all duration-300 hover:border-nodo-indigo/30 hover:bg-white/[0.10] hover:shadow-[0_0_16px_rgba(88,99,242,0.15)]">
+    <div className="flex items-center gap-2.5 rounded-[6px] border border-white/[0.08] bg-white/[0.04] px-3.5 py-2 transition-all duration-300 hover:border-nodo-indigo/30 hover:bg-white/[0.08]">
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src={tech.svg}
         alt={tech.name}
-        width={24}
-        height={24}
-        className="h-6 w-6 object-contain"
-        style={{
-          filter: tech.dark ? "invert(1) brightness(1.8)" : undefined,
-        }}
+        width={20}
+        height={20}
+        className="h-5 w-5 object-contain"
+        style={{ filter: tech.dark ? "invert(1) brightness(1.8)" : undefined }}
       />
-      <span className="text-[13px] font-medium text-nodo-gray-200">
-        {tech.name}
-      </span>
+      <span className="text-[12.5px] font-medium text-nodo-gray-200">{tech.name}</span>
     </div>
   );
 }
 
 /* ═══════════════════════════════════════════════════════
-   Service metadata — icons, accents, tech logos
+   Service metadata — icons, accents, tech logos (preserved order)
    ═══════════════════════════════════════════════════════ */
 
 const CDN = "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons";
@@ -53,6 +54,7 @@ const SERVICE_META = [
     key: "dev" as const,
     icon: Code,
     accent: "#2785fe",
+    accentRgb: "39, 133, 254",
     techs: [
       { name: "React", svg: `${CDN}/react/react-original.svg` },
       { name: "Next.js", svg: `${CDN}/nextjs/nextjs-plain.svg`, dark: true },
@@ -65,6 +67,7 @@ const SERVICE_META = [
     key: "ia" as const,
     icon: Cpu,
     accent: "#8b2fef",
+    accentRgb: "139, 47, 239",
     techs: [
       { name: "n8n", svg: `${SI}/n8n/EA4B71` },
       { name: "Anthropic", svg: `${SI}/anthropic/D97757` },
@@ -77,6 +80,7 @@ const SERVICE_META = [
     key: "wordpress" as const,
     icon: Globe,
     accent: "#00c1f4",
+    accentRgb: "0, 193, 244",
     techs: [
       { name: "WordPress", svg: `${CDN}/wordpress/wordpress-plain.svg`, dark: true },
       { name: "PHP", svg: `${CDN}/php/php-original.svg` },
@@ -88,6 +92,7 @@ const SERVICE_META = [
     key: "uiux" as const,
     icon: Palette,
     accent: "#5863f2",
+    accentRgb: "88, 99, 242",
     techs: [
       { name: "Figma", svg: `${CDN}/figma/figma-original.svg` },
       { name: "Tailwind", svg: `${CDN}/tailwindcss/tailwindcss-original.svg` },
@@ -99,6 +104,7 @@ const SERVICE_META = [
     key: "maintenance" as const,
     icon: Shield,
     accent: "#00c1f4",
+    accentRgb: "0, 193, 244",
     techs: [
       { name: "Docker", svg: `${CDN}/docker/docker-original.svg` },
       { name: "GitHub", svg: `${CDN}/github/github-original.svg`, dark: true },
@@ -110,6 +116,7 @@ const SERVICE_META = [
     key: "ecommerce" as const,
     icon: ShoppingCart,
     accent: "#8b2fef",
+    accentRgb: "139, 47, 239",
     techs: [
       { name: "WooCommerce", svg: `${CDN}/woocommerce/woocommerce-original.svg` },
       { name: "Firebase", svg: `${CDN}/firebase/firebase-original.svg` },
@@ -119,46 +126,77 @@ const SERVICE_META = [
   },
 ];
 
+const num = (i: number) => String(i + 1).padStart(2, "0");
+
+const PROCESS = [
+  { step: 1, title: "Escuchamos", desc: "Nos tomamos el tiempo para entender tu idea, tu negocio y a dónde querés llegar. Sin apuros." },
+  { step: 2, title: "Diseñamos", desc: "Bocetamos el camino juntos antes de escribir una línea de código. Querés ver cómo se va a ver." },
+  { step: 3, title: "Planificamos", desc: "Definimos alcance, tecnologías y tiempos. Sabés qué va, cuándo y cómo — sin sorpresas." },
+  { step: 4, title: "Construimos", desc: "Desarrollamos con entregas frecuentes. Ves el progreso real, nos corregís, ajustamos." },
+  { step: 5, title: "Acompañamos", desc: "Deploy, testing y soporte post-lanzamiento. Tu producto arranca y seguimos ahí." },
+];
+
 /* ═══════════════════════════════════════════════════════ */
 
 export default function ServiciosContent() {
   const { t } = useLanguage();
-  const observerRef = useRef<IntersectionObserver | null>(null);
+  const [active, setActive] = useState(0);
 
+  // Reveal-on-scroll for [data-reveal] (hero / process / cta).
   useEffect(() => {
     if (typeof window === "undefined") return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
-    observerRef.current = new IntersectionObserver(
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      document.querySelectorAll("[data-reveal]").forEach((el) => el.classList.add("revealed"));
+      return;
+    }
+    const io = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             entry.target.classList.add("revealed");
-            observerRef.current?.unobserve(entry.target);
+            io.unobserve(entry.target);
           }
         });
       },
       { threshold: 0.12, rootMargin: "0px 0px -6% 0px" },
     );
-
-    document.querySelectorAll("[data-reveal]").forEach((el) => {
-      observerRef.current?.observe(el);
-    });
-
-    return () => observerRef.current?.disconnect();
+    document.querySelectorAll("[data-reveal]").forEach((el) => io.observe(el));
+    return () => io.disconnect();
   }, []);
+
+  // Track which service is centered → drives the sticky index panel.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const arts = Array.from(document.querySelectorAll<HTMLElement>("[data-svc]"));
+    if (!arts.length) return;
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) setActive(Number(entry.target.getAttribute("data-svc") || 0));
+        });
+      },
+      { rootMargin: "-45% 0px -45% 0px" },
+    );
+    arts.forEach((a) => io.observe(a));
+    return () => io.disconnect();
+  }, []);
+
+  const activeMeta = SERVICE_META[active];
+  const activeService = t.services[activeMeta.key];
 
   return (
     <>
       {/* ─── Hero ─── */}
-      <section className="relative pb-8 pt-28 sm:pb-12 sm:pt-40">
-        <div className="mx-auto max-w-4xl px-6 text-center lg:px-8">
-          <p data-reveal className="reveal-el mb-4 label-mono text-nodo-cyan">
-            Servicios
+      <section className="relative overflow-hidden pb-10 pt-28 sm:pb-16 sm:pt-40">
+        <GridPattern className="opacity-50" size={46} />
+        <Spotlight />
+        <div className="relative mx-auto max-w-4xl px-6 text-center lg:px-8">
+          <p data-reveal className="reveal-el mb-5 label-mono text-nodo-cyan">
+            Servicios · 06
           </p>
           <h1
             data-reveal
-            className="reveal-el text-4xl font-semibold tracking-[-0.02em] text-nodo-white sm:text-5xl lg:text-6xl"
+            className="reveal-el text-[clamp(2.4rem,5vw,4.5rem)] font-bold leading-[1.02] tracking-[-0.03em] text-nodo-white"
             style={{ transitionDelay: "80ms" }}
           >
             {t.services.page_title}
@@ -173,110 +211,128 @@ export default function ServiciosContent() {
         </div>
       </section>
 
-      {/* ─── Service Sections ─── */}
-      {SERVICE_META.map((meta, i) => {
-        const service = t.services[meta.key];
-        const Icon = meta.icon;
-        const isEven = i % 2 === 1;
-        const num = String(i + 1).padStart(2, "0");
-
-        return (
-          <section key={meta.key} className="relative py-14 sm:py-28">
-            {/* Section divider */}
-            <div className="mx-auto h-px w-full max-w-5xl bg-gradient-to-r from-transparent via-nodo-indigo/30 to-transparent" />
-
-            <div className="mx-auto max-w-6xl px-6 pt-12 lg:px-8">
-              <div className={`flex flex-col gap-12 lg:flex-row lg:items-center lg:gap-16 ${isEven ? "lg:flex-row-reverse" : ""}`}>
-
-                {/* ── Card Side ── */}
-                <div
-                  data-reveal
-                  className={`flex-1 ${isEven ? "reveal-right" : "reveal-left"}`}
-                >
-                  <div className="group relative overflow-hidden rounded-[6px] border border-white/[0.06] bg-[rgba(26,26,46,0.75)] p-6 backdrop-blur-md transition-all duration-500 hover:border-nodo-indigo/20 sm:p-10 lg:p-12">
-                    <span className="mb-6 block text-5xl font-bold tracking-tight gradient-text sm:text-6xl">
-                      {num}
-                    </span>
-
-                    <div
-                      className="mb-6 inline-flex h-12 w-12 items-center justify-center rounded-[4px]"
-                      style={{ background: "linear-gradient(135deg, rgba(88,99,242,0.12), rgba(39,133,254,0.08))" }}
+      {/* ─── Services — sticky morphing index + tracing beam + spotlight cards ─── */}
+      <section className="relative py-8 sm:py-12">
+        <div className="mx-auto max-w-6xl px-6 lg:px-8">
+          <div className="grid gap-10 lg:grid-cols-[290px_1fr] lg:gap-14">
+            {/* Sticky index (desktop) — number + title morph with scroll */}
+            <aside className="hidden lg:block">
+              <div className="sticky top-28">
+                <p className="label-mono text-nodo-cyan">{num(active)} / 06</p>
+                <div className="relative mt-3 h-[150px]">
+                  <AnimatePresence mode="wait">
+                    <motion.div
+                      key={active}
+                      initial={{ opacity: 0, y: 18 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -18 }}
+                      transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
                     >
-                      <Icon className="h-6 w-6 text-nodo-white/90" />
-                    </div>
-
-                    <h2 className="mb-4 text-2xl font-semibold tracking-[-0.01em] text-nodo-white sm:text-3xl">
-                      {service.title}
-                    </h2>
-
-                    <p className="text-[15px] leading-relaxed text-white/80">
-                      {service.description}
-                    </p>
-
-                    {/* Bottom accent line */}
-                    <div className="absolute bottom-0 left-0 h-[2px] w-0 bg-gradient-to-r from-nodo-purple via-nodo-indigo to-nodo-cyan transition-all duration-500 group-hover:w-full" />
-                  </div>
-                </div>
-
-                {/* ── Detail Side ── */}
-                <div
-                  data-reveal
-                  className={`flex-1 ${isEven ? "reveal-left" : "reveal-right"}`}
-                  style={{ transitionDelay: "120ms" }}
-                >
-                  <p className="mb-8 text-[15px] leading-[1.8] text-white/80">
-                    {service.long_description}
-                  </p>
-
-                  {/* Tech logos — revealed as a single block */}
-                  <div className="mb-8">
-                    <p className="mb-4 text-[11px] font-medium tracking-[0.2em] text-nodo-indigo uppercase">
-                      Tecnologías
-                    </p>
-                    <div className="flex flex-wrap gap-3">
-                      {meta.techs.map((tech) => (
-                        <TechBadge key={tech.name} tech={tech} />
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Features — single block, no individual animations */}
-                  <ul className="mb-8 space-y-3">
-                    {service.features.map((feature: string) => (
-                      <li
-                        key={feature}
-                        className="flex items-start gap-3 text-[14px] text-white/80"
+                      <div
+                        className="font-display text-[5.5rem] font-bold leading-none"
+                        style={{ color: activeMeta.accent }}
                       >
-                        <Check
-                          className="mt-0.5 h-4 w-4 shrink-0"
-                          style={{ color: meta.accent }}
-                        />
-                        {feature}
-                      </li>
-                    ))}
-                  </ul>
-
-                  {/* CTA */}
-                  <GhostButton href="/contacto">
-                    <span className="whitespace-nowrap">Consultar sobre {service.title.toLowerCase()}</span>
-                    <ArrowRight className="h-4 w-4 shrink-0" />
-                  </GhostButton>
+                        {num(active)}
+                      </div>
+                      <h3 className="mt-3 font-display text-[1.4rem] font-semibold leading-tight text-nodo-white">
+                        {activeService.title}
+                      </h3>
+                    </motion.div>
+                  </AnimatePresence>
                 </div>
+                <ul className="mt-8 space-y-3.5 border-l border-white/10 pl-5">
+                  {SERVICE_META.map((m, i) => {
+                    const on = i === active;
+                    return (
+                      <li key={m.key}>
+                        <a
+                          href={`#svc-${i}`}
+                          className={`flex items-center gap-3 text-[13px] transition-colors duration-300 ${
+                            on ? "text-nodo-white" : "text-white/45 hover:text-white/80"
+                          }`}
+                        >
+                          <span className="font-mono text-[11px]" style={{ color: on ? m.accent : undefined }}>
+                            {num(i)}
+                          </span>
+                          <span className="truncate">{t.services[m.key].title}</span>
+                        </a>
+                      </li>
+                    );
+                  })}
+                </ul>
               </div>
-            </div>
-          </section>
-        );
-      })}
+            </aside>
 
-      {/* ─── Process ─── */}
-      <section className="relative py-24">
+            {/* Service cards — the tracing beam draws down as you scroll */}
+            <TracingBeam className="lg:pl-12">
+              <div className="space-y-12 sm:space-y-16">
+                {SERVICE_META.map((meta, i) => {
+                  const service = t.services[meta.key];
+                  const Icon = meta.icon;
+                  return (
+                    <SpotlightCard
+                      key={meta.key}
+                      id={`svc-${i}`}
+                      data-svc={i}
+                      accent={meta.accentRgb}
+                      className="scroll-mt-28 p-6 sm:p-9"
+                    >
+                      <div className="relative z-10">
+                        <div className="mb-6 flex items-center gap-4">
+                          <span className="font-display text-3xl font-bold" style={{ color: meta.accent }}>
+                            {num(i)}
+                          </span>
+                          <span
+                            className="inline-flex h-11 w-11 items-center justify-center rounded-[8px] border border-white/10"
+                            style={{ background: `linear-gradient(135deg, rgba(${meta.accentRgb},0.18), transparent)` }}
+                          >
+                            <Icon className="h-5 w-5 text-white/90" />
+                          </span>
+                        </div>
+
+                        <h2 className="mb-4 font-display text-2xl font-semibold tracking-[-0.01em] text-nodo-white sm:text-[1.9rem]">
+                          {service.title}
+                        </h2>
+
+                        <p className="mb-7 max-w-xl text-[15px] leading-[1.85] text-white/75">
+                          {service.long_description}
+                        </p>
+
+                        <ul className="mb-8 grid gap-x-6 gap-y-3 sm:grid-cols-2">
+                          {service.features.map((feature: string) => (
+                            <li key={feature} className="flex items-start gap-2.5 text-[13.5px] text-white/80">
+                              <Check className="mt-0.5 h-4 w-4 shrink-0" style={{ color: meta.accent }} />
+                              {feature}
+                            </li>
+                          ))}
+                        </ul>
+
+                        <div className="mb-7 flex flex-wrap gap-2.5">
+                          {meta.techs.map((tech) => (
+                            <TechBadge key={tech.name} tech={tech} />
+                          ))}
+                        </div>
+
+                        <GhostButton href="/contacto">
+                          <span className="whitespace-nowrap">Consultar sobre {service.title.toLowerCase()}</span>
+                          <ArrowRight className="h-4 w-4 shrink-0" />
+                        </GhostButton>
+                      </div>
+                    </SpotlightCard>
+                  );
+                })}
+              </div>
+            </TracingBeam>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── Process — vertical timeline with gradient spine ─── */}
+      <section className="relative py-20 sm:py-28">
         <div className="mx-auto h-px w-full max-w-5xl bg-gradient-to-r from-transparent via-nodo-indigo/30 to-transparent" />
-
-        <div className="mx-auto max-w-4xl px-6 pt-16 lg:px-8">
-          <div className="mb-16 text-center">
-            <p data-reveal className="reveal-el mb-4 label-mono text-nodo-cyan">
-              Proceso
-            </p>
+        <div className="mx-auto max-w-2xl px-6 pt-16 lg:px-8">
+          <div className="mb-14 text-center">
+            <p data-reveal className="reveal-el mb-4 label-mono text-nodo-cyan">Proceso</p>
             <h2
               data-reveal
               className="reveal-el text-3xl font-semibold tracking-[-0.02em] text-nodo-white sm:text-4xl"
@@ -286,71 +342,55 @@ export default function ServiciosContent() {
             </h2>
           </div>
 
-          {/* Process steps — connected circles timeline */}
-          {(() => {
-            const steps = [
-              { step: 1, title: "Escuchamos", desc: "Nos tomamos el tiempo para entender tu idea, tu negocio y a dónde querés llegar. Sin apuros." },
-              { step: 2, title: "Diseñamos", desc: "Bocetamos el camino juntos antes de escribir una línea de código. Querés ver cómo se va a ver." },
-              { step: 3, title: "Planificamos", desc: "Definimos alcance, tecnologías y tiempos. Sabés qué va, cuándo y cómo — sin sorpresas." },
-              { step: 4, title: "Construimos", desc: "Desarrollamos con entregas frecuentes. Ves el progreso real, nos corregís, ajustamos." },
-              { step: 5, title: "Acompañamos", desc: "Deploy, testing y soporte post-lanzamiento. Tu producto arranca y seguimos ahí." },
-            ];
-            return (
-              <div
+          <ol className="relative">
+            <div
+              aria-hidden
+              className="absolute left-[26px] top-4 bottom-4 w-px bg-gradient-to-b from-nodo-purple via-nodo-indigo to-nodo-cyan opacity-40"
+            />
+            {PROCESS.map((item, i) => (
+              <li
+                key={item.step}
                 data-reveal
-                className="reveal-el grid gap-10 sm:grid-cols-2 lg:grid-cols-5 lg:gap-6"
-                style={{ transitionDelay: "160ms" }}
+                className="reveal-el relative flex gap-6 pb-10 last:pb-0"
+                style={{ transitionDelay: `${i * 70}ms` }}
               >
-                {steps.map((item, i) => (
-                  <div key={item.step} className="relative flex flex-col items-center text-center">
-                    {/* Horizontal connector to next step — desktop only */}
-                    {i < steps.length - 1 && (
-                      <div
-                        aria-hidden
-                        className="pointer-events-none absolute top-7 left-1/2 hidden h-px w-full bg-gradient-to-r from-nodo-indigo/40 via-nodo-cyan/20 to-transparent lg:block"
-                      />
-                    )}
-
-                    {/* Numbered circle */}
-                    <div className="relative z-10 mb-5 flex h-14 w-14 items-center justify-center rounded-full border border-white/[0.08] bg-nodo-black/90 backdrop-blur-sm transition-all duration-300 hover:border-nodo-indigo/40 hover:shadow-[0_0_24px_rgba(88,99,242,0.25)]">
-                      <span className="text-xl font-bold gradient-text tabular-nums">
-                        {item.step}
-                      </span>
-                    </div>
-
-                    <h3 className="mb-2 text-base font-semibold text-nodo-white">{item.title}</h3>
-                    <p className="text-[13px] leading-relaxed text-white/70">{item.desc}</p>
-                  </div>
-                ))}
-              </div>
-            );
-          })()}
+                <div className="relative z-10 flex h-[54px] w-[54px] shrink-0 items-center justify-center rounded-full border border-white/10 bg-nodo-black transition-all duration-300 hover:border-nodo-indigo/40 hover:shadow-[0_0_24px_rgba(88,99,242,0.25)]">
+                  <span className="font-display text-lg font-bold tabular-nums gradient-text">{item.step}</span>
+                </div>
+                <div className="pt-2.5">
+                  <h3 className="mb-1.5 text-base font-semibold text-nodo-white">{item.title}</h3>
+                  <p className="text-[13.5px] leading-relaxed text-white/70">{item.desc}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
         </div>
       </section>
 
-      {/* ─── Final CTA ─── */}
-      <section className="relative py-24">
-        <div className="mx-auto h-px w-full max-w-5xl bg-gradient-to-r from-transparent via-nodo-indigo/30 to-transparent" />
-
-        <div className="mx-auto max-w-3xl px-6 pt-16 text-center lg:px-8">
-          <h2
+      {/* ─── Final CTA — showpiece ─── */}
+      <section className="relative py-16 sm:py-24">
+        <div className="mx-auto max-w-5xl px-6 lg:px-8">
+          <div
             data-reveal
-            className="reveal-el mb-5 text-3xl font-semibold tracking-[-0.02em] text-nodo-white sm:text-4xl"
+            className="reveal-el relative overflow-hidden rounded-[16px] border border-white/[0.07] bg-[rgba(16,16,30,0.9)] px-6 py-16 text-center sm:px-12 sm:py-20"
           >
-            {t.cta.title}
-          </h2>
-          <p
-            data-reveal
-            className="reveal-el mx-auto mb-10 max-w-md text-[15px] leading-relaxed text-white/80"
-            style={{ transitionDelay: "80ms" }}
-          >
-            {t.cta.subtitle}
-          </p>
-          <div data-reveal className="reveal-el" style={{ transitionDelay: "160ms" }}>
-            <GradientButton href="/contacto">
-              {t.cta.button}
-              <ArrowRight className="ml-2 h-4 w-4" />
-            </GradientButton>
+            <GridPattern />
+            <BorderBeam duration={9} />
+            <div
+              aria-hidden
+              className="pointer-events-none absolute left-1/2 top-0 h-48 w-[30rem] max-w-full -translate-x-1/2 -translate-y-1/3 rounded-full opacity-25 blur-[60px]"
+              style={{ background: "radial-gradient(ellipse, #5863f2, transparent 70%)" }}
+            />
+            <div className="relative">
+              <h2 className="mx-auto max-w-2xl text-h2 text-white">{t.cta.title}</h2>
+              <p className="mx-auto mb-9 mt-5 max-w-md text-[15px] leading-relaxed text-white/75">
+                {t.cta.subtitle}
+              </p>
+              <GradientButton href="/contacto" magnetic>
+                {t.cta.button}
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </GradientButton>
+            </div>
           </div>
         </div>
       </section>
