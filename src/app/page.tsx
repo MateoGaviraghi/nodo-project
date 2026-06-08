@@ -28,8 +28,8 @@ export default function HomePage() {
   const services = [t.services.dev, t.services.ia];
   const homeProjects = getPublishedProjects().slice(0, 4);
   const carouselItems = getPublishedProjects()
-    .map((p) => ({ src: p.thumbnail.src, alt: p.thumbnail.alt[lang] }))
-    .filter((it): it is { src: string; alt: string } => Boolean(it.src));
+    .map((p) => ({ src: p.thumbnail.src, alt: p.thumbnail.alt[lang], href: `/proyectos/${p.slug}` }))
+    .filter((it): it is { src: string; alt: string; href: string } => Boolean(it.src));
   const categoryLabel = {
     dev: t.projects.cat_dev,
     wordpress: t.projects.cat_wordpress,
@@ -174,14 +174,10 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Flagship: draggable 3D project carousel (no reveal-el wrapper —
-              its persistent transform would trap the fixed modal) */}
+          {/* Flagship: scroll-rotating 3D project carousel — click navigates to the case study */}
           {carouselItems.length >= 3 && (
             <div className="mb-12 sm:mb-16">
               <ThreeDCarousel items={carouselItems} />
-              <p className="mt-5 text-center font-mono text-[11px] tracking-[0.2em] text-white/40 uppercase">
-                Arrastrá para explorar · clic para ampliar
-              </p>
             </div>
           )}
 

@@ -41,13 +41,13 @@ export default function HeroSection() {
         animate="show"
         className="relative z-10 mx-auto flex w-full max-w-6xl flex-col items-start px-6 text-left lg:px-8"
       >
-        {/* Brand eyebrow — mono kicker with gradient tick */}
+        {/* Brand eyebrow — Nodo wordmark in the display face */}
         <motion.p
           variants={item}
-          className="mb-6 flex items-center gap-3 font-mono text-[clamp(0.7rem,1.1vw,0.85rem)] font-medium tracking-[0.32em] uppercase text-nodo-gray-300"
+          className="mb-6 flex items-center gap-3 font-display text-[clamp(1.05rem,1.6vw,1.35rem)] font-semibold tracking-[0.01em] text-nodo-white/90"
         >
-          <span className="h-px w-8 bg-gradient-to-r from-nodo-purple to-nodo-cyan" />
-          Software house · Argentina
+          <span className="h-px w-9 bg-gradient-to-r from-nodo-purple to-nodo-cyan" />
+          Nodo
         </motion.p>
 
         {/* Headline */}

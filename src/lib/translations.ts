@@ -14,7 +14,7 @@ export const translations = {
     hero: {
       headline: "El *punto* donde tu *idea*, se *conecta* con el *mundo*",
       subtitle:
-        "Desarrollo a medida · WordPress profesional · Automatización con IA",
+        "Desarrollo de sistemas a medida · Automatizaciones con IA",
       cta_primary: "Empezar proyecto",
       cta_secondary: "Conocer más",
     },
@@ -264,7 +264,7 @@ export const translations = {
     },
     hero: {
       headline: "The *point* where your *idea* *connects* with the *world*",
-      subtitle: "Custom development · Professional WordPress · AI Automation",
+      subtitle: "Custom systems development · AI automation",
       cta_primary: "Start a project",
       cta_secondary: "Learn more",
     },
