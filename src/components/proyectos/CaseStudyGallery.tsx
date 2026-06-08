@@ -95,6 +95,7 @@ export default function CaseStudyGallery({ project, lang, eyebrow }: CaseStudyGa
     if (!wrapper || !track) return;
     let raf = 0;
     const update = () => {
+      raf = 0;
       const vw = window.innerWidth || document.documentElement.clientWidth || 1280;
       const vh = window.innerHeight || document.documentElement.clientHeight || 800;
       const rect = wrapper.getBoundingClientRect();
@@ -126,11 +127,18 @@ export default function CaseStudyGallery({ project, lang, eyebrow }: CaseStudyGa
       });
       setActiveIndex(closestIdx);
       if (progressRef.current) progressRef.current.style.transform = `scaleX(${p})`;
-      raf = requestAnimationFrame(update);
     };
-    raf = requestAnimationFrame(update);
+    // Update only on scroll (rAF-throttled) — no continuous reflow when idle.
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(update);
+    };
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
     return () => {
-      cancelAnimationFrame(raf);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      if (raf) cancelAnimationFrame(raf);
       track.style.transform = "";
       track.querySelectorAll<HTMLElement>("[data-gallery-inner]").forEach((el) => {
         el.style.transform = "";

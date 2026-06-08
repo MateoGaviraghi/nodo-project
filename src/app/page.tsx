@@ -239,7 +239,7 @@ export default function HomePage() {
           </div>
 
           <div data-reveal className="reveal-3d" style={{ transitionDelay: "240ms" }}>
-            <div className="relative overflow-hidden rounded-[16px] border border-white/[0.06] bg-[rgba(20,20,36,0.35)] p-5 backdrop-blur-md sm:p-7">
+            <div className="relative overflow-hidden rounded-[16px] border border-white/[0.06] bg-[rgba(16,16,30,0.72)] p-5 sm:p-7">
               <BorderBeam duration={12} />
               <div className="relative">
                 <FeedbackForm />
@@ -255,13 +255,13 @@ export default function HomePage() {
         <div className="mx-auto max-w-5xl px-6 pt-10 sm:pt-16 lg:px-8">
           <div
             data-reveal
-            className="reveal-el relative overflow-hidden rounded-[16px] border border-white/[0.07] bg-[rgba(20,20,36,0.5)] px-6 py-16 text-center backdrop-blur-xl sm:px-12 sm:py-24"
+            className="reveal-el relative overflow-hidden rounded-[16px] border border-white/[0.07] bg-[rgba(16,16,30,0.9)] px-6 py-16 text-center sm:px-12 sm:py-24"
           >
             <GridPattern />
             <BorderBeam duration={9} />
             <div
               aria-hidden
-              className="pointer-events-none absolute left-1/2 top-0 h-64 w-[40rem] max-w-full -translate-x-1/2 -translate-y-1/3 rounded-full opacity-30 blur-[110px]"
+              className="pointer-events-none absolute left-1/2 top-0 h-48 w-[30rem] max-w-full -translate-x-1/2 -translate-y-1/3 rounded-full opacity-25 blur-[60px]"
               style={{ background: "radial-gradient(ellipse, #5863f2, transparent 70%)" }}
             />
             <div className="relative">

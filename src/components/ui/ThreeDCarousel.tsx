@@ -58,7 +58,8 @@ export default function ThreeDCarousel({ items }: { items: CarouselItem[] }) {
     const w = wrapperRef.current;
     if (!w) return;
     let raf = 0;
-    const tick = () => {
+    const compute = () => {
+      raf = 0;
       const rect = w.getBoundingClientRect();
       const vh = window.innerHeight || document.documentElement.clientHeight || 800;
       const scrollable = Math.max(1, w.offsetHeight - vh);
@@ -69,10 +70,19 @@ export default function ThreeDCarousel({ items }: { items: CarouselItem[] }) {
       const frac = seg - idx;
       const eased = frac * frac * (3 - 2 * frac);
       rotation.set(-(idx + eased) * (360 / faceCount));
-      raf = requestAnimationFrame(tick);
     };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
+    // Update only on scroll (rAF-throttled) — no continuous reflow when idle.
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(compute);
+    };
+    compute();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      if (raf) cancelAnimationFrame(raf);
+    };
   }, [mounted, reduced, faceCount, rotation]);
 
   const go = (href: string) => router.push(href);

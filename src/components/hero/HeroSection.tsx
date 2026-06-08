@@ -57,7 +57,7 @@ export default function HeroSection() {
         {/* Headline — explicit two-line break for a clean editorial set */}
         <motion.h1
           variants={item}
-          className="mb-6 text-[clamp(2rem,6vw,5.25rem)] font-bold leading-[0.98] tracking-[-0.04em] text-nodo-white"
+          className="mb-6 text-[clamp(1.9rem,5vw,4.25rem)] font-bold leading-[1.0] tracking-[-0.04em] text-nodo-white"
         >
           {t.hero.headline.split("\n").map((line, li) => (
             <span key={li} className="block">
