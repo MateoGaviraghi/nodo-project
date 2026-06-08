@@ -12,7 +12,7 @@ export const translations = {
       cta: "Empezar proyecto",
     },
     hero: {
-      headline: "El *punto* donde tu *idea*, se *conecta* con el *mundo*",
+      headline: "El *punto* donde tu *idea*\nse *conecta* con el *mundo*",
       subtitle:
         "Desarrollo de sistemas a medida · Automatizaciones con IA",
       cta_primary: "Empezar proyecto",
@@ -263,7 +263,7 @@ export const translations = {
       cta: "Start a project",
     },
     hero: {
-      headline: "The *point* where your *idea* *connects* with the *world*",
+      headline: "The *point* where your *idea*\n*connects* with the *world*",
       subtitle: "Custom systems development · AI automation",
       cta_primary: "Start a project",
       cta_secondary: "Learn more",

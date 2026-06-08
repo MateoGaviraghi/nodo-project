@@ -251,11 +251,6 @@ export default function CaseStudyGallery({ project, lang, eyebrow }: CaseStudyGa
           pinType: "transform",
           anticipatePin: 1,
           invalidateOnRefresh: true,
-          // Snap to each slide so a frame never rests half-centered.
-          snap:
-            slides.length > 1
-              ? { snapTo: 1 / (slides.length - 1), duration: { min: 0.15, max: 0.5 }, ease: "power2.inOut" }
-              : undefined,
           onUpdate: (self) => {
             const idx = updateSlides();
             setActiveIndex(idx);
@@ -272,15 +267,24 @@ export default function CaseStudyGallery({ project, lang, eyebrow }: CaseStudyGa
       // Initial paint — apply transforms before first scroll.
       requestAnimationFrame(updateSlides);
 
-      // Web fonts (Syne/Jakarta) load async and shift layout above the
-      // gallery, staling the pin measurements (miscentering + scroll lock).
-      // Recalc once fonts and full load settle.
+      // First-load freeze fix: late-loading fonts/images shift the layout and
+      // stale the pin measurements, trapping the scroll (a reload "fixes" it
+      // because assets are then cached). Refresh as things settle.
       const refresh = () => ScrollTrigger.refresh();
       if (document.fonts?.ready) document.fonts.ready.then(refresh);
       window.addEventListener("load", refresh);
+      const imgs = Array.from(track.querySelectorAll("img"));
+      imgs.forEach((img) => {
+        if (!img.complete) img.addEventListener("load", refresh, { once: true });
+      });
+      const t1 = window.setTimeout(refresh, 400);
+      const t2 = window.setTimeout(refresh, 1200);
 
       cleanup = () => {
         window.removeEventListener("load", refresh);
+        window.clearTimeout(t1);
+        window.clearTimeout(t2);
+        imgs.forEach((img) => img.removeEventListener("load", refresh));
         tween.scrollTrigger?.kill();
         tween.kill();
         gsap.set(track, { clearProps: "transform" });

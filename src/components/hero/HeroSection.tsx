@@ -50,31 +50,35 @@ export default function HeroSection() {
           Nodo
         </motion.p>
 
-        {/* Headline */}
+        {/* Headline — explicit two-line break for a clean editorial set */}
         <motion.h1
           variants={item}
-          className="mb-6 max-w-[16ch] text-[clamp(2.4rem,6vw,5.25rem)] font-bold leading-[0.98] tracking-[-0.04em] text-nodo-white"
+          className="mb-6 text-[clamp(2rem,6vw,5.25rem)] font-bold leading-[0.98] tracking-[-0.04em] text-nodo-white"
         >
-          {t.hero.headline.split(" ").map((word, i) => {
-            const clean = word.replace(/\*/g, "");
-            const highlighted = word.includes("*");
-            return (
-              <span
-                key={i}
-                className={`inline-block ${i > 0 ? "ml-[0.28em]" : ""} ${
-                  highlighted ? "gradient-text" : ""
-                }`}
-              >
-                {clean}
-              </span>
-            );
-          })}
+          {t.hero.headline.split("\n").map((line, li) => (
+            <span key={li} className="block">
+              {line.split(" ").map((word, i) => {
+                const clean = word.replace(/\*/g, "");
+                const highlighted = word.includes("*");
+                return (
+                  <span
+                    key={i}
+                    className={`inline-block ${i > 0 ? "ml-[0.22em]" : ""} ${
+                      highlighted ? "gradient-text" : ""
+                    }`}
+                  >
+                    {clean}
+                  </span>
+                );
+              })}
+            </span>
+          ))}
         </motion.h1>
 
         {/* Subtitle */}
         <motion.p
           variants={item}
-          className="mb-10 max-w-md text-[clamp(0.95rem,0.5vw+0.85rem,1.1rem)] leading-relaxed text-nodo-gray-300"
+          className="mb-10 max-w-xl text-pretty text-[clamp(0.95rem,0.5vw+0.85rem,1.1rem)] leading-relaxed text-nodo-gray-300"
         >
           {t.hero.subtitle}
         </motion.p>
