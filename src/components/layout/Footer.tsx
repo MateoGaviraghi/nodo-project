@@ -35,7 +35,7 @@ export default function Footer() {
   const emailHref = emailMailto(SOCIAL_LINKS.email, defaults.emailSubject, defaults.emailBody);
 
   return (
-    <footer className="relative border-t border-white/[0.06] bg-[rgba(26,26,46,0.6)] backdrop-blur-xl">
+    <footer className="relative border-t border-white/[0.06] bg-[rgba(13,13,24,0.94)]">
       {/* Top gradient line */}
       <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-nodo-indigo/20 to-transparent" />
 
