@@ -500,6 +500,13 @@ h1, h2, h3, h4 {
   background: linear-gradient(90deg, #8b2fef, #5863f2, #2785fe, #00c1f4);
 }
 
+/* Traveling light pulse along an SVG path (AIBeams node graph) */
+@keyframes beam-flow {
+  to {
+    stroke-dashoffset: -240;
+  }
+}
+
 /* ── Reduced motion ── */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {

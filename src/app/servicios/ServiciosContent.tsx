@@ -14,6 +14,7 @@ import Spotlight from "@/components/ui/Spotlight";
 import BorderBeam from "@/components/ui/BorderBeam";
 import SpotlightCard from "@/components/ui/SpotlightCard";
 import TracingBeam from "@/components/ui/TracingBeam";
+import AIBeams from "@/components/ui/AIBeams";
 
 /* ═══════════════════════════════════════════════════════
    TechBadge — tech logo chip (no backdrop-blur: perf over the mesh)
@@ -297,6 +298,12 @@ export default function ServiciosContent() {
                         <p className="mb-7 max-w-xl text-[15px] leading-[1.85] text-white/75">
                           {service.long_description}
                         </p>
+
+                        {meta.key === "ia" && (
+                          <div className="mb-8 overflow-hidden rounded-[10px] border border-white/[0.07] bg-[rgba(10,10,20,0.45)] p-4 sm:p-6">
+                            <AIBeams />
+                          </div>
+                        )}
 
                         <ul className="mb-8 grid gap-x-6 gap-y-3 sm:grid-cols-2">
                           {service.features.map((feature: string) => (
