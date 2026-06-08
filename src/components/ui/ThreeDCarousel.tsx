@@ -18,18 +18,17 @@ import {
 const useIsomorphicLayoutEffect =
   typeof window !== "undefined" ? useLayoutEffect : useEffect;
 
-const IS_SERVER = typeof window === "undefined";
-
 function useMediaQuery(
   query: string,
   { defaultValue = false }: { defaultValue?: boolean } = {},
 ): boolean {
-  const getMatches = (q: string) => (IS_SERVER ? defaultValue : window.matchMedia(q).matches);
-  const [matches, setMatches] = useState<boolean>(() => getMatches(query));
+  // Always start from defaultValue so the first client render matches SSR
+  // (no hydration mismatch); correct it in a layout effect after mount.
+  const [matches, setMatches] = useState<boolean>(defaultValue);
 
   useIsomorphicLayoutEffect(() => {
     const mq = window.matchMedia(query);
-    const onChange = () => setMatches(getMatches(query));
+    const onChange = () => setMatches(mq.matches);
     onChange();
     mq.addEventListener("change", onChange);
     return () => mq.removeEventListener("change", onChange);
@@ -126,6 +125,14 @@ export default function ThreeDCarousel({ items }: { items: CarouselItem[] }) {
   const [isCarouselActive, setIsCarouselActive] = useState(true);
   const controls = useAnimation();
   const cards = useMemo(() => items, [items]);
+  // Client-only: the 3D geometry depends on viewport width, which differs from
+  // SSR. Render a same-height placeholder until mounted to avoid hydration drift.
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+
+  if (!mounted) {
+    return <div className="relative h-[260px] w-full sm:h-[420px]" aria-hidden />;
+  }
 
   const handleClick = (item: CarouselItem) => {
     setActive(item);
