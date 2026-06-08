@@ -32,27 +32,28 @@ export default function HeroSection() {
   return (
     <section
       data-hero
-      className="relative flex min-h-[100svh] w-full items-center justify-center overflow-hidden"
+      className="relative flex min-h-[100svh] w-full items-center overflow-hidden"
     >
       {/* ── Content (MeshBackground from layout handles ambient color) ── */}
       <motion.div
         variants={container}
         initial="hidden"
         animate="show"
-        className="relative z-10 flex flex-col items-center px-6 text-center"
+        className="relative z-10 mx-auto flex w-full max-w-6xl flex-col items-start px-6 text-left lg:px-8"
       >
-        {/* Brand eyebrow */}
+        {/* Brand eyebrow — mono kicker with gradient tick */}
         <motion.p
           variants={item}
-          className="mb-8 text-[clamp(0.95rem,1.6vw,1.15rem)] font-semibold tracking-[0.42em] uppercase gradient-text"
+          className="mb-6 flex items-center gap-3 font-mono text-[clamp(0.7rem,1.1vw,0.85rem)] font-medium tracking-[0.32em] uppercase text-nodo-gray-300"
         >
-          Nodo
+          <span className="h-px w-8 bg-gradient-to-r from-nodo-purple to-nodo-cyan" />
+          Software house · Argentina
         </motion.p>
 
         {/* Headline */}
         <motion.h1
           variants={item}
-          className="mb-6 max-w-3xl text-[clamp(1.9rem,5vw,4rem)] font-medium leading-[1.08] tracking-[-0.03em] text-nodo-white"
+          className="mb-6 max-w-[16ch] text-[clamp(2.4rem,6vw,5.25rem)] font-bold leading-[0.98] tracking-[-0.04em] text-nodo-white"
         >
           {t.hero.headline.split(" ").map((word, i) => {
             const clean = word.replace(/\*/g, "");
@@ -73,7 +74,7 @@ export default function HeroSection() {
         {/* Subtitle */}
         <motion.p
           variants={item}
-          className="mb-10 max-w-md text-[15px] leading-relaxed text-nodo-gray-300"
+          className="mb-10 max-w-md text-[clamp(0.95rem,0.5vw+0.85rem,1.1rem)] leading-relaxed text-nodo-gray-300"
         >
           {t.hero.subtitle}
         </motion.p>
@@ -81,9 +82,9 @@ export default function HeroSection() {
         {/* CTAs */}
         <motion.div
           variants={item}
-          className="flex w-full flex-col items-center gap-3 px-4 sm:w-auto sm:flex-row sm:px-0"
+          className="flex w-full flex-col items-stretch gap-3 sm:w-auto sm:flex-row sm:items-center"
         >
-          <GradientButton href="/contacto" className="w-full sm:w-auto">
+          <GradientButton href="/contacto" magnetic className="w-full sm:w-auto">
             {t.hero.cta_primary}
           </GradientButton>
           <GhostButton href="/servicios" className="w-full sm:w-auto">

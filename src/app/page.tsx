@@ -10,6 +10,7 @@ import GhostButton from "@/components/ui/GhostButton";
 import TiltCard from "@/components/ui/TiltCard";
 import ScrollCounter from "@/components/ui/ScrollCounter";
 import FeedbackForm from "@/components/feedback/FeedbackForm";
+import ThreeDCarousel from "@/components/ui/ThreeDCarousel";
 import Link from "next/link";
 import { getPublishedProjects } from "@/lib/projects";
 // Testimonials section is hidden until we accumulate 10+ real opinions via /api/feedback.
@@ -26,6 +27,9 @@ export default function HomePage() {
   const { t, language: lang } = useLanguage();
   const services = [t.services.dev, t.services.ia];
   const homeProjects = getPublishedProjects().slice(0, 4);
+  const carouselItems = getPublishedProjects()
+    .map((p) => ({ src: p.thumbnail.src, alt: p.thumbnail.alt[lang] }))
+    .filter((it): it is { src: string; alt: string } => Boolean(it.src));
   const categoryLabel = {
     dev: t.projects.cat_dev,
     wordpress: t.projects.cat_wordpress,
@@ -169,6 +173,17 @@ export default function HomePage() {
               </GhostButton>
             </div>
           </div>
+
+          {/* Flagship: draggable 3D project carousel (no reveal-el wrapper —
+              its persistent transform would trap the fixed modal) */}
+          {carouselItems.length >= 3 && (
+            <div className="mb-12 sm:mb-16">
+              <ThreeDCarousel items={carouselItems} />
+              <p className="mt-5 text-center font-mono text-[11px] tracking-[0.2em] text-white/40 uppercase">
+                Arrastrá para explorar · clic para ampliar
+              </p>
+            </div>
+          )}
 
           <div className="grid gap-8 sm:grid-cols-2 sm:gap-10">
             {homeProjects.map((project, idx) => (

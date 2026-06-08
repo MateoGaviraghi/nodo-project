@@ -166,6 +166,13 @@ body {
   text-rendering: optimizeLegibility;
 }
 
+/* Display face on all headings by default (components can still override) */
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+}
+
 /* ═══════════════════════════════════════════════════════
    Background — Mouse-reactive glow (handled in React)
    ═══════════════════════════════════════════════════════ */
