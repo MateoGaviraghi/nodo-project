@@ -1,12 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ChevronRight, FileDown } from "lucide-react";
 import type { Project, ProjectScreenshot, ProjectAccent } from "@/types";
-
-gsap.registerPlugin(ScrollTrigger);
 
 interface CaseStudyGalleryProps {
   project: Project;
@@ -22,47 +18,55 @@ const ACCENT_RGB: Record<ProjectAccent, string> = {
 };
 
 /**
- * Pinned horizontal gallery with cinematic per-slide transforms.
- * The page pins, the track translates with scrub, and each slide is
- * scaled/blurred/dimmed based on its distance from the viewport center
- * — so the focused frame "lifts" and the others recede.
+ * Horizontal gallery with cinematic per-slide transforms (the focused frame
+ * lifts, the others recede).
  *
- * Same behavior on mobile and desktop. `pinType: "transform"` keeps
- * it stable on iOS Safari + Lenis.
+ * Desktop: a tall wrapper + a sticky stage; vertical scroll translates the
+ * track horizontally, driven by rAF + getBoundingClientRect. This is native
+ * CSS sticky (NO GSAP pin) so it never collides with Lenis — which is what
+ * caused the first-load scroll-lock that a reload "fixed".
+ * Mobile / reduced-motion: native horizontal scroll-snap.
  */
 export default function CaseStudyGallery({ project, lang, eyebrow }: CaseStudyGalleryProps) {
   const sectionRef = useRef<HTMLElement | null>(null);
   const trackRef = useRef<HTMLDivElement>(null);
-  const stickyRef = useRef<HTMLDivElement>(null);
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const scrollerRef = useRef<HTMLDivElement>(null);
   const progressRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
-  // Track viewport class so we can switch between mobile (native swipe)
-  // and desktop (GSAP pin/scrub) on the fly without remounting.
   const [isMobile, setIsMobile] = useState(false);
-  // Mobile-only swipe hint, hides as soon as the user scrolls.
+  const [reduced, setReduced] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const [showSwipeHint, setShowSwipeHint] = useState(true);
+
+  useEffect(() => setMounted(true), []);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
     const mq = window.matchMedia("(max-width: 767px)");
+    const rm = window.matchMedia("(prefers-reduced-motion: reduce)");
     setIsMobile(mq.matches);
-    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
-    mq.addEventListener("change", handler);
-    return () => mq.removeEventListener("change", handler);
+    setReduced(rm.matches);
+    const onMq = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    const onRm = (e: MediaQueryListEvent) => setReduced(e.matches);
+    mq.addEventListener("change", onMq);
+    rm.addEventListener("change", onRm);
+    return () => {
+      mq.removeEventListener("change", onMq);
+      rm.removeEventListener("change", onRm);
+    };
   }, []);
 
   const slides: ProjectScreenshot[] =
     project.screenshots.length > 0 ? project.screenshots : [project.thumbnail];
   const accentRgb = ACCENT_RGB[project.accent];
 
-  // Reveal observer (eyebrow / counter / progress strip).
+  // Reveal observer (eyebrow / progress strip).
   useEffect(() => {
     const root = sectionRef.current;
     if (!root) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      root.querySelectorAll<HTMLElement>("[data-reveal]").forEach((el) => {
-        el.classList.add("revealed");
-      });
+      root.querySelectorAll<HTMLElement>("[data-reveal]").forEach((el) => el.classList.add("revealed"));
       return;
     }
     const io = new IntersectionObserver(
@@ -80,288 +84,203 @@ export default function CaseStudyGallery({ project, lang, eyebrow }: CaseStudyGa
     return () => io.disconnect();
   }, []);
 
+  const useMobileLayout = mounted && (isMobile || reduced);
+  const useDesktopPin = mounted && !isMobile && !reduced;
+
+  // ─── DESKTOP: native sticky pin (vertical scroll → horizontal track) ───
   useEffect(() => {
-    if (typeof window === "undefined") return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
-    const section = sectionRef.current;
+    if (!useDesktopPin) return;
+    const wrapper = wrapperRef.current;
     const track = trackRef.current;
-    const sticky = stickyRef.current;
-    if (!section || !track || !sticky) return;
+    if (!wrapper || !track) return;
+    let raf = 0;
+    const update = () => {
+      const vw = window.innerWidth || document.documentElement.clientWidth || 1280;
+      const vh = window.innerHeight || document.documentElement.clientHeight || 800;
+      const rect = wrapper.getBoundingClientRect();
+      const scrollable = Math.max(1, wrapper.offsetHeight - vh);
+      const p = Math.min(1, Math.max(0, -rect.top / scrollable));
+      const travel = Math.max(0, track.scrollWidth - vw);
+      track.style.transform = `translate3d(${-p * travel}px, 0, 0)`;
 
-    // ─── MOBILE BRANCH ───────────────────────────────────────────
-    // Native horizontal swipe with scroll-snap. We drive the same
-    // per-slide effects (scale / opacity / blur / ty) + counter +
-    // progress bar from the container's scrollLeft — so it looks and
-    // feels like the desktop scrub but uses native touch momentum
-    // (no GSAP pin, no Lenis collision).
-    if (isMobile) {
-      let raf = 0;
+      const slideEls = track.querySelectorAll<HTMLElement>("[data-gallery-slide]");
+      const center = vw / 2;
+      let closestIdx = 0;
+      let closestDist = Infinity;
+      slideEls.forEach((el, idx) => {
+        const r = el.getBoundingClientRect();
+        const slideCenter = r.left + r.width / 2;
+        const distance = Math.abs(slideCenter - center);
+        const norm = Math.min(1, distance / r.width);
+        const eased = norm * norm;
+        const inner = el.querySelector<HTMLElement>("[data-gallery-inner]");
+        if (inner) {
+          inner.style.transform = `translate3d(0, ${eased * 18}px, 0) scale(${1 - eased * 0.14})`;
+          inner.style.opacity = `${1 - eased * 0.45}`;
+          inner.style.filter = `blur(${eased * 1.5}px)`;
+        }
+        if (distance < closestDist) {
+          closestDist = distance;
+          closestIdx = idx;
+        }
+      });
+      setActiveIndex(closestIdx);
+      if (progressRef.current) progressRef.current.style.transform = `scaleX(${p})`;
+      raf = requestAnimationFrame(update);
+    };
+    raf = requestAnimationFrame(update);
+    return () => {
+      cancelAnimationFrame(raf);
+      track.style.transform = "";
+      track.querySelectorAll<HTMLElement>("[data-gallery-inner]").forEach((el) => {
+        el.style.transform = "";
+        el.style.opacity = "";
+        el.style.filter = "";
+      });
+    };
+  }, [useDesktopPin, slides.length]);
 
-      const update = () => {
-        const slideEls = track.querySelectorAll<HTMLElement>("[data-gallery-slide]");
-        const stickyRect = sticky.getBoundingClientRect();
-        const viewportCenter = stickyRect.left + stickyRect.width / 2;
-        let closestIdx = 0;
-        let closestDist = Infinity;
-
-        slideEls.forEach((el, idx) => {
-          const r = el.getBoundingClientRect();
-          const slideCenter = r.left + r.width / 2;
-          const distance = Math.abs(slideCenter - viewportCenter);
+  // ─── MOBILE / reduced-motion: native horizontal scroll-snap ───
+  useEffect(() => {
+    if (!useMobileLayout) return;
+    const scroller = scrollerRef.current;
+    const track = trackRef.current;
+    if (!scroller || !track) return;
+    let raf = 0;
+    const update = () => {
+      const slideEls = track.querySelectorAll<HTMLElement>("[data-gallery-slide]");
+      const sRect = scroller.getBoundingClientRect();
+      const center = sRect.left + sRect.width / 2;
+      let closestIdx = 0;
+      let closestDist = Infinity;
+      slideEls.forEach((el, idx) => {
+        const r = el.getBoundingClientRect();
+        const slideCenter = r.left + r.width / 2;
+        const distance = Math.abs(slideCenter - center);
+        const inner = el.querySelector<HTMLElement>("[data-gallery-inner]");
+        if (inner && !reduced) {
           const norm = Math.min(1, distance / r.width);
           const eased = norm * norm;
-
-          const inner = el.querySelector<HTMLElement>("[data-gallery-inner]");
-          if (inner) {
-            const scale = 1 - eased * 0.10; // softer on mobile (touch feel)
-            const opacity = 1 - eased * 0.40;
-            const blur = eased * 1.2;
-            const ty = eased * 12;
-            inner.style.transform = `translate3d(0, ${ty}px, 0) scale(${scale})`;
-            inner.style.opacity = `${opacity}`;
-            inner.style.filter = `blur(${blur}px)`;
-          }
-
-          if (distance < closestDist) {
-            closestDist = distance;
-            closestIdx = idx;
-          }
-        });
-
-        setActiveIndex(closestIdx);
-        if (progressRef.current) {
-          const maxScroll = sticky.scrollWidth - sticky.clientWidth;
-          const progress = maxScroll > 0 ? sticky.scrollLeft / maxScroll : 0;
-          progressRef.current.style.transform = `scaleX(${progress})`;
+          inner.style.transform = `translate3d(0, ${eased * 12}px, 0) scale(${1 - eased * 0.1})`;
+          inner.style.opacity = `${1 - eased * 0.4}`;
+          inner.style.filter = `blur(${eased * 1.2}px)`;
         }
-        // Hide the swipe hint as soon as the user starts scrolling.
-        if (sticky.scrollLeft > 40) {
-          setShowSwipeHint(false);
+        if (distance < closestDist) {
+          closestDist = distance;
+          closestIdx = idx;
         }
-      };
-
-      // Triple coverage: scroll event + rAF loop + setInterval polling.
-      // - scroll event fires fast on browsers that dispatch it
-      //   (Chrome desktop, most Android, etc).
-      // - rAF loop covers smooth 60fps when the section is in view.
-      // - setInterval is the bulletproof fallback for headless engines
-      //   and iOS Safari edge cases where scroll/rAF can be throttled
-      //   inside scroll-snap-mandatory containers.
-      // `update()` is idempotent and bails out when scrollLeft hasn't
-      // changed, so the cost is one comparison per tick.
-      let lastScrollLeft = -1;
-      let lastWidth = 0;
-      const tick = () => {
-        const sl = sticky.scrollLeft;
-        const w = sticky.clientWidth;
-        if (sl !== lastScrollLeft || w !== lastWidth) {
-          lastScrollLeft = sl;
-          lastWidth = w;
-          update();
-        }
-      };
-      const onScroll = () => {
-        cancelAnimationFrame(raf);
-        raf = requestAnimationFrame(tick);
-      };
-      const loop = () => {
-        tick();
-        raf = requestAnimationFrame(loop);
-      };
-
-      sticky.addEventListener("scroll", onScroll, { passive: true });
-      const intervalId = window.setInterval(tick, 50);
-      // Initial paint (run before kicking off rAF so first frame is correct)
-      update();
-      raf = requestAnimationFrame(loop);
-
-      return () => {
-        sticky.removeEventListener("scroll", onScroll);
-        cancelAnimationFrame(raf);
-        clearInterval(intervalId);
-        track
-          .querySelectorAll<HTMLElement>("[data-gallery-inner]")
-          .forEach((el) => {
-            el.style.transform = "";
-            el.style.opacity = "";
-            el.style.filter = "";
-          });
-      };
-    }
-
-    // ─── DESKTOP BRANCH (GSAP pin/scrub) ─────────────────────────
-
-    let cleanup: (() => void) | null = null;
-
-    const timeout = window.setTimeout(() => {
-      const compute = () => {
-        const totalWidth = track.scrollWidth;
-        const viewport = window.innerWidth;
-        return Math.max(0, totalWidth - viewport);
-      };
-      if (compute() <= 0) return;
-
-      // Drives the per-slide transforms based on each slide's distance
-      // from the viewport center. Called from ScrollTrigger.onUpdate so
-      // it runs in sync with the scrub.
-      const updateSlides = () => {
-        const slideEls = track.querySelectorAll<HTMLElement>("[data-gallery-slide]");
-        const viewportCenter = window.innerWidth / 2;
-        let closestIdx = 0;
-        let closestDist = Infinity;
-
-        slideEls.forEach((el, idx) => {
-          const r = el.getBoundingClientRect();
-          const slideCenter = r.left + r.width / 2;
-          const distance = Math.abs(slideCenter - viewportCenter);
-          const norm = Math.min(1, distance / r.width); // 0 centered, 1 far
-          const eased = norm * norm; // ease-in for a sharper focus
-
-          // Apply on the inner content so the layout doesn't shift.
-          const inner = el.querySelector<HTMLElement>("[data-gallery-inner]");
-          if (inner) {
-            const scale = 1 - eased * 0.14; // 1.0 centered → 0.86 edge (less aggressive)
-            const opacity = 1 - eased * 0.45; // 1.0 → 0.55 (less dim)
-            const blur = eased * 1.5; // 0px → 1.5px (much less blur for crisper edges)
-            const ty = eased * 18; // 0px → 18px down
-            inner.style.transform = `translate3d(0, ${ty}px, 0) scale(${scale})`;
-            inner.style.opacity = `${opacity}`;
-            inner.style.filter = `blur(${blur}px)`;
-          }
-
-          if (distance < closestDist) {
-            closestDist = distance;
-            closestIdx = idx;
-          }
-        });
-
-        return closestIdx;
-      };
-
-      const tween = gsap.to(track, {
-        x: () => -compute(),
-        ease: "none",
-        scrollTrigger: {
-          trigger: section,
-          start: "top top",
-          end: () => `+=${compute()}`,
-          scrub: 0.6,
-          pin: sticky,
-          pinType: "transform",
-          anticipatePin: 1,
-          invalidateOnRefresh: true,
-          onUpdate: (self) => {
-            const idx = updateSlides();
-            setActiveIndex(idx);
-            if (progressRef.current) {
-              progressRef.current.style.transform = `scaleX(${self.progress})`;
-            }
-          },
-          onRefresh: () => {
-            updateSlides();
-          },
-        },
       });
-
-      // Initial paint — apply transforms before first scroll.
-      requestAnimationFrame(updateSlides);
-
-      // First-load freeze fix: late-loading fonts/images shift the layout and
-      // stale the pin measurements, trapping the scroll (a reload "fixes" it
-      // because assets are then cached). Refresh as things settle.
-      const refresh = () => ScrollTrigger.refresh();
-      if (document.fonts?.ready) document.fonts.ready.then(refresh);
-      window.addEventListener("load", refresh);
-      const imgs = Array.from(track.querySelectorAll("img"));
-      imgs.forEach((img) => {
-        if (!img.complete) img.addEventListener("load", refresh, { once: true });
-      });
-      const t1 = window.setTimeout(refresh, 400);
-      const t2 = window.setTimeout(refresh, 1200);
-
-      cleanup = () => {
-        window.removeEventListener("load", refresh);
-        window.clearTimeout(t1);
-        window.clearTimeout(t2);
-        imgs.forEach((img) => img.removeEventListener("load", refresh));
-        tween.scrollTrigger?.kill();
-        tween.kill();
-        gsap.set(track, { clearProps: "transform" });
-        track
-          .querySelectorAll<HTMLElement>("[data-gallery-inner]")
-          .forEach((el) => {
-            el.style.transform = "";
-            el.style.opacity = "";
-            el.style.filter = "";
-          });
-      };
-    }, 80);
-
-    return () => {
-      window.clearTimeout(timeout);
-      cleanup?.();
+      setActiveIndex(closestIdx);
+      if (progressRef.current) {
+        const maxScroll = scroller.scrollWidth - scroller.clientWidth;
+        progressRef.current.style.transform = `scaleX(${maxScroll > 0 ? scroller.scrollLeft / maxScroll : 0})`;
+      }
+      if (scroller.scrollLeft > 40) setShowSwipeHint(false);
     };
-  }, [slides.length, isMobile]);
+    let lastSL = -1;
+    let lastW = 0;
+    const tick = () => {
+      const sl = scroller.scrollLeft;
+      const w = scroller.clientWidth;
+      if (sl !== lastSL || w !== lastW) {
+        lastSL = sl;
+        lastW = w;
+        update();
+      }
+    };
+    const onScroll = () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(tick);
+    };
+    const loop = () => {
+      tick();
+      raf = requestAnimationFrame(loop);
+    };
+    scroller.addEventListener("scroll", onScroll, { passive: true });
+    const intervalId = window.setInterval(tick, 50);
+    update();
+    raf = requestAnimationFrame(loop);
+    return () => {
+      scroller.removeEventListener("scroll", onScroll);
+      cancelAnimationFrame(raf);
+      clearInterval(intervalId);
+      track.querySelectorAll<HTMLElement>("[data-gallery-inner]").forEach((el) => {
+        el.style.transform = "";
+        el.style.opacity = "";
+        el.style.filter = "";
+      });
+    };
+  }, [useMobileLayout, reduced, slides.length]);
+
+  const slideMarkup = slides.map((shot, i) => (
+    <GallerySlide
+      key={i}
+      shot={shot}
+      project={project}
+      accentRgb={accentRgb}
+      lang={lang}
+      isActive={i === activeIndex}
+    />
+  ));
+
+  const eyebrowEl = (
+    <div
+      data-reveal
+      className="reveal-el pointer-events-none absolute top-0 left-0 right-0 z-10 flex items-center justify-between px-6 pt-10 sm:px-12 sm:pt-16 md:pt-24 lg:px-16 lg:pt-28"
+    >
+      <p className="label-mono text-nodo-cyan">{eyebrow}</p>
+    </div>
+  );
+
+  const progressEl = (
+    <div className="pointer-events-none absolute bottom-6 left-1/2 z-10 h-px w-[55%] max-w-[420px] -translate-x-1/2 overflow-hidden bg-white/[0.08] sm:bottom-10">
+      <div
+        ref={progressRef}
+        className="h-full origin-left bg-gradient-to-r from-nodo-purple via-nodo-indigo to-nodo-cyan"
+        style={{ transform: "scaleX(0)" }}
+      />
+    </div>
+  );
 
   return (
     <section ref={sectionRef} className="relative" data-reveal>
-      <div
-        ref={stickyRef}
-        className="relative h-auto py-14 overflow-y-visible overflow-x-auto snap-x snap-mandatory md:h-[100dvh] md:py-0 md:overflow-y-hidden md:overflow-hidden md:snap-none [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
-        style={{ WebkitOverflowScrolling: "touch" }}
-      >
-        {/* Top bar — eyebrow only */}
+      {useMobileLayout ? (
+        /* ─── MOBILE / reduced-motion: native horizontal scroll ─── */
         <div
-          data-reveal
-          className="reveal-el pointer-events-none absolute top-0 left-0 right-0 z-10 flex items-center justify-between px-6 pt-10 sm:px-12 sm:pt-16 md:pt-24 lg:px-16 lg:pt-28"
+          ref={scrollerRef}
+          className="relative h-auto overflow-x-auto overflow-y-visible py-14 snap-x snap-mandatory [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+          style={{ WebkitOverflowScrolling: "touch" }}
         >
-          <p className="label-mono text-nodo-cyan">
-            {eyebrow}
-          </p>
-        </div>
-
-        {/* Track — same layout on mobile and desktop. On mobile the
-            container scrolls horizontally with snap; on desktop GSAP
-            translates this track via transform (no native scroll). */}
-        <div
-          ref={trackRef}
-          className="flex h-full items-center will-change-transform"
-          style={{ width: `${slides.length * 100}vw` }}
-        >
-          {slides.map((shot, i) => (
-            <GallerySlide
-              key={i}
-              shot={shot}
-              project={project}
-              accentRgb={accentRgb}
-              lang={lang}
-              isActive={i === activeIndex}
-            />
-          ))}
-        </div>
-
-        {/* Mobile swipe hint — only shows on mobile while still on slide 1,
-            fades out as soon as the user scrolls. */}
-        <div
-          className={`pointer-events-none absolute bottom-14 left-1/2 z-10 flex -translate-x-1/2 items-center gap-2 text-[11px] font-medium tracking-[0.25em] uppercase text-white/65 transition-opacity duration-500 md:hidden ${
-            showSwipeHint ? "opacity-100" : "opacity-0"
-          }`}
-        >
-          <span>{lang === "es" ? "Deslizá" : "Swipe"}</span>
-          <ChevronRight className="h-3.5 w-3.5 animate-[swipeHint_1.4s_ease-in-out_infinite] text-nodo-cyan" />
-        </div>
-
-        {/* Bottom progress bar — driven by GSAP scrub on desktop,
-            by scroll position on mobile (both via progressRef). */}
-        <div className="pointer-events-none absolute bottom-6 left-1/2 z-10 h-px w-[55%] max-w-[420px] -translate-x-1/2 overflow-hidden bg-white/[0.08] sm:bottom-10">
+          {eyebrowEl}
+          <div ref={trackRef} className="flex items-center" style={{ width: `${slides.length * 100}vw` }}>
+            {slideMarkup}
+          </div>
           <div
-            ref={progressRef}
-            className="h-full origin-left bg-gradient-to-r from-nodo-purple via-nodo-indigo to-nodo-cyan"
-            style={{ transform: "scaleX(0)" }}
-          />
+            className={`pointer-events-none absolute bottom-14 left-1/2 z-10 flex -translate-x-1/2 items-center gap-2 text-[11px] font-medium tracking-[0.25em] uppercase text-white/65 transition-opacity duration-500 ${
+              showSwipeHint ? "opacity-100" : "opacity-0"
+            }`}
+          >
+            <span>{lang === "es" ? "Deslizá" : "Swipe"}</span>
+            <ChevronRight className="h-3.5 w-3.5 animate-[swipeHint_1.4s_ease-in-out_infinite] text-nodo-cyan" />
+          </div>
+          {progressEl}
         </div>
-      </div>
+      ) : (
+        /* ─── DESKTOP (and SSR default): tall wrapper + sticky stage ─── */
+        <div ref={wrapperRef} className="relative" style={{ height: `${100 + (slides.length - 1) * 140}vh` }}>
+          <div className="sticky top-0 h-[100dvh] overflow-hidden">
+            {eyebrowEl}
+            <div
+              ref={trackRef}
+              className="flex h-full items-center will-change-transform"
+              style={{ width: `${slides.length * 100}vw` }}
+            >
+              {slideMarkup}
+            </div>
+            {progressEl}
+          </div>
+        </div>
+      )}
     </section>
   );
 }
@@ -397,8 +316,6 @@ function GallerySlide({
   const pairList = shot.pair ?? [];
   const hasPair = pairList.length > 0;
   const totalImgs = hasPair ? pairList.length + 1 : 1;
-  // Pair (mobile side-by-side) needs more vertical room limited per image.
-  // Single image: take as much height as the viewport allows.
   const maxH = hasPair ? "calc(100dvh - 240px)" : "calc(100dvh - 200px)";
 
   return (
@@ -409,16 +326,11 @@ function GallerySlide({
       <div
         data-gallery-inner
         className={`w-full ${hasPair ? "max-w-sm sm:max-w-xl lg:max-w-3xl" : "max-w-none sm:max-w-3xl lg:max-w-6xl"}`}
-        style={{
-          willChange: "transform, opacity, filter",
-          transformOrigin: "center center",
-        }}
+        style={{ willChange: "transform, opacity, filter", transformOrigin: "center center" }}
       >
         <div
           className="relative overflow-hidden rounded-[8px]"
-          style={{
-            background: `linear-gradient(135deg, rgba(${accentRgb}, 0.10), rgba(10,10,10,0.0) 60%)`,
-          }}
+          style={{ background: `linear-gradient(135deg, rgba(${accentRgb}, 0.10), rgba(10,10,10,0.0) 60%)` }}
         >
           {shot.src ? (
             hasPair ? (
@@ -457,7 +369,6 @@ function GallerySlide({
               </span>
             </div>
           )}
-          {/* Subtle accent glow — keeps the brand color without a fake browser chrome */}
           <div
             aria-hidden
             className="pointer-events-none absolute -bottom-16 -right-16 h-48 w-48 rounded-full opacity-25 blur-3xl"
@@ -465,20 +376,14 @@ function GallerySlide({
           />
         </div>
 
-        {/* Caption + optional link — fades in only when slide is centered.
-            isActive is updated by both branches (GSAP on desktop, rAF on mobile). */}
         {(captionText || shot.link) && (
           <div
             className={`mx-auto mt-6 max-w-md text-center transition-all duration-500 sm:mt-7 ${
-              isActive
-                ? "opacity-100 translate-y-0"
-                : "opacity-0 translate-y-2"
+              isActive ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"
             }`}
           >
             {captionText && (
-              <p className="text-[13px] leading-relaxed text-white/65 sm:text-[14px]">
-                {captionText}
-              </p>
+              <p className="text-[13px] leading-relaxed text-white/65 sm:text-[14px]">{captionText}</p>
             )}
             {shot.link && (
               <a

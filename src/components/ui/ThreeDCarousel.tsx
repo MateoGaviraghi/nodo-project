@@ -7,9 +7,10 @@ import { useRouter } from "next/navigation";
 /**
  * Scroll-pinned 3D cylinder carousel. A tall wrapper provides scroll
  * distance; a sticky stage keeps the cylinder centered while you scroll,
- * turning it one full revolution (slow, project by project) before the page
- * continues. Clicking a face navigates to that project. Native CSS sticky +
- * rAF (no GSAP pin) — robust with Lenis, never locks the scroll.
+ * dwelling on each project then stepping to the next (smoothstep per
+ * segment) before the page continues. Each face shows the project's
+ * category + title and navigates to it on click. Native CSS sticky + rAF
+ * (no GSAP pin) — robust with Lenis, never locks the scroll.
  */
 
 const useIso = typeof window !== "undefined" ? useLayoutEffect : useEffect;
@@ -30,6 +31,8 @@ export interface CarouselItem {
   src: string;
   alt: string;
   href: string;
+  title: string;
+  category: string;
 }
 
 export default function ThreeDCarousel({ items }: { items: CarouselItem[] }) {
@@ -60,18 +63,23 @@ export default function ThreeDCarousel({ items }: { items: CarouselItem[] }) {
       const vh = window.innerHeight || document.documentElement.clientHeight || 800;
       const scrollable = Math.max(1, w.offsetHeight - vh);
       const p = Math.min(1, Math.max(0, -rect.top / scrollable));
-      rotation.set(p * 360);
+      // Dwell on each project, then step to the next (smoothstep per segment).
+      const seg = p * faceCount;
+      const idx = Math.floor(seg);
+      const frac = seg - idx;
+      const eased = frac * frac * (3 - 2 * frac);
+      rotation.set(-(idx + eased) * (360 / faceCount));
       raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
-  }, [mounted, reduced, rotation]);
+  }, [mounted, reduced, faceCount, rotation]);
 
   const go = (href: string) => router.push(href);
 
   const stage = (
     <div
-      className="relative flex h-[240px] w-full items-center justify-center sm:h-[440px]"
+      className="relative flex h-[300px] w-full items-center justify-center sm:h-[460px]"
       style={{ transformStyle: "preserve-3d" }}
     >
       <motion.div
@@ -81,7 +89,17 @@ export default function ThreeDCarousel({ items }: { items: CarouselItem[] }) {
         {items.map((item, i) => (
           <div
             key={`${item.src}-${i}`}
-            className="absolute flex h-full origin-center items-center justify-center p-2"
+            role="link"
+            tabIndex={0}
+            aria-label={item.title}
+            onClick={() => go(item.href)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                go(item.href);
+              }
+            }}
+            className="group absolute flex h-full origin-center cursor-pointer flex-col items-center justify-center gap-3 p-2 outline-none"
             style={{
               width: `${faceWidth}px`,
               transform: `rotateY(${i * (360 / faceCount)}deg) translateZ(${radius}px)`,
@@ -90,22 +108,18 @@ export default function ThreeDCarousel({ items }: { items: CarouselItem[] }) {
             <motion.img
               src={item.src}
               alt={item.alt}
-              role="link"
-              tabIndex={0}
-              aria-label={item.alt}
               draggable={false}
-              onClick={() => go(item.href)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" || e.key === " ") {
-                  e.preventDefault();
-                  go(item.href);
-                }
-              }}
-              className="aspect-[16/10] w-full cursor-pointer rounded-[10px] border border-white/[0.08] object-cover shadow-[0_18px_50px_-12px_rgba(0,0,0,0.85)] outline-none transition-[border-color,box-shadow] duration-300 hover:border-nodo-cyan/50 hover:shadow-[0_18px_60px_-10px_rgba(0,193,244,0.28)] focus-visible:border-nodo-cyan"
+              className="aspect-[16/10] w-full rounded-[10px] border border-white/[0.08] object-cover shadow-[0_18px_50px_-12px_rgba(0,0,0,0.85)] transition-[border-color,box-shadow] duration-300 group-hover:border-nodo-cyan/50 group-hover:shadow-[0_18px_60px_-10px_rgba(0,193,244,0.28)] group-focus-visible:border-nodo-cyan"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.4, ease: [0.32, 0.72, 0, 1] }}
             />
+            <div className="w-full text-center">
+              <p className="label-mono text-nodo-cyan">{item.category}</p>
+              <h3 className="mt-1 font-display text-[clamp(0.95rem,1.4vw,1.35rem)] font-semibold tracking-[-0.01em] text-nodo-white">
+                {item.title}
+              </h3>
+            </div>
           </div>
         ))}
       </motion.div>
@@ -113,7 +127,7 @@ export default function ThreeDCarousel({ items }: { items: CarouselItem[] }) {
   );
 
   if (!mounted) {
-    return <div ref={wrapperRef} className="relative h-[300px] w-full sm:h-[480px]" aria-hidden />;
+    return <div ref={wrapperRef} className="relative h-[340px] w-full sm:h-[520px]" aria-hidden />;
   }
 
   // Reduced motion: static stage, no pin, no rotation.
@@ -125,7 +139,7 @@ export default function ThreeDCarousel({ items }: { items: CarouselItem[] }) {
     );
   }
 
-  const tallHeight = `${100 + (faceCount - 1) * 42}vh`;
+  const tallHeight = `${100 + faceCount * 52}vh`;
 
   return (
     <div ref={wrapperRef} className="relative" style={{ height: tallHeight }}>

@@ -25,9 +25,26 @@ const serviceIcons = [Code, Cpu] as const;
 export default function HomePage() {
   const { t, language: lang } = useLanguage();
   const services = [t.services.dev, t.services.ia];
+  const catLabel: Record<string, string> = {
+    dev: t.projects.cat_dev,
+    wordpress: t.projects.cat_wordpress,
+    ia: t.projects.cat_ia,
+    ecommerce: t.projects.cat_ecommerce,
+    uiux: t.projects.cat_uiux,
+    maintenance: t.projects.cat_maintenance,
+  };
   const carouselItems = getPublishedProjects()
-    .map((p) => ({ src: p.thumbnail.src, alt: p.thumbnail.alt[lang], href: `/proyectos/${p.slug}` }))
-    .filter((it): it is { src: string; alt: string; href: string } => Boolean(it.src));
+    .map((p) => ({
+      src: p.thumbnail.src,
+      alt: p.thumbnail.alt[lang],
+      href: `/proyectos/${p.slug}`,
+      title: p.title,
+      category: catLabel[p.category] ?? "",
+    }))
+    .filter(
+      (it): it is { src: string; alt: string; href: string; title: string; category: string } =>
+        Boolean(it.src),
+    );
   // CSS scroll-driven animations via IntersectionObserver
   const observerRef = useRef<IntersectionObserver | null>(null);
 
