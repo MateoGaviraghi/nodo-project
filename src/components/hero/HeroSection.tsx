@@ -5,6 +5,7 @@ import { useLanguage } from "@/hooks/useLanguage";
 import GradientButton from "@/components/ui/GradientButton";
 import GhostButton from "@/components/ui/GhostButton";
 import ScrollIndicator from "./ScrollIndicator";
+import GridPattern from "@/components/ui/GridPattern";
 
 const EASE_OUT = [0.22, 1, 0.36, 1] as const;
 
@@ -34,6 +35,7 @@ export default function HeroSection() {
       data-hero
       className="relative flex min-h-[100svh] w-full items-center overflow-hidden"
     >
+      <GridPattern className="opacity-70" size={46} />
       {/* ── Content (MeshBackground from layout handles ambient color) ── */}
       <motion.div
         variants={container}

@@ -11,6 +11,8 @@ import TiltCard from "@/components/ui/TiltCard";
 import ScrollCounter from "@/components/ui/ScrollCounter";
 import FeedbackForm from "@/components/feedback/FeedbackForm";
 import ThreeDCarousel from "@/components/ui/ThreeDCarousel";
+import BorderBeam from "@/components/ui/BorderBeam";
+import GridPattern from "@/components/ui/GridPattern";
 import { getPublishedProjects } from "@/lib/projects";
 // Testimonials section is hidden until we accumulate 10+ real opinions via /api/feedback.
 // Re-enable by importing DepthMarquee + testimonials and restoring the <TESTIMONIALS> section.
@@ -223,7 +225,12 @@ export default function HomePage() {
           </div>
 
           <div data-reveal className="reveal-3d" style={{ transitionDelay: "240ms" }}>
-            <FeedbackForm />
+            <div className="relative overflow-hidden rounded-[16px] border border-white/[0.06] bg-[rgba(20,20,36,0.35)] p-5 backdrop-blur-md sm:p-7">
+              <BorderBeam duration={12} />
+              <div className="relative">
+                <FeedbackForm />
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -232,11 +239,21 @@ export default function HomePage() {
       <section className="relative py-16 sm:py-36">
         <div className="section-line" />
         <div className="mx-auto max-w-5xl px-6 pt-10 sm:pt-16 lg:px-8">
-          <div className="text-center">
-            <h2 data-reveal className="reveal-el mb-5 text-3xl font-semibold tracking-[-0.02em] text-white sm:text-4xl lg:text-5xl">{t.cta.title}</h2>
-            <p data-reveal className="reveal-el mx-auto mb-10 max-w-md text-[15px] leading-relaxed text-white/70" style={{ transitionDelay: "80ms" }}>{t.cta.subtitle}</p>
-            <div data-reveal className="reveal-el" style={{ transitionDelay: "160ms" }}>
-              <GradientButton href="/contacto" className="w-full sm:w-auto">{t.cta.button}</GradientButton>
+          <div
+            data-reveal
+            className="reveal-el relative overflow-hidden rounded-[16px] border border-white/[0.07] bg-[rgba(20,20,36,0.5)] px-6 py-16 text-center backdrop-blur-xl sm:px-12 sm:py-24"
+          >
+            <GridPattern />
+            <BorderBeam duration={9} />
+            <div
+              aria-hidden
+              className="pointer-events-none absolute left-1/2 top-0 h-64 w-[40rem] max-w-full -translate-x-1/2 -translate-y-1/3 rounded-full opacity-30 blur-[110px]"
+              style={{ background: "radial-gradient(ellipse, #5863f2, transparent 70%)" }}
+            />
+            <div className="relative">
+              <h2 className="mx-auto max-w-2xl text-h2 text-white">{t.cta.title}</h2>
+              <p className="mx-auto mb-10 mt-5 max-w-md text-[15px] leading-relaxed text-white/70">{t.cta.subtitle}</p>
+              <GradientButton href="/contacto" magnetic className="w-full sm:w-auto">{t.cta.button}</GradientButton>
             </div>
           </div>
         </div>
