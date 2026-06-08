@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "@/hooks/useLanguage";
@@ -12,6 +13,8 @@ export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const { t, language, setLanguage } = useLanguage();
+  const pathname = usePathname();
+  const isActive = (href: string) => (href === "/" ? pathname === "/" : pathname.startsWith(href));
 
   useEffect(() => {
     function handleScroll() {
@@ -83,16 +86,26 @@ export default function Navbar() {
             {/* Desktop Nav — pages centradas absolutamente */}
             <div className="absolute left-1/2 hidden -translate-x-1/2 items-center md:flex">
               <div className="flex items-center gap-8">
-                {NAV_ITEMS.map((item) => (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    className="group relative py-2 text-[13px] text-nodo-gray-300 transition-colors duration-200 hover:text-nodo-white"
-                  >
-                    {navTranslations[item.label] || item.label}
-                    <span className="absolute bottom-0 left-0 h-[2px] w-0 rounded-full bg-gradient-to-r from-nodo-purple via-nodo-indigo to-nodo-cyan transition-all duration-300 ease-out group-hover:w-full" />
-                  </Link>
-                ))}
+                {NAV_ITEMS.map((item) => {
+                  const active = isActive(item.href);
+                  return (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      aria-current={active ? "page" : undefined}
+                      className={`group relative py-2 text-[13px] transition-colors duration-200 ${
+                        active ? "text-nodo-white" : "text-nodo-gray-300 hover:text-nodo-white"
+                      }`}
+                    >
+                      {navTranslations[item.label] || item.label}
+                      <span
+                        className={`absolute bottom-0 left-0 h-[2px] rounded-full bg-gradient-to-r from-nodo-purple via-nodo-indigo to-nodo-cyan transition-all duration-300 ease-out ${
+                          active ? "w-full" : "w-0 group-hover:w-full"
+                        }`}
+                      />
+                    </Link>
+                  );
+                })}
               </div>
             </div>
 
@@ -175,7 +188,10 @@ export default function Navbar() {
                   <Link
                     href={item.href}
                     onClick={() => setIsMobileOpen(false)}
-                    className="block py-1 text-center text-[1.75rem] font-medium text-nodo-white transition-colors active:text-nodo-cyan"
+                    aria-current={isActive(item.href) ? "page" : undefined}
+                    className={`block py-1 text-center text-[1.75rem] font-medium transition-colors active:text-nodo-cyan ${
+                      isActive(item.href) ? "text-nodo-cyan" : "text-nodo-white"
+                    }`}
                   >
                     {navTranslations[item.label] || item.label}
                   </Link>

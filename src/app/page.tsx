@@ -87,18 +87,32 @@ export default function HomePage() {
             <p data-reveal className="reveal-el mx-auto mt-5 max-w-lg text-[15px] leading-relaxed text-white/70" style={{ transitionDelay: "160ms" }}>{t.services.subtitle}</p>
           </div>
 
-          <div className="mx-auto grid max-w-4xl gap-6 md:grid-cols-2">
+          <div className="mx-auto grid max-w-5xl gap-6 lg:grid-cols-5">
             {services.map((service, i) => {
               const Icon = serviceIcons[i];
+              const feature = i === 0;
               return (
-                <div key={i} data-reveal className="reveal-3d" style={{ transitionDelay: `${i * 150}ms` }}>
-                  <TiltCard className="h-full p-6 sm:p-8">
-                    <div className="mb-6 inline-flex h-12 w-12 items-center justify-center rounded-[4px]" style={{ background: "linear-gradient(135deg, rgba(88,99,242,0.12), rgba(39,133,254,0.08))" }}>
-                      <Icon className="h-5 w-5 text-nodo-white/80" />
+                <div
+                  key={i}
+                  data-reveal
+                  className={`reveal-3d ${feature ? "lg:col-span-3" : "lg:col-span-2"}`}
+                  style={{ transitionDelay: `${i * 150}ms` }}
+                >
+                  <TiltCard className={`relative h-full overflow-hidden ${feature ? "p-7 sm:p-10" : "p-6 sm:p-8"}`}>
+                    <GridPattern className="opacity-50" size={30} />
+                    <div className="relative z-10 flex h-full flex-col">
+                      <div
+                        className="mb-6 inline-flex h-12 w-12 items-center justify-center rounded-[6px]"
+                        style={{ background: "linear-gradient(135deg, rgba(88,99,242,0.14), rgba(39,133,254,0.08))" }}
+                      >
+                        <Icon className="h-5 w-5 text-nodo-white/80" />
+                      </div>
+                      <p className="mb-4 label-mono text-white/40">0{i + 1}</p>
+                      <h3 className={`mb-3 font-semibold text-nodo-white ${feature ? "text-2xl sm:text-[1.7rem]" : "text-lg"}`}>
+                        {service.title}
+                      </h3>
+                      <p className="max-w-prose text-[14px] leading-relaxed text-white/70">{service.description}</p>
                     </div>
-                    <p className="mb-4 text-[11px] font-medium tracking-[0.2em] text-white/40 uppercase">0{i + 1}</p>
-                    <h3 className="mb-3 text-lg font-semibold text-nodo-white">{service.title}</h3>
-                    <p className="text-[14px] leading-relaxed text-white/70">{service.description}</p>
                   </TiltCard>
                 </div>
               );
