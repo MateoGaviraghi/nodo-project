@@ -100,6 +100,7 @@ function MemberCard({ member }: { member: TeamMemberData }) {
               src={member.image}
               alt={member.name}
               fill
+              loading="eager"
               sizes="(max-width: 640px) 90vw, 360px"
               className="z-0 object-cover"
               style={{ objectPosition: member.imagePosition ?? "center 20%" }}

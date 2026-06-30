@@ -321,7 +321,7 @@ export default function ServiciosContent() {
                         </div>
 
                         <GhostButton href="/contacto">
-                          <span className="whitespace-nowrap">Consultar sobre {service.title.toLowerCase()}</span>
+                          <span>Consultá este servicio</span>
                           <ArrowRight className="h-4 w-4 shrink-0" />
                         </GhostButton>
                       </div>

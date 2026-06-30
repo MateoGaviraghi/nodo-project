@@ -31,7 +31,7 @@ function Node({
   return (
     <div
       className={`absolute flex -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-[9px] ${
-        hub ? "h-12 w-12 border border-white/20" : "h-8 w-8 border border-white/10 bg-[rgba(18,18,32,0.92)]"
+        hub ? "h-10 w-10 border border-white/20 sm:h-12 sm:w-12" : "h-7 w-7 border border-white/10 bg-[rgba(18,18,32,0.92)] sm:h-8 sm:w-8"
       }`}
       style={{
         left: `${x}%`,
