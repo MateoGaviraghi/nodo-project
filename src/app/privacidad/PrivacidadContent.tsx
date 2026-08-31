@@ -3,7 +3,7 @@
 import { useLanguage } from "@/hooks/useLanguage";
 
 /** Buzón de privacidad. Coincide con el remitente de Resend y con el texto de la política. */
-const PRIVACY_EMAIL = "hola@nodotech.dev";
+const PRIVACY_EMAIL = "mateogaviraghi@nodotech.dev";
 
 type PrivacySection = {
   title: string;

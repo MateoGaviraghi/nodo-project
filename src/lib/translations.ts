@@ -178,7 +178,7 @@ export const translations = {
           title: "Quiénes somos",
           body: [
             "Nodo (nodotech.dev) es un estudio de desarrollo de software con sede en Santa Fe, Argentina, formado por Mateo Gaviraghi y Justo González Viescas.",
-            "Somos los responsables del tratamiento de los datos que se cargan en este sitio. Para cualquier consulta sobre esta política: hola@nodotech.dev",
+            "Somos los responsables del tratamiento de los datos que se cargan en este sitio. Para cualquier consulta sobre esta política: mateogaviraghi@nodotech.dev",
           ],
         },
         {
@@ -222,7 +222,7 @@ export const translations = {
         {
           title: "Tus derechos",
           body: [
-            "Podés pedirnos en cualquier momento acceder a tus datos, corregirlos, actualizarlos o que los eliminemos. Escribinos a hola@nodotech.dev y respondemos dentro de los 10 días corridos.",
+            "Podés pedirnos en cualquier momento acceder a tus datos, corregirlos, actualizarlos o que los eliminemos. Escribinos a mateogaviraghi@nodotech.dev y respondemos dentro de los 10 días corridos.",
             "En Argentina, el titular de los datos personales tiene derecho a solicitar el acceso a ellos de forma gratuita a intervalos no menores a seis meses, salvo que acredite un interés legítimo (art. 14, inciso 3, Ley 25.326).",
             "La Agencia de Acceso a la Información Pública, órgano de control de la Ley 25.326, atiende las denuncias y reclamos de quienes vean afectados sus derechos.",
           ],
@@ -512,7 +512,7 @@ export const translations = {
           title: "Who we are",
           body: [
             "Nodo (nodotech.dev) is a software studio based in Santa Fe, Argentina, run by Mateo Gaviraghi and Justo González Viescas.",
-            "We are the controllers of the data submitted through this site. For any question about this policy: hola@nodotech.dev",
+            "We are the controllers of the data submitted through this site. For any question about this policy: mateogaviraghi@nodotech.dev",
           ],
         },
         {
@@ -556,7 +556,7 @@ export const translations = {
         {
           title: "Your rights",
           body: [
-            "You can ask us at any time to access, correct, update, or delete your data. Write to hola@nodotech.dev and we will reply within 10 calendar days.",
+            "You can ask us at any time to access, correct, update, or delete your data. Write to mateogaviraghi@nodotech.dev and we will reply within 10 calendar days.",
             "In Argentina, data subjects have the right to request access to their personal data free of charge at intervals of no less than six months, unless a legitimate interest is demonstrated (art. 14, para. 3, Law 25.326).",
             "The Agencia de Acceso a la Información Pública, the supervisory authority for Law 25.326, handles complaints from individuals whose rights have been affected.",
           ],
