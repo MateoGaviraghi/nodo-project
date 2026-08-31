@@ -165,6 +165,90 @@ export const translations = {
       rights: "Todos los derechos reservados.",
       navigation: "Navegación",
       contact: "Contacto",
+      privacy: "Privacidad",
+    },
+    privacy: {
+      eyebrow: "Legal",
+      title: "Política de privacidad",
+      updated: "Última actualización: 31 de agosto de 2026",
+      intro:
+        "Esta política explica qué datos personales recolecta nodotech.dev, para qué los usamos, con quién los compartimos y cómo podés pedir que los borremos. Está escrita para que se entienda, no para cubrirnos.",
+      sections: [
+        {
+          title: "Quiénes somos",
+          body: [
+            "Nodo (nodotech.dev) es un estudio de desarrollo de software con sede en Santa Fe, Argentina, formado por Mateo Gaviraghi y Justo González Viescas.",
+            "Somos los responsables del tratamiento de los datos que se cargan en este sitio. Para cualquier consulta sobre esta política: hola@nodotech.dev",
+          ],
+        },
+        {
+          title: "Qué datos recolectamos",
+          body: [
+            "Agenda de videollamada: nombre, correo electrónico, número de WhatsApp (opcional), el tema que querés tratar y tu zona horaria.",
+            "Formulario de opinión: nombre, correo electrónico (opcional), empresa (opcional), tu opinión y una puntuación.",
+            "Datos técnicos de navegación: métricas agregadas y anónimas de uso y rendimiento del sitio. No usamos cookies de seguimiento publicitario ni construimos perfiles de usuario.",
+            "No pedimos ni almacenamos datos de tarjetas, documentos de identidad ni información sensible.",
+          ],
+        },
+        {
+          title: "Para qué los usamos",
+          body: [
+            "Responder tu consulta y coordinar una reunión.",
+            "Crear el evento en el calendario y enviarte la confirmación por correo.",
+            "Mostrar tu opinión en el sitio, solo si la dejaste con ese fin.",
+            "Entender qué secciones se usan y mejorar el rendimiento del sitio.",
+            "No usamos tus datos para publicidad. No los vendemos ni los cedemos a terceros con fines comerciales.",
+          ],
+        },
+        {
+          title: "Con quién los compartimos",
+          body: [
+            "Solo con los proveedores que necesitamos para que el sitio funcione, y únicamente con ese fin:",
+            "Vercel — alojamiento del sitio y métricas anónimas de uso y rendimiento.",
+            "Google — creación y gestión del evento de calendario cuando agendás una llamada.",
+            "Supabase — base de datos donde se guardan las opiniones.",
+            "Resend — envío de los correos de confirmación y aviso.",
+            "Cada uno trata los datos bajo sus propias políticas y solo para prestarnos ese servicio.",
+          ],
+        },
+        {
+          title: "Cuánto tiempo los guardamos",
+          body: [
+            "Consultas y reuniones: mientras dure la conversación comercial y hasta dos años después, por si retomás el contacto.",
+            "Opiniones publicadas: hasta que nos pidas que las saquemos.",
+            "Métricas de navegación: de forma agregada y anónima, sin plazo, porque ya no permiten identificarte.",
+          ],
+        },
+        {
+          title: "Tus derechos",
+          body: [
+            "Podés pedirnos en cualquier momento acceder a tus datos, corregirlos, actualizarlos o que los eliminemos. Escribinos a hola@nodotech.dev y respondemos dentro de los 10 días corridos.",
+            "En Argentina, el titular de los datos personales tiene derecho a solicitar el acceso a ellos de forma gratuita a intervalos no menores a seis meses, salvo que acredite un interés legítimo (art. 14, inciso 3, Ley 25.326).",
+            "La Agencia de Acceso a la Información Pública, órgano de control de la Ley 25.326, atiende las denuncias y reclamos de quienes vean afectados sus derechos.",
+          ],
+        },
+        {
+          title: "Seguridad",
+          body: [
+            "El sitio se sirve por HTTPS y los datos viajan cifrados. El acceso a la base de datos está restringido a los dos socios de Nodo.",
+            "Ningún sistema es infalible: si detectamos un incidente que afecte tus datos, te lo comunicamos.",
+          ],
+        },
+        {
+          title: "Menores",
+          body: [
+            "Este sitio está dirigido a personas mayores de 18 años. No recolectamos datos de menores de forma consciente.",
+          ],
+        },
+        {
+          title: "Cambios en esta política",
+          body: [
+            "Si cambiamos algo, actualizamos esta página y la fecha del encabezado. Los cambios rigen desde su publicación.",
+          ],
+        },
+      ],
+      contactTitle: "Contacto",
+      contactBody: "Cualquier duda o pedido sobre tus datos:",
     },
     contact: {
       title: "Hablemos",
@@ -415,6 +499,90 @@ export const translations = {
       rights: "All rights reserved.",
       navigation: "Navigation",
       contact: "Contact",
+      privacy: "Privacy",
+    },
+    privacy: {
+      eyebrow: "Legal",
+      title: "Privacy policy",
+      updated: "Last updated: August 31, 2026",
+      intro:
+        "This policy explains what personal data nodotech.dev collects, what we use it for, who we share it with, and how you can ask us to delete it. It is written to be understood, not to cover ourselves.",
+      sections: [
+        {
+          title: "Who we are",
+          body: [
+            "Nodo (nodotech.dev) is a software studio based in Santa Fe, Argentina, run by Mateo Gaviraghi and Justo González Viescas.",
+            "We are the controllers of the data submitted through this site. For any question about this policy: hola@nodotech.dev",
+          ],
+        },
+        {
+          title: "What we collect",
+          body: [
+            "Call booking: name, email address, WhatsApp number (optional), the topic you want to discuss, and your time zone.",
+            "Feedback form: name, email address (optional), company (optional), your comment, and a rating.",
+            "Technical browsing data: aggregated, anonymous usage and performance metrics. We do not use advertising trackers and we do not build user profiles.",
+            "We never ask for or store card details, ID documents, or sensitive information.",
+          ],
+        },
+        {
+          title: "What we use it for",
+          body: [
+            "Answering your enquiry and scheduling a meeting.",
+            "Creating the calendar event and sending you the confirmation email.",
+            "Displaying your feedback on the site, only if you submitted it for that purpose.",
+            "Understanding which sections are used and improving site performance.",
+            "We do not use your data for advertising. We do not sell it or pass it to third parties for commercial purposes.",
+          ],
+        },
+        {
+          title: "Who we share it with",
+          body: [
+            "Only the providers we need for the site to work, and only for that purpose:",
+            "Vercel — site hosting and anonymous usage and performance metrics.",
+            "Google — creating and managing the calendar event when you book a call.",
+            "Supabase — the database where feedback is stored.",
+            "Resend — sending confirmation and notification emails.",
+            "Each one processes data under its own policies and solely to provide us that service.",
+          ],
+        },
+        {
+          title: "How long we keep it",
+          body: [
+            "Enquiries and meetings: for the duration of the commercial conversation and up to two years afterwards, in case you get back in touch.",
+            "Published feedback: until you ask us to remove it.",
+            "Browsing metrics: aggregated and anonymous, with no time limit, since they can no longer identify you.",
+          ],
+        },
+        {
+          title: "Your rights",
+          body: [
+            "You can ask us at any time to access, correct, update, or delete your data. Write to hola@nodotech.dev and we will reply within 10 calendar days.",
+            "In Argentina, data subjects have the right to request access to their personal data free of charge at intervals of no less than six months, unless a legitimate interest is demonstrated (art. 14, para. 3, Law 25.326).",
+            "The Agencia de Acceso a la Información Pública, the supervisory authority for Law 25.326, handles complaints from individuals whose rights have been affected.",
+          ],
+        },
+        {
+          title: "Security",
+          body: [
+            "The site is served over HTTPS and data travels encrypted. Database access is restricted to the two partners at Nodo.",
+            "No system is infallible: if we detect an incident affecting your data, we will tell you.",
+          ],
+        },
+        {
+          title: "Minors",
+          body: [
+            "This site is intended for people over 18. We do not knowingly collect data from minors.",
+          ],
+        },
+        {
+          title: "Changes to this policy",
+          body: [
+            "If we change anything, we update this page and the date in the header. Changes take effect on publication.",
+          ],
+        },
+      ],
+      contactTitle: "Contact",
+      contactBody: "Any question or request about your data:",
     },
     contact: {
       title: "Let's talk",

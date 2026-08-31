@@ -129,8 +129,17 @@ export default function Footer() {
         {/* Bottom bar */}
         <div className="mt-8 border-t border-white/[0.04] pt-5 sm:mt-14 sm:pt-6">
           <div className="flex flex-col items-center justify-between gap-3 sm:flex-row">
-            <p className="text-[11px] text-nodo-gray-600">
-              © {new Date().getFullYear()} {SITE_CONFIG.name}. {t.footer.rights}
+            <p className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-[11px] text-nodo-gray-600">
+              <span>
+                © {new Date().getFullYear()} {SITE_CONFIG.name}. {t.footer.rights}
+              </span>
+              <span aria-hidden="true">·</span>
+              <Link
+                href="/privacidad"
+                className="transition-colors duration-200 hover:text-nodo-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-nodo-indigo focus-visible:ring-offset-2 focus-visible:ring-offset-nodo-black"
+              >
+                {t.footer.privacy}
+              </Link>
             </p>
             <p className="text-[11px] text-nodo-gray-600">
               <span className="gradient-text font-medium">{SITE_CONFIG.description}</span>
